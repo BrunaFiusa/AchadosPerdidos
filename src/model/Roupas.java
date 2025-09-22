@@ -1,22 +1,14 @@
 package model;
 
-public class Roupas {
-    private int objeti_id;
-    private String cor, marca, tamanho;
+import java.util.Date;
 
-    public Roupas(int objeti_id, String cor, String marca, String tamanho) {
-        this.objeti_id = objeti_id;
+public class Roupas extends Objetos {
+    private String cor, tamanho;
+
+    public Roupas(int id, int local_id, int lacre, int status_id, int funcionario_id, int categoria_id, int destino_id, String nome, String condicao, String observacao, String marca, Date dataRegistro, String cor, String tamanho) {
+        super(id, local_id, lacre, status_id, funcionario_id, categoria_id, destino_id, nome, condicao, observacao, marca, dataRegistro);
         this.cor = cor;
-        this.marca = marca;
         this.tamanho = tamanho;
-    }
-
-    public int getObjeti_id() {
-        return objeti_id;
-    }
-
-    public void setObjeti_id(int objeti_id) {
-        this.objeti_id = objeti_id;
     }
 
     public String getCor() {
@@ -25,14 +17,6 @@ public class Roupas {
 
     public void setCor(String cor) {
         this.cor = cor;
-    }
-
-    public String getMarca() {
-        return marca;
-    }
-
-    public void setMarca(String marca) {
-        this.marca = marca;
     }
 
     public String getTamanho() {

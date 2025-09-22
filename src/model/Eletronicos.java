@@ -1,29 +1,13 @@
 package model;
 
-public class Eletronicos {
-    private int objeto_id;
-    private String marca, modelo;
+import java.util.Date;
 
-    public Eletronicos(int objeto_id, String marca, String modelo) {
-        this.objeto_id = objeto_id;
-        this.marca = marca;
+public class Eletronicos extends Objetos {
+    private String modelo;
+
+    public Eletronicos(int id, int local_id, int lacre, int status_id, int funcionario_id, int categoria_id, int destino_id, String nome, String condicao, String observacao, String marca, Date dataRegistro, String modelo) {
+        super(id, local_id, lacre, status_id, funcionario_id, categoria_id, destino_id, nome, condicao, observacao, marca, dataRegistro);
         this.modelo = modelo;
-    }
-
-    public int getObjeto_id() {
-        return objeto_id;
-    }
-
-    public void setObjeto_id(int objeto_id) {
-        this.objeto_id = objeto_id;
-    }
-
-    public String getMarca() {
-        return marca;
-    }
-
-    public void setMarca(String marca) {
-        this.marca = marca;
     }
 
     public String getModelo() {

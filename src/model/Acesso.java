@@ -1,11 +1,10 @@
 package model;
 
-public class Destinos {
+public class Acesso {
     private int id;
     private String nome;
 
-    public Destinos(int id, String nome) {
-        this.id = id;
+    public Acesso(String nome) {
         this.nome = nome;
     }
 

@@ -1,10 +1,11 @@
 package model;
 
-public class Acessos {
+public class Local {
     private int id;
     private String nome;
 
-    public Acessos(String nome) {
+    public Local(int id, String nome) {
+        this.id = id;
         this.nome = nome;
     }
 

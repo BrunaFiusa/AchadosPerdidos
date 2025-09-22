@@ -1,15 +1,14 @@
 package model;
 
-public class Destinaatarios {
+public class Destinaatario {
     private int id;
-    private String nome, telefone, cpf, rg;
+    private String nome, telefone, documento;
 
-    public Destinaatarios(int id, String nome, String telefone, String cpf, String rg) {
+    public Destinaatario(int id, String nome, String telefone, String documento) {
         this.id = id;
         this.nome = nome;
         this.telefone = telefone;
-        this.cpf = cpf;
-        this.rg = rg;
+        this.documento = documento;
     }
 
     public int getId() {
@@ -36,19 +35,11 @@ public class Destinaatarios {
         this.telefone = telefone;
     }
 
-    public String getCpf() {
-        return cpf;
+    public String getDocumento() {
+        return documento;
     }
 
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
-    public String getRg() {
-        return rg;
-    }
-
-    public void setRg(String rg) {
-        this.rg = rg;
+    public void setDocumento(String documento) {
+        this.documento = documento;
     }
 }

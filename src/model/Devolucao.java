@@ -2,12 +2,12 @@ package model;
 
 import java.util.Date;
 
-public class Devolucoes {
+public class Devolucao {
     private int id, destinatario_id, objeto_id;
     private Date dataDevoluçao;
     private String autenticadorAssinatura;
 
-    public Devolucoes(int id, Date dataDevoluçao, String autenticadorAssinatura, int destinatario_id, int objeto_id) {
+    public Devolucao(int id, Date dataDevoluçao, String autenticadorAssinatura, int destinatario_id, int objeto_id) {
         this.id = id;
         this.dataDevoluçao = dataDevoluçao;
         this.autenticadorAssinatura = autenticadorAssinatura;

@@ -1,10 +1,10 @@
 package model;
 
-public class Funcionarios {
+public class Funcionario {
     private int id, acesso_id;
     private String nome, email, senha;
 
-    public Funcionarios(int id, int acesso_id, String nome, String email, String senha) {
+    public Funcionario(int id, int acesso_id, String nome, String email, String senha) {
         this.id = id;
         this.acesso_id = acesso_id;
         this.nome = nome;

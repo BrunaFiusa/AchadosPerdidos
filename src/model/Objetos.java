@@ -3,21 +3,22 @@ package model;
 import java.util.Date;
 
 public class Objetos {
-    private int id, lacre, local_id, status_id, funcionario_id, categoria_id;
-    private String nome, condicao, observacao;
+    private int id, lacre, local_id, status_id, funcionario_id, categoria_id, destino_id;
+    private String nome, condicao, observacao, marca;
     private Date dataRegistro;
 
-    public Objetos(int id, int lacre, int local_id, int status_id, int funcionario_id,
-                   int categoria_id, String nome, String condicao, String observacao, Date dataRegistro) {
+    public Objetos(int id, int local_id, int lacre, int status_id, int funcionario_id, int categoria_id, int destino_id, String nome, String condicao, String observacao, String marca, Date dataRegistro) {
         this.id = id;
-        this.lacre = lacre;
         this.local_id = local_id;
+        this.lacre = lacre;
         this.status_id = status_id;
         this.funcionario_id = funcionario_id;
         this.categoria_id = categoria_id;
+        this.destino_id = destino_id;
         this.nome = nome;
         this.condicao = condicao;
         this.observacao = observacao;
+        this.marca = marca;
         this.dataRegistro = dataRegistro;
     }
 
@@ -69,12 +70,28 @@ public class Objetos {
         this.categoria_id = categoria_id;
     }
 
+    public int getDestino_id() {
+        return destino_id;
+    }
+
+    public void setDestino_id(int destino_id) {
+        this.destino_id = destino_id;
+    }
+
     public String getNome() {
         return nome;
     }
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public String getCondicao() {
+        return condicao;
+    }
+
+    public void setCondicao(String condicao) {
+        this.condicao = condicao;
     }
 
     public String getObservacao() {
@@ -85,12 +102,12 @@ public class Objetos {
         this.observacao = observacao;
     }
 
-    public String getCondicao() {
-        return condicao;
+    public String getMarca() {
+        return marca;
     }
 
-    public void setCondicao(String condicao) {
-        this.condicao = condicao;
+    public void setMarca(String marca) {
+        this.marca = marca;
     }
 
     public Date getDataRegistro() {
