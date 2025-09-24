@@ -13,8 +13,8 @@ import java.sql.ResultSet;
 //PreparedStatement -> usado para escrever os comando SQL com parâmetros
 //ResultSet -> usado para armazenar e percorrer os resultados de um SELECT.
 
-public class FuncionarioDao {
-    private Connection conexao = new ConexaoDB() {
+public class FuncionariosDao {
+    private Connection conexao = new ConexaoDB();
         //Aqui é criado o objeto "conexao" que vai ser usado
         //em todos os metodos abaixo para se conectar ao Banco de dados.
 
@@ -60,8 +60,7 @@ public class FuncionarioDao {
                 // Abre a conexão com o banco.
 
                 PreparedStatement removerFuncionario = conexaoBanco.prepareStatement(
-                        "DELETE FROM funcionarios WHERE id = ? ;"
-                );
+                        "DELETE FROM funcionarios WHERE id = ? ;");
                 // Preparamos um comando SQL de DELETE.
                 // Ele vai remover um registro da tabela "funcionario", mas precisa de um "id" específico.
 
@@ -80,9 +79,8 @@ public class FuncionarioDao {
                 // Retorna true se conseguiu apagar pelo menos 1 registro.
 
             } catch (Exception erro) {
-                System.out.println("Erro ao deletar funcionario " + erro);
+                System.out.println("Erro ao deletar Funcionário " + erro);
                 return false;
-
             }
         }
 
@@ -111,54 +109,9 @@ public class FuncionarioDao {
                 // Se pelo menos 1 linha foi alterada, significa que funcionou.
 
             } catch (Exception erro) {
-                System.out.println("Erro ao atualizar Objetos!" + erro);
+                System.out.println("Erro ao atualizar Funcionário!" + erro);
                 return false;
 
-            }
-        }
-
-        public void pesquisarObjetos() {
-            try {
-                Connection conexaoBanco = conexao.conectar();
-                // Abre a conexão.
-
-                PreparedStatement procurarFuncionario = conexaoBanco.prepareStatement(
-                        "SELECT nome, email, senha, acesso_fk WHERE id = ? ;"
-                );
-                // Cria o comando SQL de SELECT para buscar o nome e o preço de um objeto específico.
-
-                procurarFuncionario.setInt(1, 1);
-                // Define o id que será pesquisado (aqui fixo no número 1).
-
-                ResultSet resultado = procurarFuncionario.executeQuery();
-                // Executa o SELECT e armazena os resultados dentro do objeto "resultado".
-
-                while (resultado.next()) {
-                    //O "while" percorre os resultados.
-                    //Mesmo sendo apenas 1 registro, é usado while porque o ResultSet pode ter várias linhas.
-
-                    String nome = resultado.getString("nome");
-                    // Pega o valor da coluna "nome".
-                     email = resultado.getString("email");
-                    // Pega o valor da coluna "email".
-                    String senha = resultado.getString("senha");
-                    // Pega o valor da coluna "senha".
-                    String acesso_fk = resultado.getString("acesso_fk");
-                    // Pega o valor da coluna "acesso_fk".
-
-
-
-                    System.out.println(nome + " nome " + observacao + " observacao" + condicao + "condicao" + lacre + "lacre" +
-                            data_registro + "data_registro" + categoria_fk + "categoria_fk" + funcionario_fk + "funcionario_fk" +
-                            status_fk + "status_fk" + local_fk + "local_fk");
-                    // Imprime no console os valores encontrados.
-                }
-
-                conexaoBanco.close();
-                // Fecha a conexão.
-
-            } catch (Exception erro) {
-                System.out.println("Erro ao pesquisar por Objetos!" + erro);
             }
         }
     }
