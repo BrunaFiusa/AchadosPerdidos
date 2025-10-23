@@ -22,6 +22,8 @@ public class Objetos {
         this.dataRegistro = dataRegistro;
     }
 
+    public Objetos() {}
+
     public int getId() {
         return id;
     }

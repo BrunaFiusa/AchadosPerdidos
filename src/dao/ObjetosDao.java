@@ -1,176 +1,145 @@
 package dao;
-//Importação da DAO para organização das classes no projeto
 
+import model.Objetos;
 import util.ConexaoDB;
-//Aqui importamos a classe ConexaoDB" criada para estabelecer a conecxão com o banco
-//Essa classe deve/tem um metodo para abriur a conexao com o banco de dados. EX: conexao.conectar
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-//Essas são as classes da biblioteca JDBC (java Database Conncetiviity).
-//Connection -> Representa uma conexão ativa com o banco
-//PreparedStatement -> usado para escrever os comando SQL com parâmetros
-//ResultSet -> usado para armazenar e percorrer os resultados de um SELECT.
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ObjetosDao {
-    private Connection conexao = new ConexaoDB();
-    //Aqui é criado o objeto "conexao" que vai ser usado
-    //em todos os metodos abaixo para se conectar ao Banco de dados.
-
-    public boolean inserirObjeto() {
-        try {
-            Connection conexaoBanco = conexao.conectar();
-            //Abre uma conecxao com o banco atraves do metodo conectar da classe ConexaoDB
-            //Sendo assim, temos acesso ao banco de dados atravésdo obeto conexaoBanco
-
-            PreparedStatement adicionarObjeto = conexaoBanco.prepareStatement("INSERT INTO objetos" + "(nome, observacao, condicao, lacre, data_registro " +
-                    "categoria_fk, funcionario_fk, status_fk ,local_fk ) + VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ;");
-            //Preparamos um comando SQL do tipo INSERT para inserir informações na tabela "objetos"
-            //Os "?" são "placeholders",ou seja, espaços reservados para colocarmos valores
-
-            adicionarObjeto.setInt(); // Substitui o 1º "?" pelo número.
-            adicionarObjeto.setInt(); // Substitui o 2º "?" pelo número.
-            adicionarObjeto.setInt();
-            adicionarObjeto.setInt();
-            adicionarObjeto.setInt();
-            adicionarObjeto.setTimestamp();
-            adicionarObjeto.setInt();
-            adicionarObjeto.setCharacterStream();
-            adicionarObjeto.setString();
-            adicionarObjeto.setString();
-            // Aqui atribuimos valores reais para cada "placeholder" ->  "?" do comando SQL.
-
-            int linhaAfetadaSQL = adicionarObjeto.executeUpdate();
-            //Executa o comando SQL ao banco
-            //O retorno é um inteiro para mostrar quantas linhas do banco foram inseridas/afetadas.
-
-            conexaoBanco.close();
-            //Fecha a conexao com o banco de dados (boa pratica para liberar recursos e não consumir memoria)
-
-            return linhaAfetadaSQL > 0;
-            //Se pelo menos ' linha for afetada (inserida), retorna "true", indicando que teve sucesso ao inserir informações
-
-        } catch (Exception erro) {
-            System.out.println("Erro ao inserir objetos " + erro);
-            //Caso de algum erro, imprime a mensagem + o erro no console
-
-            return false;
-            //E retorna false, indicando que a operação não de certo
+    private ConexaoDB conexao = new ConexaoDB();
+    private Timestamp converterParaSqlTimestamp(Objetos objetos) {
+        if (objetos.getDataRegistro() == null) {
+            return null;
         }
+        return new Timestamp(objetos.getDataRegistro().getTime());
     }
 
-    public boolean deletarObjetos() {
+    public boolean inserirObjetos(Objetos objetos) {
         try {
-            Connection conexaoBanco = conexao.conectar();
-            // Abre a conexão com o banco.
 
-            PreparedStatement removerObjeto = conexaoBanco.prepareStatement(
-                    "DELETE FROM objetos WHERE id = ? ;"
-            );
-            // Preparamos um comando SQL de DELETE.
-            // Ele vai remover um registro da tabela "objetos", mas precisa de um "id" específico.
+            Connection connDb = conexao.conectar();
+            Timestamp sqlTimestamp = converterParaSqlTimestamp(objetos);
 
-            removerObjeto.setInt(1, 1);
-            // Aqui estamos definindo que o "id" será 1.
-            // Ou seja, vai apagar o registro com id = 1 da tabela.
+            PreparedStatement stmt = connDb.prepareStatement("INSERT INTO objetos (nome, data_registro, lacre, condicao, observacao, local_id, status_id, funcionario_id, categoria_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);");
 
-            int linhaAfetada = removerObjeto.executeUpdate();
-            // Executa o DELETE no banco.
-            // O retorno indica quantas linhas foram apagadas.
+            stmt.setString(1, objetos.getNome());
+            stmt.setTimestamp(2, sqlTimestamp);
+            stmt.setInt(3, objetos.getLacre());
+            stmt.setString(4, objetos.getCondicao());
+            stmt.setString(5, objetos.getObservacao());
+            stmt.setInt(6, objetos.getLocal_id());
+            stmt.setInt(7, objetos.getStatus_id());
+            stmt.setInt(8, objetos.getFuncionario_id());
+            stmt.setInt(9, objetos.getCategoria_id());
 
-            conexaoBanco.close();
-            // Fecha a conexão.
-
+            int linhaAfetada = stmt.executeUpdate();
+            connDb.close();
             return linhaAfetada > 0;
-            // Retorna true se conseguiu apagar pelo menos 1 registro.
 
-        } catch (Exception erro) {
-            System.out.println("Erro ao deletar Objetos" + erro);
+        }  catch (Exception erro) {
+            System.out.println("Erro ao inserir objetos: " + erro);
             return false;
         }
     }
 
-    public boolean atualizarObjetos() {
+    public boolean alterarObjetos(Objetos objetos) {
         try {
-            Connection conexaoBanco = conexao.conectar();
-            // Abre a conexão com o banco.
 
-            PreparedStatement alterarObjeto = conexaoBanco.prepareStatement(
-                    "UPDATE objetos SET nome = ?, observacao = ?, condicao = ?, lacre = ?, data_registro = ?, " +
-                            "categoria_fk = ?, funcionario_fk = ?, status_fk = ?, local_fk = ? WHERE id = ? ;"
-            );
-            // Cria o comando SQL para atualizar dados de um registro.
-            // Ele vai trocar as informações de um objeto que tenha o "id" informado.
+            Connection connDb = conexao.conectar();
+            Timestamp sqlTimestamp = converterParaSqlTimestamp(objetos);
 
-            alterarObjeto.setInt(); //Substitui o 1º "?" pelo número.
-            alterarObjeto.setInt(); //Substitui o 2º "?" pelo número.
-            alterarObjeto.setInt();
-            alterarObjeto.setInt();
-            alterarObjeto.setInt();
-            alterarObjeto.setTimestamp();
-            alterarObjeto.setInt();
-            alterarObjeto.setCharacterStream();
-            alterarObjeto.setString();
-            alterarObjeto.setString();
+            PreparedStatement stmt = connDb.prepareStatement("UPDATE objetos SET nome = ?, data_registro = ?, lacre = ?, condicao = ?, observacao = ?, local_id = ?, status_id = ?, funcionario_id = ?, categoria_id = ? WHERE id = ?;");
 
-            int linhaAfetada = alterarObjeto.executeUpdate();
-            // Executa o UPDATE e retorna quantas linhas foram modificadas.
+            stmt.setString(1, objetos.getNome());
+            stmt.setTimestamp(2, converterParaSqlTimestamp(objetos));
+            stmt.setInt(3, objetos.getLacre());
+            stmt.setString(4, objetos.getCondicao());
+            stmt.setString(5, objetos.getObservacao());
+            stmt.setInt(6, objetos.getLocal_id());
+            stmt.setInt(7, objetos.getStatus_id());
+            stmt.setInt(8, objetos.getFuncionario_id());
+            stmt.setInt(9, objetos.getCategoria_id());
+            stmt.setInt(10, objetos.getId());
 
-            conexaoBanco.close();
+            int linhaAfetada = stmt.executeUpdate();
+            connDb.close();
             return linhaAfetada > 0;
-            // Se pelo menos 1 linha foi alterada, significa que funcionou.
 
         } catch (Exception erro) {
-            System.out.println("Erro ao atualizar Objetos!" + erro);
+            System.out.println("Erro ao alterar objetos: " + erro);
             return false;
         }
     }
 
-    public void pesquisarObjetos() {
+    public boolean deletarObjetos(Objetos objetos) {
         try {
-            Connection conexaoBanco = conexao.conectar();
-            // Abre a conexão.
 
-            PreparedStatement procurarObjeto = conexaoBanco.prepareStatement(
-                    "SELECT nome, observacao, condicao, lacre , data_registro" +
-                            "categoria_fk, funcionario_fk, status_fk, local_fk WHERE id = ? ;"
-            );
-            // Cria o comando SQL de SELECT para buscar o nome e o preço de um objeto específico.
+            Connection connDb = conexao.conectar();
 
-            procurarObjeto.setInt(1, 1);
-            // Define o id que será pesquisado (aqui fixo no número 1).
+            PreparedStatement stmt = connDb.prepareStatement("DELETE FROM objetos WHERE id = ?;");
 
-            ResultSet resultado = procurarObjeto.executeQuery();
-            // Executa o SELECT e armazena os resultados dentro do objeto "resultado".
+            stmt.setInt(1, objetos.getId());
 
-            while (resultado.next()) {
-                //O "while" percorre os resultados.
-                //Mesmo sendo apenas 1 registro, é usado while porque o ResultSet pode ter várias linhas.
+            int linhaAfetada = stmt.executeUpdate();
+            connDb.close();
+            return linhaAfetada > 0;
 
-                String nome = resultado.getString("nome");
-                String observacao = resultado.getString("observacao");
-                String condicao = resultado.getString("condicao");
-                String lacre = resultado.getString("lacre");
-                String data_registro = resultado.getString("data_registro");
-                String categoria_fk = resultado.getString("categoria_fk");
-                String funcionario_fk = resultado.getString("funcionario_fk");
-                String status_fk = resultado.getString("status_fk");
-                String local_fk = resultado.getString("local_fk");
-                // Pega o valor da coluna "nome/observacao etc".
+        } catch (Exception erro) {
+            System.out.println("Erro ao deletar objetos: " + erro);
+            return false;
+        }
+    }
 
+    public List<Objetos> listarTodosObjetos() {
+        String sql = "SELECT id, nome, data_registro, lacre, condicao, observacao, local_id, status_id, funcionario_id, categoria_id FROM objetos";
 
-                System.out.println(nome + " nome " + observacao + " observacao" + condicao + "condicao" + lacre + "lacre" +
-                        data_registro + "data_registro" + categoria_fk + "categoria_fk" + funcionario_fk + "funcionario_fk" +
-                        status_fk + "status_fk" + local_fk + "local_fk");
-                // Imprime no console os valores encontrados.
+        Connection connDb = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        List<Objetos> listaDeObjetos = new ArrayList<>();
+
+        try {
+            connDb = conexao.conectar();
+            stmt = connDb.prepareStatement(sql);
+
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+
+                Objetos objeto = new Objetos();
+
+                objeto.setId(rs.getInt("id"));
+                objeto.setNome(rs.getString("nome"));
+                objeto.setDataRegistro(rs.getTimestamp("data_registro"));
+                objeto.setLacre(rs.getInt("lacre"));
+                objeto.setCondicao(rs.getString("condicao"));
+                objeto.setObservacao(rs.getString("observacao"));
+                objeto.setLocal_id(rs.getInt("local_id"));
+                objeto.setStatus_id(rs.getInt("status_id"));
+                objeto.setFuncionario_id(rs.getInt("funcionario_id"));
+                objeto.setCategoria_id(rs.getInt("categoria_id"));
+
+                listaDeObjetos.add(objeto);
+
             }
 
-            conexaoBanco.close();
-            // Fecha a conexão.
-
         } catch (Exception erro) {
-            System.out.println("Erro ao pesquisar por Objetos!" + erro);
+            System.out.println("Erro ao listar objetos: " + erro);
+
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+                if (connDb != null) connDb.close();
+            } catch (Exception e) {}
         }
+
+        return listaDeObjetos;
     }
+
+    //Outros Metodos de Listagem!
 }
