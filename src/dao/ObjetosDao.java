@@ -18,13 +18,14 @@ public class ObjetosDao {
         return new Timestamp(objetos.getDataRegistro().getTime());
     }
 
-    public boolean inserirObjetos(Objetos objetos) {
-        try {
+    //** COMPLETO - INSERIR OBJETOS
+    public int inserirObjetos(Objetos objetos, Connection connDb) throws Exception {
+        String sql = "INSERT INTO objetos (nome, data_registro, lacre, condicao, observacao, local_id, status_id, funcionario_id, categoria_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        int idGerado = -1;
 
-            Connection connDb = conexao.conectar();
+        try (PreparedStatement stmt = connDb.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+
             Timestamp sqlTimestamp = converterParaSqlTimestamp(objetos);
-
-            PreparedStatement stmt = connDb.prepareStatement("INSERT INTO objetos (nome, data_registro, lacre, condicao, observacao, local_id, status_id, funcionario_id, categoria_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);");
 
             stmt.setString(1, objetos.getNome());
             stmt.setTimestamp(2, sqlTimestamp);
@@ -36,13 +37,14 @@ public class ObjetosDao {
             stmt.setInt(8, objetos.getFuncionario_id());
             stmt.setInt(9, objetos.getCategoria_id());
 
-            int linhaAfetada = stmt.executeUpdate();
-            connDb.close();
-            return linhaAfetada > 0;
+            stmt.executeUpdate();
 
-        }  catch (Exception erro) {
-            System.out.println("Erro ao inserir objetos: " + erro);
-            return false;
+            try (ResultSet rs = stmt.getGeneratedKeys()) {
+                if (rs.next()) {
+                    idGerado = rs.getInt(1);
+                }
+            }
+            return idGerado;
         }
     }
 
@@ -94,6 +96,7 @@ public class ObjetosDao {
         }
     }
 
+    //** MODIFICAR - NÃO LISTAR CHAVES ESTRANGEIRAS | NÃO LISTAR ID **
     public List<Objetos> listarTodosObjetos() {
         String sql = "SELECT id, nome, data_registro, lacre, condicao, observacao, local_id, status_id, funcionario_id, categoria_id FROM objetos";
 
