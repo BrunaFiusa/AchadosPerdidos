@@ -10,7 +10,6 @@ public class ObjetosEletronicosDao {
     private ConexaoDB conexao = new ConexaoDB();
     private ObjetosDao objetosDao = new ObjetosDao();
 
-    //MODIFICAR - ALTERAR PARA NOVO MODELO COM MARCA
     public boolean inserirEletronicos(Eletronicos eletronicos) {
 
         String sqlEletronico = "INSERT INTO eletronicos (modelo, objeto_id) VALUES (?, ?)";
@@ -62,6 +61,4 @@ public class ObjetosEletronicosDao {
         }
         return sucesso;
     }
-
-    //CRIAÇÃO DOS OUTROS MÉTODOS
 }

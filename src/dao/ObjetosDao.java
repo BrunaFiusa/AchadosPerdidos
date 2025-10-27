@@ -18,7 +18,6 @@ public class ObjetosDao {
         return new Timestamp(objetos.getDataRegistro().getTime());
     }
 
-    //** COMPLETO - INSERIR OBJETOS
     public int inserirObjetos(Objetos objetos, Connection connDb) throws Exception {
         String sql = "INSERT INTO objetos (nome, data_registro, lacre, condicao, observacao, local_id, status_id, funcionario_id, categoria_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         int idGerado = -1;
@@ -49,6 +48,7 @@ public class ObjetosDao {
     }
 
     public boolean alterarObjetos(Objetos objetos) {
+
         try {
 
             Connection connDb = conexao.conectar();
@@ -77,7 +77,10 @@ public class ObjetosDao {
         }
     }
 
-    public boolean deletarObjetos(Objetos objetos) {
+    public boolean deletarObjetos (Objetos objetos, Connection connDb) throws Exception {
+
+        String sql = "DELETE FROM objetos WHERE id = ?";
+
         try {
 
             Connection connDb = conexao.conectar();
