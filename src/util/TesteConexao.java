@@ -1,25 +1,48 @@
 package util;
+
 import controller.GerenciamentoController;
+import java.util.Random;
 
-import java.sql.Connection;
+class TesteUpdateObjeto {
 
-public class TesteConexao {
+    private static GerenciamentoController controller = new GerenciamentoController();
+
     public static void main(String[] args) {
-        ConexaoDB conexao = new ConexaoDB();
-        //UsuariosController usuariosController = new UsuariosController();
-        Connection condb = conexao.conectar();
-        if (condb != null) {
-            System.out.println("Conexão estabelcida com sucesso!");
-            try {
-                //usuariosController.veririficarCredencias("Souza@gmail.com","321");
-                condb.close();
-                System.out.println("Conexão encerrada!");
 
-            } catch (Exception erro) {
-                System.out.println("Erro ao encerrar a conexão: " + erro.getMessage());
-            }
+        System.out.println("--- Iniciando Teste de ALTERAÇÃO de Objeto Genérico ---");
+
+        int id = 1;
+        String Nome = "Teste";
+        int Lacre = 213411;
+        String Condicao = "preservado";
+        String Observacao = "Teste";
+        int LocalId = 1;
+        int statusId = 1;
+        int funcionarioId = 1;
+        int categoriaId = 1;
+        String cor = "Teste";
+        String tamanho = "GG";
+
+        boolean sucesso = controller.alterarRoupas(
+                id,
+                Nome,
+                Lacre,
+                Condicao,
+                Observacao,
+                LocalId,
+                statusId,
+                funcionarioId,
+                categoriaId,
+                cor,
+                tamanho
+        );
+
+        System.out.println("\n----------------------------------------");
+        if (sucesso) {
+            System.out.println("✅ SUCESSO: Objeto ID alterado com êxito!");;
         } else {
-            System.out.println("Falha ao conectar ao banco de dados!");
+            System.out.println("❌ FALHA: A alteração falhou.");
         }
+        System.out.println("--- Teste Concluído ---");
     }
 }

@@ -56,6 +56,54 @@ public class ObjetosEletronicosDao {
                 try {
                     connDb.setAutoCommit(true);
                     connDb.close();
+                } catch (Exception e) {}
+            }
+        }
+        return sucesso;
+    }
+
+    public boolean alterarEletronicos(Eletronicos eletronicos) {
+        String sqlEletronico = "UPDATE eletronicos SET modelo = ? WHERE objeto_id = ?";
+
+        Connection connDb = null;
+        boolean sucesso = false;
+
+        try {
+            connDb = conexao.conectar();
+            connDb.setAutoCommit(false);
+
+            boolean sucessoObjeto = objetosDao.alterarObjetos(eletronicos, connDb);
+
+            if (!sucessoObjeto) {
+                throw new Exception("Falha ao alterar o objeto base.");
+            }
+
+            try (PreparedStatement stmtEle = connDb.prepareStatement(sqlEletronico)) {
+
+                stmtEle.setString(1, eletronicos.getModelo());
+                stmtEle.setInt(2, eletronicos.getId());
+
+                stmtEle.executeUpdate();
+            }
+
+            connDb.commit();
+            sucesso = true;
+
+        } catch (Exception erro) {
+            System.out.println("Erro ao alterar eletrônico completo: " + erro.getMessage());
+
+            if (connDb != null) {
+                try {
+                    connDb.rollback();
+                } catch (Exception rollbackErr) { }
+            }
+            sucesso = false;
+
+        } finally {
+            if (connDb != null) {
+                try {
+                    connDb.setAutoCommit(true);
+                    connDb.close();
                 } catch (Exception e) { }
             }
         }
