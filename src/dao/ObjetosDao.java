@@ -213,9 +213,15 @@ public class ObjetosDao {
         return listaDeObjetos;
     }
 
-    public List<Objetos> listarObjetosPreservados(){
-        List<Objetos> listaDeObjetos = new ArrayList<>();
-        String sql = "SELECT nome, marca, condicao FROM objetos WHERE condicao = 'preservado' ";
+    public List<Objetos> listarObjetosPreservados(List<String> condicoes){
+
+        //Caso não tenha filtros, retona tudo ou somente uma lista vazia
+        if( condicao == null || condicao.isEmpty()){
+            //lista vazia
+        return listarTodosObjetos(); //chama o metodo listarTodosObjetos
+        }
+
+        String sql = "SELECT nome, marca, condicao FROM objetos WHERE condicao IN = (?, ?,?) ";
 
         try (Connection connDb = conexao.conectar();
              PreparedStatement ps = connDb.prepareStatement(sql);
@@ -242,6 +248,7 @@ public class ObjetosDao {
         // (criada na linha 1) será retornada.
         return listaDeObjetos;
     }
+
 
 
     //Outros Metodos de Listagem!
