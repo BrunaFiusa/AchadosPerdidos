@@ -12,6 +12,8 @@ public class Funcionario {
         this.senha = senha;
     }
 
+    public Funcionario() {}
+
     public int getId() {
         return id;
     }

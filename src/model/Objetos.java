@@ -6,8 +6,9 @@ public class Objetos {
     private int id, lacre, local_id, status_id, funcionario_id, categoria_id, destino_id;
     private String nome, condicao, observacao, marca;
     private Date dataRegistro;
+    private boolean ativado;
 
-    public Objetos(int id, int local_id, int lacre, int status_id, int funcionario_id, int categoria_id, int destino_id, String nome, String condicao, String observacao, String marca, Date dataRegistro) {
+    public Objetos(int id, int local_id, int lacre, int status_id, int funcionario_id, int categoria_id, int destino_id, String nome, String condicao, String observacao, String marca, Date dataRegistro, boolean ativado) {
         this.id = id;
         this.local_id = local_id;
         this.lacre = lacre;
@@ -20,7 +21,10 @@ public class Objetos {
         this.observacao = observacao;
         this.marca = marca;
         this.dataRegistro = dataRegistro;
+        this.ativado = ativado;
     }
+
+    public Objetos() {}
 
     public int getId() {
         return id;
@@ -117,4 +121,9 @@ public class Objetos {
     public void setDataRegistro(Date dataRegistro) {
         this.dataRegistro = dataRegistro;
     }
+
+    public boolean getAtivado() { return ativado; }
+
+    public void setAtivado(boolean ativado) { this.ativado = ativado; }
+
 }
