@@ -10,6 +10,7 @@ public class ObjetosEletronicosDao {
     private ConexaoDB conexao = new ConexaoDB();
     private ObjetosDao objetosDao = new ObjetosDao();
 
+    //Pronto ✅
     public boolean inserirEletronicos(Eletronicos eletronicos) {
 
         String sqlEletronico = "INSERT INTO eletronicos (modelo, objeto_id) VALUES (?, ?)";
@@ -62,6 +63,7 @@ public class ObjetosEletronicosDao {
         return sucesso;
     }
 
+    //Pronto ✅
     public boolean alterarEletronicos(Eletronicos eletronicos) {
         String sqlEletronico = "UPDATE eletronicos SET modelo = ? WHERE objeto_id = ?";
 

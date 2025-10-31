@@ -11,8 +11,8 @@ public class ObjetosRoupasDao {
     private ConexaoDB conexao = new ConexaoDB();
     private ObjetosDao objetosDao = new ObjetosDao();
 
+    //Pronto ✅
     public  boolean inserirRoupas(Roupas roupas){
-
         String sqlRoupa = "INSERT INTO roupas (cor, tamanho, objeto_id) VALUES (?, ?, ?)";
 
         Connection connDb = null;
@@ -64,6 +64,7 @@ public class ObjetosRoupasDao {
         return sucesso;
     }
 
+    //Pronto ✅
     public boolean alterarRoupas(Roupas roupas) {
         String sqlEletronico = "UPDATE roupas SET cor = ?, tamanho= ? WHERE objeto_id = ?";
 

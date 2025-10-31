@@ -1,7 +1,7 @@
 package util;
 
 import controller.GerenciamentoController;
-import java.util.Random;
+import java.util.Date;
 
 class TesteUpdateObjeto {
 
@@ -9,19 +9,22 @@ class TesteUpdateObjeto {
 
     public static void main(String[] args) {
 
-        System.out.println("--- Iniciando Teste de ALTERAÇÃO de Objeto Genérico ---");
+        System.out.println("---Teste de Conexão ---");
 
         int id = 1;
-        String Nome = "Teste";
-        int Lacre = 213411;
+        String Nome = "Teste12";
+        int Lacre = 999999;
         String Condicao = "preservado";
         String Observacao = "Teste";
-        int LocalId = 1;
+        int LocalId = 2;
         int statusId = 1;
         int funcionarioId = 1;
-        int categoriaId = 1;
+        int categoriaId = 5;
+        String marca = "Teste";
+        boolean ativado = false;
         String cor = "Teste";
         String tamanho = "GG";
+        String modelo = "Teste";
 
         boolean sucesso = controller.alterarRoupas(
                 id,
@@ -33,15 +36,16 @@ class TesteUpdateObjeto {
                 statusId,
                 funcionarioId,
                 categoriaId,
+                marca,
+//                modelo,
                 cor,
                 tamanho
         );
 
-        System.out.println("\n----------------------------------------");
         if (sucesso) {
-            System.out.println("✅ SUCESSO: Objeto ID alterado com êxito!");;
+            System.out.println("✅ SUCESSO");
         } else {
-            System.out.println("❌ FALHA: A alteração falhou.");
+            System.out.println("❌ FALHA");
         }
         System.out.println("--- Teste Concluído ---");
     }

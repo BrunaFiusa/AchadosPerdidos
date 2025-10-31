@@ -6,7 +6,6 @@ import model.Roupas;
 import dao.ObjetosDao;
 import dao.ObjetosEletronicosDao;
 import dao.ObjetosRoupasDao;
-import java.util.Date;
 
 public class GerenciamentoController {
 
@@ -20,10 +19,10 @@ public class GerenciamentoController {
         this.objetosEletronicosDao = new ObjetosEletronicosDao();
     }
 
-    public int inserirObjetos(String nome, int lacre, String condicao, String observacao, int localId, int statusId, int funcionarioId, int categoriaId) {
+    //Pronto ✅
+    public int inserirObjetos(String nome, int lacre, String condicao, String observacao, int localId, int statusId, int funcionarioId, int categoriaId, String marca) {
         Objetos objeto = new Objetos();
 
-        objeto.setDataRegistro(new Date());
         objeto.setNome(nome);
         objeto.setLacre(lacre);
         objeto.setCondicao(condicao);
@@ -32,13 +31,14 @@ public class GerenciamentoController {
         objeto.setStatus_id(statusId);
         objeto.setFuncionario_id(funcionarioId);
         objeto.setCategoria_id(categoriaId);
+        objeto.setMarca(marca);
 
         return objetosDao.inserirObjetos(objeto);
     }
 
-    public boolean inserirEletronicos(String nome, int lacre, String condicao, String observacao, int localId, int statusId, int funcionarioId, int categoriaId, String modelo) {
+    //Pronto ✅
+    public boolean inserirEletronicos(String nome, int lacre, String condicao, String observacao, int localId, int statusId, int funcionarioId, int categoriaId, String marca, String modelo) {
         Eletronicos eletronicos = new Eletronicos();
-        eletronicos.setDataRegistro(new Date());
 
         eletronicos.setNome(nome);
         eletronicos.setLacre(lacre);
@@ -48,14 +48,15 @@ public class GerenciamentoController {
         eletronicos.setStatus_id(statusId);
         eletronicos.setFuncionario_id(funcionarioId);
         eletronicos.setCategoria_id(categoriaId);
+        eletronicos.setMarca(marca);
         eletronicos.setModelo(modelo);
 
         return objetosEletronicosDao.inserirEletronicos(eletronicos);
     }
 
-    public boolean inserirRoupas(String nome, int lacre, String condicao, String observacao, int localId, int statusId, int funcionarioId, int categoriaId, String cor, String tamanho) {
+    //Pronto ✅
+    public boolean inserirRoupas(String nome, int lacre, String condicao, String observacao, int localId, int statusId, int funcionarioId, int categoriaId, String marca, String cor, String tamanho) {
         Roupas roupas = new Roupas();
-        roupas.setDataRegistro(new Date());
 
         roupas.setNome(nome);
         roupas.setLacre(lacre);
@@ -65,13 +66,15 @@ public class GerenciamentoController {
         roupas.setStatus_id(statusId);
         roupas.setFuncionario_id(funcionarioId);
         roupas.setCategoria_id(categoriaId);
+        roupas.setMarca(marca);
         roupas.setCor(cor);
         roupas.setTamanho(tamanho);
 
         return objetosRoupasDao.inserirRoupas(roupas);
     }
 
-    public boolean alterarObjetos(int id, String nome, int lacre, String condicao, String observacao, int localId, int statusId, int funcionarioId, int categoriaId) {
+    //Pronto ✅
+    public boolean alterarObjetos(int id, String nome, int lacre, String condicao, String observacao, int localId, int statusId, int funcionarioId, int categoriaId, String marca) {
         Objetos objeto = new Objetos();
 
         objeto.setId(id);
@@ -83,11 +86,13 @@ public class GerenciamentoController {
         objeto.setStatus_id(statusId);
         objeto.setFuncionario_id(funcionarioId);
         objeto.setCategoria_id(categoriaId);
+        objeto.setMarca(marca);
 
         return objetosDao.alterarObjetos(objeto);
     }
 
-    public boolean alterarEletronicos(int id, String nome, int lacre, String condicao, String observacao, int localId, int statusId, int funcionarioId, int categoriaId, String modelo) {
+    //Pronto ✅
+    public boolean alterarEletronicos(int id, String nome, int lacre, String condicao, String observacao, int localId, int statusId, int funcionarioId, int categoriaId, String marca, String modelo) {
         Eletronicos eletronicos = new Eletronicos();
 
         eletronicos.setId(id);
@@ -99,12 +104,14 @@ public class GerenciamentoController {
         eletronicos.setStatus_id(statusId);
         eletronicos.setFuncionario_id(funcionarioId);
         eletronicos.setCategoria_id(categoriaId);
+        eletronicos.setMarca(marca);
         eletronicos.setModelo(modelo);
 
         return objetosEletronicosDao.alterarEletronicos(eletronicos);
     }
 
-    public boolean alterarRoupas(int id, String nome, int lacre, String condicao, String observacao, int localId, int statusId, int funcionarioId, int categoriaId, String cor, String tamanho) {
+    //Pronto ✅
+    public boolean alterarRoupas(int id, String nome, int lacre, String condicao, String observacao, int localId, int statusId, int funcionarioId, int categoriaId,String marca, String cor, String tamanho) {
         Roupas roupas = new Roupas();
 
         roupas.setId(id);
@@ -116,6 +123,7 @@ public class GerenciamentoController {
         roupas.setStatus_id(statusId);
         roupas.setFuncionario_id(funcionarioId);
         roupas.setCategoria_id(categoriaId);
+        roupas.setMarca(marca);
         roupas.setCor(cor);
         roupas.setTamanho(tamanho);
 
