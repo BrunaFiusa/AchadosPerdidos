@@ -1,5 +1,6 @@
 package view.components;
 
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -8,6 +9,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
+import javafx.stage.Popup;
 
 public class TopBar extends HBox {
     private static final double SPACING = 10.0;
@@ -17,13 +19,12 @@ public class TopBar extends HBox {
         this.setSpacing(SPACING);
         this.setPadding(new Insets(10));
         this.setPrefHeight(HEIGHT);
-        this.setStyle("-fx-border-color: #919191; -fx-background-color: #505050;");
+        this.setStyle("-fx-border-color: #919191; -fx-background-color: #c4af95;");
         this.setAlignment(Pos.CENTER_LEFT);
 
         createLogo();
         createNavigation();
         createNotificationArea();
-        
     }
 
     private void createLogo() {
@@ -69,6 +70,4 @@ public class TopBar extends HBox {
 
         this.getChildren().add(notificationArea);
     }
-
-
 }
