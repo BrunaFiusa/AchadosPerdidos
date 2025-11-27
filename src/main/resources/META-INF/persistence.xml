@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
+             version="3.0">
+
+    <persistence-unit name="ap_iguatemi" transaction-type="RESOURCE_LOCAL">
+<!-- (transaction-type): Define o tipo de transação. (RESOURCE_LOCAL) significa que as transações são controladas manualmente no código Java (begin/commit).-->
+
+        <properties>
+
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/ap_iguatemi?serverTimezone=UTC" />
+            <!--Endereço/url do banco-->
+
+            <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
+            <!--Classe que ira conversar com MySQL-->
+
+            <property name="jakarta.persistence.jdbc.user" value="ap_iguatemi_admin" />
+            <!--Usuario para acesso ao banco-->
+
+            <property name="jakarta.persistence.jdbc.password" value="ApIguateMI2025!" />
+            <!--Senha para acesso ao banco-->
+
+            <property name="hibernate.hbm2ddl.auto" value="update" />
+            <!--Gerencia a estrutura do banco (DDL - update (ideal para dev): Cria ou atualiza tabelas, mas não apaga dados existentes.-->
+
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect" />
+            <!--Define o dialeto SQL - Informa ao Hibernate qual sotaque SQL usar (Ex: MySQL8Dialect).-->
+
+            <property name="hibernate.show_sql" value="true" />
+            <!--Vacilita Debug - Se true, imprime todo o SQL gerado no console.-->
+
+            <property name="hibernate.format_sql" value="true" />
+            <!--Formatação - Se true, formata o SQL do show_sql com quebras de linha para facilitar a leitura.-->
+
+        </properties>
+<!-- (</properties>): Container que agrupa todas as configurações específicas de conexão e do Hibernate.-->
+
+    </persistence-unit>
+<!-- (</persistence-unit>): Tag de config. Define um bloco único de conexão. O nome (ap_iguatemi) é usado no código Java para iniciar a conexão.-->
+
+</persistence>
+<!-- (</persistence>): Tag raiz/principal que contém toda a configuração do Jakarta Persistence.-->

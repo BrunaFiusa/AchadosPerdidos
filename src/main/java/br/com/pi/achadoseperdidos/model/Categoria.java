@@ -1,0 +1,42 @@
+package br.com.pi.achadoseperdidos.model;
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "categorias")
+public class Categoria {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "nome", nullable = false)
+    private String nome;
+    @Column(name = "prazo", nullable = false)
+    private Integer prazo;
+
+    public Categoria(){}
+
+    public Categoria(String nome, int prazo) {
+        this.nome = nome;
+        this.prazo = prazo;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public int getPrazo() {
+        return prazo;
+    }
+    public void setPrazo(int prazo) {
+        this.prazo = prazo;
+    }
+}
