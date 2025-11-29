@@ -4,11 +4,11 @@ package br.com.pi.achadoseperdidos.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "local")
+@Table(name = "locais")
 public class Local {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
     @Column(name = "nome")
     private String nome;
 
@@ -18,7 +18,7 @@ public class Local {
         this.nome = nome;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 

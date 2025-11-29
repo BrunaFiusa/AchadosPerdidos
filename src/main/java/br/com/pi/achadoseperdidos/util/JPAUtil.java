@@ -14,7 +14,7 @@ public class JPAUtil {
 
         //Tratemento de Try-Catch para tentar capturar o erro na inicialização da aplicação
         try {
-            factory = Persistence.createEntityManagerFactory("aulajpa");
+            factory = Persistence.createEntityManagerFactory("ap_iguatemi");
             //aqui passamos o mesmo parametro que passamos no - persistence-unit(nome do banco)
         } catch (Exception e) {
             System.err.println("Erro ao inicializar o EntityManagerFactory" + e.getMessage());
@@ -26,7 +26,7 @@ public class JPAUtil {
     public static EntityManager getEntityManager() {
         if (factory == null) {
             // Se a fábrica for nula (raro, mas possível), recria
-            factory = Persistence.createEntityManagerFactory("aulajpa");
+            factory = Persistence.createEntityManagerFactory("ap_iguatemi");
         }
         return factory.createEntityManager(); //Retorna o  EntityManager(trabalhador)
     }

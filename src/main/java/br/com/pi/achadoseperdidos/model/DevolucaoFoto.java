@@ -1,10 +1,9 @@
 package br.com.pi.achadoseperdidos.model;
 
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "fotodevolucoes")
 public class DevolucaoFoto {
 
     @EmbeddedId

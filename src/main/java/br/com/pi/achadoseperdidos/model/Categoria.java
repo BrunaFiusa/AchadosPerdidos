@@ -8,7 +8,7 @@ public class Categoria {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column(name = "nome", nullable = false)
     private String nome;
@@ -22,7 +22,7 @@ public class Categoria {
         this.prazo = prazo;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 

@@ -15,7 +15,7 @@ public class ObjetoEncaminhado {
     // Relação com Objeto (FK)
     @ManyToOne
     @MapsId("objetoId") //O @MapsId relaciona o campo 'objetoId' da minha chave composta (id) que está mapeando a Chave Estrangeira para a Entidade Objeto
-    @JoinColumn(name = "objetos_id") // Coluna FK no banco
+    @JoinColumn(name = "objeto_id") // Coluna FK no banco
     private Objeto objeto;
 
     // Relação com Destinos (FK)

@@ -9,7 +9,7 @@ public class Status {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column(name = "nome")
     private String nome;
@@ -18,7 +18,7 @@ public class Status {
 
     public Status(String nome) {this.nome = nome;}
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 

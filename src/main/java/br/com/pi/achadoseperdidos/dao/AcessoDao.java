@@ -1,19 +1,19 @@
 package br.com.pi.achadoseperdidos.dao;
 
-import br.com.pi.achadoseperdidos.model.Devolucao;
+import br.com.pi.achadoseperdidos.model.Acesso;
 import br.com.pi.achadoseperdidos.util.JPAUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 
 import java.util.List;
 
-public class DevolucoesDao {
+public class AcessoDao {
 
-    public void salvar(Devolucao devolucao){
+    public void salvar(Acesso acesso){
         EntityManager em = JPAUtil.getEntityManager();
         try {
             em.getTransaction().begin();
-            em.merge(devolucao);
+            em.merge(acesso);
             em.getTransaction().commit();
         }catch (Exception e) {
             em.getTransaction().rollback();
@@ -23,11 +23,11 @@ public class DevolucoesDao {
         }
     }
 
-    public Devolucao atualizar(Devolucao devolucao) {
+    public Acesso atualizar(Acesso acesso) {
         EntityManager em = JPAUtil.getEntityManager();
         try{
             em.getTransaction().begin();
-            Devolucao merged = em.merge(devolucao);
+            Acesso merged = em.merge(acesso);
             em.getTransaction().commit();
             return merged;
         }catch (Exception e){
@@ -38,13 +38,13 @@ public class DevolucoesDao {
         }
     }
 
-    public void remover(Devolucao devolucao) {
+    public void remover(Acesso acesso) {
         EntityManager em = JPAUtil.getEntityManager();
 
         try {
             em.getTransaction().begin();
-            Devolucao devolucaoRemover = em.find(Devolucao.class, devolucao.getId()); //Busca o objeto para coloca-lo na persistencia
-            em.remove(devolucaoRemover); //Removemos o objeto que esta monitorado
+            Acesso acessoRemover = em.find(Acesso.class, acesso.getId()); //Busca o objeto para coloca-lo na persistencia
+            em.remove(acessoRemover); //Removemos o objeto que esta monitorado
             em.getTransaction().commit();
         } catch (Exception e) {
             em.getTransaction().rollback();
@@ -54,25 +54,23 @@ public class DevolucoesDao {
         }
     }
 
-    public List<Devolucao> listarTodos() {
+    public List<Acesso> listarTodos() {
         EntityManager em = JPAUtil.getEntityManager();
 
         try {
-            TypedQuery<Devolucao> q = em.createQuery("SELECT d FROM Devolucoes d", Devolucao.class);
+            TypedQuery<Acesso> q = em.createQuery("SELECT a FROM Acesso a", Acesso.class);
             return q.getResultList();
         } finally {
             em.close();
         }
     }
 
-    public Devolucao buscarPorId(Long id) {
+    public Acesso buscarPorId(Integer id) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
-            return em.find(Devolucao.class, id);
+            return em.find(Acesso.class, id);
         } finally {
             em.close();
         }
     }
-
-
 }

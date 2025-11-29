@@ -12,12 +12,12 @@ import java.util.List;
 //PreparedStatement -> usado para escrever os comando SQL com parâmetros
 //ResultSet -> usado para armazenar e percorrer os resultados de um SELECT.
 
-public class FuncionariosDao {
+public class FuncionarioDao {
     public void salvar(Funcionario funcionario){
         EntityManager em = JPAUtil.getEntityManager();
         try {
             em.getTransaction().begin();
-            em.merge(funcionario);
+            em.persist(funcionario);
             em.getTransaction().commit();
         }catch (Exception e) {
             em.getTransaction().rollback();
@@ -62,14 +62,14 @@ public class FuncionariosDao {
         EntityManager em = JPAUtil.getEntityManager();
 
         try {
-            TypedQuery<Funcionario> q = em.createQuery("SELECT f FROM Funcionarios f", Funcionario.class);
+            TypedQuery<Funcionario> q = em.createQuery("SELECT f FROM Funcionario f", Funcionario.class);
             return q.getResultList();
         } finally {
             em.close();
         }
     }
 
-    public Funcionario buscarPorId(Long id) {
+    public Funcionario buscarPorId(Integer id) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
             return em.find(Funcionario.class, id);

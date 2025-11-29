@@ -8,7 +8,7 @@ public class Destinatario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column(name = "nome")
     private String nome;
@@ -30,7 +30,7 @@ public class Destinatario {
         this.cpf = cpf;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 

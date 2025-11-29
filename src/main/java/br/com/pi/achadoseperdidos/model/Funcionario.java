@@ -8,18 +8,18 @@ public class Funcionario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "acesso_id", nullable = false)
     private Acesso acesso;
 
 
     @Column(name = "nome")
     private String nome;
-    @Column(name = "email", unique = true)
+    @Column(name = "email")//, unique = true)
     private String email;
-    @Column(name = "senha", unique = true)
+    @Column(name = "senha")//, unique = true)
     private String senha;
 
     public Funcionario() {
@@ -32,7 +32,7 @@ public class Funcionario {
         this.senha = senha;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 

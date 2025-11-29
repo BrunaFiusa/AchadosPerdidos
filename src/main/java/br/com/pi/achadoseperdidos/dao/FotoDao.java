@@ -7,7 +7,7 @@ import jakarta.persistence.TypedQuery;
 
 import java.util.List;
 
-public class FotosDao {
+public class FotoDao {
 
     public void salvar(Foto foto){
         EntityManager em = JPAUtil.getEntityManager();
@@ -58,7 +58,7 @@ public class FotosDao {
         EntityManager em = JPAUtil.getEntityManager();
 
         try {
-            TypedQuery<Foto> q = em.createQuery("SELECT f FROM Fotos f", Foto.class);
+            TypedQuery<Foto> q = em.createQuery("SELECT f FROM Foto f", Foto.class);
             return q.getResultList();
         } finally {
             em.close();

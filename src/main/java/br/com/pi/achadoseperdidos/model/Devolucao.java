@@ -11,7 +11,7 @@ public class Devolucao {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "destinatario_id", nullable = false)
@@ -43,7 +43,7 @@ public class Devolucao {
         this.autenticadorAssinatura = autenticadorAssinatura;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 

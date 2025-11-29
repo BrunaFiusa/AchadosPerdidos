@@ -21,10 +21,10 @@
             <property name="jakarta.persistence.jdbc.password" value="ApIguateMI2025!" />
             <!--Senha para acesso ao banco-->
 
-            <property name="hibernate.hbm2ddl.auto" value="update" />
+            <property name="hibernate.hbm2ddl.auto" value="none" />
             <!--Gerencia a estrutura do banco (DDL - update (ideal para dev): Cria ou atualiza tabelas, mas não apaga dados existentes.-->
 
-            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect" />
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
             <!--Define o dialeto SQL - Informa ao Hibernate qual sotaque SQL usar (Ex: MySQL8Dialect).-->
 
             <property name="hibernate.show_sql" value="true" />

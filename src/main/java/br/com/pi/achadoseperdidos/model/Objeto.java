@@ -7,11 +7,12 @@ import java.util.List;
 
 @Entity
 @Table(name = "objetos")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Objeto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     //Mapeamento das chaves FK
     @ManyToOne // Indica que Muitos Objetos (N) apontam para Um Local (1)
@@ -50,17 +51,34 @@ public class Objeto {
     private String marca;
     @Column(name = "condicao")
     private String condicao;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    // Define o formato de data/hora no SQL. TIMESTAMP salva a data e a hora exata do registro (o momento do registro).
+    @Column(name = "ativação")
+    private Boolean ativacao;
+    @Column(name = "data_registro")// Define o formato de data/hora no SQL. TIMESTAMP salva a data e a hora exata do registro (o momento do registro).
     private Date dataRegistro;
-
-    private boolean ativado;
 
     public Objeto() {
     }
 
-    public Long getId() { //somente getter!
+    public Objeto(Local local, Status status, Funcionario funcionario, Categoria categoria, List<Devolucao> devolucoes,
+                  List<ObjetoEncaminhado> objetosEncaminhados, Integer lacre, String nome, String observacao, String marca, String
+                          condicao, Boolean ativacao, Date dataRegistro) {
+
+        this.local = local;
+        this.status = status;
+        this.funcionario = funcionario;
+        this.categoria = categoria;
+        this.devolucoes = devolucoes;
+        this.objetosEncaminhados = objetosEncaminhados;
+        this.lacre = lacre;
+        this.nome = nome;
+        this.observacao = observacao;
+        this.marca = marca;
+        this.condicao = condicao;
+        this.ativacao = ativacao;
+        this.dataRegistro = dataRegistro;
+    }
+
+    public Integer getId() {
         return id;
     }
 
@@ -92,8 +110,18 @@ public class Objeto {
         this.categoria = categoria;
     }
 
-    public List<ObjetoEncaminhado> getObjetoEncaminhado() { //somente getter!
-        return objetoEncaminhado;
+    public List<Devolucao> getDevolucoes() {
+        return devolucoes;
+    }
+    public void setDevolucoes(List<Devolucao> devolucoes) {
+        this.devolucoes = devolucoes;
+    }
+
+    public List<ObjetoEncaminhado> getObjetosEncaminhados() {
+        return objetosEncaminhados;
+    }
+    public void setObjetosEncaminhados(List<ObjetoEncaminhado> objetosEncaminhados) {
+        this.objetosEncaminhados = objetosEncaminhados;
     }
 
     public Integer getLacre() {
@@ -131,17 +159,17 @@ public class Objeto {
         this.condicao = condicao;
     }
 
+    public Boolean getAtivacao() {
+        return ativacao;
+    }
+    public void setAtivacao(Boolean ativacao) {
+        this.ativacao = ativacao;
+    }
+
     public Date getDataRegistro() {
         return dataRegistro;
     }
     public void setDataRegistro(Date dataRegistro) {
         this.dataRegistro = dataRegistro;
-    }
-
-    public boolean isAtivado() {
-        return ativado;
-    }
-    public void setAtivado(boolean ativado) {
-        this.ativado = ativado;
     }
 }

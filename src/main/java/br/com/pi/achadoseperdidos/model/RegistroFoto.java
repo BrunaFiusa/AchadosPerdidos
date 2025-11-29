@@ -2,6 +2,8 @@ package br.com.pi.achadoseperdidos.model;
 
 import jakarta.persistence.*;
 
+@Entity
+@Table(name = "fotoregistros")
 public class RegistroFoto {
 
     @EmbeddedId
@@ -50,4 +52,3 @@ public class RegistroFoto {
         this.objeto = objeto;
     }
 }
- 

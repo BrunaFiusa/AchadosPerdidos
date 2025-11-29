@@ -1,4 +1,4 @@
 package br.com.pi.achadoseperdidos.dao;
 
-public class SolicitantesDaoTest {
+public class FotoDaoTest {
 }

@@ -10,7 +10,7 @@ public class Foto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @OneToMany(mappedBy = "foto")
     private List<RegistroFoto> registroFotos;
@@ -30,7 +30,7 @@ public class Foto {
         this.caminho = caminho;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
