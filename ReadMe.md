@@ -1,64 +1,89 @@
-# INSTRUÇÕES DE INSTALAÇÃO E EXECUÇÃO
-
-Este documento guia a configuração necessária para que o projeto seja executado corretamente em seu ambiente de desenvolvimento.
+# 🚀 Instruções da Migração para (Maven & JPA/Hibernate)
 
 ---
 
-## 🛠️ Tecnologias e Pré-requisitos
+**⚠️ Aviso Importante sobre Testes:** Devido à urgência do prazo, alguns testes de integração ainda não foram concluídos. No entanto, a migração da arquitetura está finalizada com êxito e funcional.
 
-Para que este projeto funcione corretamente, você precisará ter o seguinte configurado:
+Vou encaminhar os materiais para vocês estudarem e entenderem aquilo que foi implementado nesta "migração".
 
-* **Java Development Kit (JDK) 21:** O projeto requer a **versão 21 do Java**.
-* **JavaFX:** Biblioteca utilizada para a interface gráfica (GUI).
-* **MySQL Connector/J:** Driver JDBC para a conexão com o banco de dados **MySQL**.
+> **Observação:** Além dos materiais, adicionei comentários em alguns arquivos novos no código da aplicação, para caso de dúvidas. (Embora alguns materiais sejam mais antigos, o conceito das *stacks* continua o mesmo)
 
 ---
 
-### ⚙️ Configuração Inicial do Banco de Dados
+## 📚 Materiais de Estudo e Conceitos
 
-É **obrigatório** que o banco de dados e o usuário de conexão sejam criados antes da primeira execução.
+Aqui estão os artigos e vídeos para aprofundar o entendimento sobre as tecnologias implementadas (ORM, JPA, Hibernate e Maven).
 
-1.  **Criação do Esquema e Tabelas:**
-    * Localize o arquivo de script SQL na pasta **`database/`** do projeto.
-    * Execute este script em seu servidor MySQL para criar o banco de dados (`ap_iguatemi`) e todas as tabelas necessárias.
+### 1. Conceitos de ORM, JPA e Hibernate
 
-2.  **Criação do Usuário de Conexão:**
-    * Crie um usuário no MySQL com as seguintes credenciais, garantindo que ele tenha permissões de acesso ao esquema `ap_iguatemi`:
+| Tópico | Recurso | Tipo | Nota |
+| :--- | :--- | :--- | :--- |
+| **ORM** | [DevMedia - ORM (Object Relational Mapper)](https://www.devmedia.com.br/orm-object-relational-mapper/19056) | Artigo | **Leiam**!! |
+| **JPA com Hibernate** | [Medium - Entenda de uma vez por todas JPA e Hibernate](https://medium.com/@duduxss3/entenda-de-uma-vez-por-todas-jpa-e-hibernate-e2a1237161a9) | Artigo | **LEIAM ESTE ARTIGO!** ||
+| **Build & Run** | [YouTube - Build & Run](https://youtu.be/4yj3mYAbNIA?si=Dmy67WCl84W9rUWf) | Vídeo |Conceito de Relacionamento entre a Anotation - @OneToMany e suas demais|
+| **Base de JPA** | [YouTube - DevSuperior](https://youtu.be/CAP1IPgeJkw?si=Tyzb-t2RXfcsoCGN) | Vídeo | Aula antiga para pegar uma base |
+| **ProfRogério** | [YouTube - ProfRogério](https://youtu.be/8qP06yVj5JU?si=CVmgA-Ubc51b3-ca) | Vídeo | **Vejam**!!|
+| **Explicando JPA e persistence.xml** | [YouTube - Explicando JPA e persistence.xml](https://youtu.be/15psnxLYDo4?si=e3AW-_Yy4i-CnwCw) | Vídeo |  **Vejam**!! |
 
-| Variável | Valor | Descrição |
-| :--- | :--- | :--- |
-| **Driver** | `com.mysql.cj.jdbc.Driver` | Driver JDBC a ser utilizado. |
-| **URL** | `jdbc:mysql://127.0.0.1:3306/ap_iguatemi` | URL de conexão local (padrão). |
-| **Usuário** | `ap_iguatemi_admin` | Usuário de acesso ao banco. |
-| **Senha** | `ApIguateMI2025!` | Senha de acesso. |
+### 2. Maven com Java
+
+| Tópico | Recurso | Tipo | Nota |
+| :--- | :--- | :--- | :--- |
+| **O que é o Maven** | [Medium - O que é o Maven e como instalar](https://medium.com/@januario86/o-que-%C3%A9-o-maven-e-como-instalar-1d5e9f29ac4c) | Artigo | **LEIAM!** |
+| **Maven com Java** | [YouTube - Giuliana Bezzera](https://youtu.be/N7AyIfUQxGc?si=1GOfbU-mQYZfxU-z) | Vídeo | |
+| **Conceito Maven** | [YouTube - Curso Tecnologia](https://youtu.be/bN6ZOjhrOm4?si=UcwOXHYmHOHddpjA) | Vídeo | |
+| **Prof Thomás Costa** | [YouTube - Prof Thomás Costa](https://youtu.be/J9y5Spv8WsE?si=pGfdNxY9POt1a8S0) | Vídeo | |
+| **Explicando pom.xml** | [Medium - Understanding pom.xml in Maven](https://anju-chaurasiya2012.medium.com/understanding-pom-xml-in-maven-a-beginner-friendly-guide-7f2e23232d4a) | Artigo | |
+
+### 3. Repositório de Exemplo
+
+* **Repositório no GitHub para auxiliar no entendimento:** [renandacruzzsnts/java-oficina-crud](https://github.com/renandacruzzsnts/java-oficina-crud/tree/main)
+
+---
+
+## 🛠️ Resumo das Alterações (O que foi mudado/removido)
+
+A seguir, um resumo das principais mudanças de arquitetura e remoções de código:
+
+### ❌ Itens Removidos
+
+* **Dependências Manuais:**
+    * Arquivos **.jar** (MySQL) e **libraries** (JavaFX) que eram adicionadas manualmente via `Project Structure/Modules/Dependencies`.
+    * Classes de **Conexão** e **Teste de JDBC**.
+    * O uso de **`PreparedStatement`** para abrir conexão com o banco.
+    * Arquivo de configuração (**`config.properties`**).
+
+### 🔄 Itens Alterados
+
+* **Estrutura da Model:**
+    * A model agora utiliza **`@Anotations`** do **Persistence (JPA)** para o mapeamento relacional.
 
 ---
 
-## 🏃 Passo a Passo para Execução
+## ✨ Oque há de novo?
 
-Siga rigorosamente as etapas abaixo para colocar o projeto no ar:
+Conheça os novos componentes e a nova organização do projeto:
 
-1.  **Clone o Repositório:**
-    ```bash
-    https://github.com/JoaoVictorSouzaDev/SistemaGerenciamentoIguatemi.git
-    ```
+### ⚙️ Gerenciamento e Configuração
 
-2.  **Configuração da Pasta de Recursos (Resources Root):**
-    > **IMPORTANTE:** Dentro de sua IDE (ex: IntelliJ IDEA, Eclipse), **marque a pasta `resources`** como um diretório de **Resources Root** (ou Fonte de Recursos). Isso é obrigatório para que o projeto localize arquivos de configuração e arquivos FXML/CSS.
+* **`pom.xml` (Maven):**
+    * Será o responsável por gerenciar as **dependências** e bibliotecas da nossa aplicação. Ele contém toda a configuração do projeto.
+* **`persistence.xml` (JPA):**
+    * Contém as **configurações de acesso ao banco** de dados (url, password, user, dialeto, etc.).
 
-3.  **Configuração das Dependências:**
-    * Adicione os arquivos JAR do **JavaFX SDK** e do **MySQL Connector/J** ao `classpath` do seu projeto. (Se estiver usando Maven ou Gradle, verifique se as dependências estão corretamente configuradas).
+### 📦 Estrutura de Código
 
-4.  **Configuração da IDE para JavaFX (VM Options)** 🚨
-    * Para que o JavaFX seja executado, é **obrigatório** configurar os argumentos da Máquina Virtual (VM Options) nas **"Edit Configurations"** da sua IDE.
-    * Você deve apontar o caminho (`/caminho/para/javafx-sdk/lib`) para onde o seu JavaFX SDK está instalado:
+* **Root Package Único:**
+    * Inclusão de um diretório de domínio único (`br.com.pi.achadoseperdidos`) no **root package** para identificação de importações e prevenção de conflitos de pacotes.
+* **`JPAUtil`:**
+    * Esta classe gerencia a **instanciação da conexão** (`EntityManagerFactory`) **uma única vez** para a aplicação toda, otimizando o processo (Função semelhante à antiga `ConexãoDB`).
+* **Pasta `test`:**
+    * Criada para incluir testes unitários e de integração das classes **`DAO`**/métodos.
 
-    ```bash
-    # Exemplo de VM Options (Substitua o caminho ABSOLUTO)
-    --module-path /caminho/para/javafx-sdk/lib --add-modules javafx.controls,javafx.fxml
-    ```
+### 🧩 Classes de Auxílio
 
-5.  **Execução:**
-    * Após finalizar todas as configurações acima, compile e execute a classe principal (Main) da sua aplicação.
-
----
+* **Classes de Auxílio para Chave Composta (`Composite Key`):**
+    * Classes criadas para lidar com o mapeamento de chaves compostas em tabelas de entidade relacional:
+        * `ObjetoEncaminhadoId`
+        * `RegistroFotoId`
+        * `DevolucaoFotoId`
