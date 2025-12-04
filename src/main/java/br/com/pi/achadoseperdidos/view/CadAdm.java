@@ -1,5 +1,7 @@
-package view;
+package br.com.pi.achadoseperdidos.view;
 
+import br.com.pi.achadoseperdidos.view.components.SideBar;
+import br.com.pi.achadoseperdidos.view.components.TopBar;
 import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -13,8 +15,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import view.components.TopBar;
-import view.components.SideBar;
 
 import java.time.LocalDate;
 import java.util.Random;
