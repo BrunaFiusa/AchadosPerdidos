@@ -84,6 +84,84 @@ Conheça os novos componentes e a nova organização do projeto:
 
 * **Classes de Auxílio para Chave Composta (`Composite Key`):**
     * Classes criadas para lidar com o mapeamento de chaves compostas em tabelas de entidade relacional:
+
         * `ObjetoEncaminhadoId`
         * `RegistroFotoId`
         * `DevolucaoFotoId`
+
+
+    ---
+
+## 🎨 Guia de Execução do Frontend (JavaFX)
+
+Como migramos para o Maven e o projeto agora é modular, a forma de rodar as telas mudou. Não usamos mais o botão "Run" direto na classe Java (Application) sem configuração prévia.
+
+Abaixo estão as **3 maneiras (1️⃣-2️⃣-3️⃣)** de rodar e testar as telas (`Views`) da aplicação.
+
+### ⚠️ Pré-requisito: Configurando o Ambiente
+
+Para rodar via terminal ou ferramentas Maven, você precisa ter o Maven configurado nas **Variáveis de Ambiente** do Windows.
+
+1.  Assista ao tutorial de configuração: **[YouTube - Como Baixar Instalar e Configurar as Variaveis de Ambiente Maven](https://youtu.be/mPqp_vmU_w8?si=6Ip7gnupacr89DPV)**
+
+2.  Após configurar, abra seu terminal e verifique se funcionou digitando:
+    ```bash
+    mvn -v
+    ```
+---
+
+### 1️⃣ Opção 1: Rodando pelo Terminal (Linha de Comando)
+
+Esta é a forma mais direta. Graças à configuração dinâmica que fizemos no `pom.xml`, você pode escolher qual tela abrir sem alterar o código.
+
+**Passo a passo:**
+
+1.  Abra o terminal na raiz do projeto (onde está o `pom.xml`).
+
+2.  Para rodar a tela padrão (**Login.view**), digite:
+    ```bash
+    mvn clean javafx:run
+    ```
+3.  Para rodar **qualquer outra tela** (ex: Login, CadCadastro, etc), use o comando abaixo trocando apenas o caminho da classe:
+    ```bash
+    mvn clean javafx:run -Dapp.run.class=br.com.pi.achadoseperdidos.view.Classe
+    ```
+
+> **Nota:** O parâmetro `-Dapp.run.class` sobrescreve temporariamente a configuração padrão do projeto, permitindo testar telas isoladas.
+
+---
+
+### 2️⃣ Opção 2: Criando Botões de "Run" Personalizados (IDE)
+
+Você pode configurar botões no menu superior do IntelliJ para rodar telas específicas com um clique.
+
+**O Problema:** O IntelliJ bloqueia configurações com o mesmo comando, dizendo *"Configuration already exists"*.
+**A Solução:** Usamos um "truque" (`-Dunique.id`) para diferenciar as configurações.
+
+**Passo a passo:**
+
+1.  No topo do IntelliJ, clique na caixa de seleção de execução e vá em **Edit Configurations...**
+2.  Clique no **`+`** e selecione **Maven**.
+3.  Preencha da seguinte forma para cada tela que quiser criar:
+
+| Campo | O que colocar? (Exemplo para aplicar em TODAS classes da *(.view)* ) |
+| :--- | :--- |
+| **Name** | `Run View: Cadastro` (Nome amigável para você identificar) |
+| **Command line** | `clean javafx:run -Dapp.run.class=br.com.pi.achadoseperdidos.view.CadCadastro -Dunique.id=Cadastro` |
+
+4.  Clique em **Apply**.
+5.  Agora é só selecionar a configuração criada no topo da IDE e clicar no **Play (▶)**.
+
+> **Importante:** O parâmetro `-Dunique.id=NomeDaTela` não afeta o código, serve apenas para o IntelliJ entender que são botões diferentes.
+
+---
+
+### 3️⃣ Opção 3: Ferramenta Maven (Run Configurations)
+
+Após fazer a *(Opção 2)*, você pode rodar utilizando as ferramentas do próprio *Maven*
+**Passo a passo:**
+
+1.  Abra a aba **Maven** na lateral direita do IntelliJ.
+2.  Vá até a pasta **⚙ Run Configurations** (geralmente representada por ícones de engrenagem(⚙) ou lista de comandos salvos).
+3.  Se você seguiu o passo da "Opção 2", todas as suas configurações salvas aparecerão listadas ali.
+4.  Basta clicar duas vezes sobre a configuração desejada (ex: `Run View: Login`) para iniciar a aplicação.
