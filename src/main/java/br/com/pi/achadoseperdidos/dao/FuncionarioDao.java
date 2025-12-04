@@ -7,12 +7,9 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 
 import java.util.List;
-//Essas são as classes da biblioteca JDBC (java Database Conncetiviity).
-//Connection -> Representa uma conexão ativa com o banco
-//PreparedStatement -> usado para escrever os comando SQL com parâmetros
-//ResultSet -> usado para armazenar e percorrer os resultados de um SELECT.
 
-public class FuncionarioDao {
+
+public class    FuncionarioDao {
     public void salvar(Funcionario funcionario){
         EntityManager em = JPAUtil.getEntityManager();
         try {

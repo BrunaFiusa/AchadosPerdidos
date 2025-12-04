@@ -1,4 +1,4 @@
-package view.components;
+package br.com.pi.achadoseperdidos.view.components;
 
 public class PaletadeCor {
     public static final String BACKGROUND = "#F5F5F5";
