@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-<!-- (modelVersion) A versão do "molde" do pom.xml. Sendo sempre a 4.0.0.-->
+    <!-- (modelVersion) A versão do "molde" do pom.xml. Sendo sempre a 4.0.0.-->
 
     <groupId>br.com.pi.achadoseperdidos</groupId> <!--(groupId): O "ID da Empresa" - Identifica quem é o "dono" do projeto-->
     <artifactId>SistemaGerenciamentoIguatemi</artifactId>  <!--(artifactId) - Nome do Projeto-->
@@ -14,9 +14,12 @@
     <url>http://maven.apache.org</url> <!--(url): O site/URL do maven (apenas informativo)-->
 
     <properties>
-<!--(properties): Define "variáveis" globais para usar no resto do arquivo-->
+        <!--(properties): Define "variáveis" globais para usar no resto do arquivo-->
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> <!-- (project.build.sourceEncoding): Define a codificação de caracteres (UTF-8) para evitar problemas com acentos-->
+
+        <app.run.class>br.com.pi.achadoseperdidos.view.Login</app.run.class>
+        <!-- Define a classe (tela) inicial PADRÃO da aplicação JavaFX. Este valor é usado se nenhum parâmetro -Dapp.run.class for passado via linha de comando (terminal/IDE).-->
 
         <maven.compiler.source>21</maven.compiler.source> <!-- (maven.compiler.source): Diz ao Maven qual versão do Java usou para escrever o código (ex: 21)-->
         <maven.compiler.target>21</maven.compiler.target> <!-- (maven.compiler.target): Diz ao Maven para qual versão do Java ele deve compilar o código (ex: 21)-->
@@ -25,7 +28,7 @@
 
     <dependencies>
 
-<!-- https://mvnrepository.com/artifact/org.hibernate.orm/hibernate-core / - repositorio da versão do Hibernate dentro do MavenRepository-->
+        <!-- https://mvnrepository.com/artifact/org.hibernate.orm/hibernate-core / - repositorio da versão do Hibernate dentro do MavenRepository-->
         <dependency>
             <groupId>org.hibernate.orm</groupId>  <!--identifica quem criou a biblioteca-->
             <artifactId>hibernate-core</artifactId> <!--identifica o nome especifico da biblioteca-->
@@ -33,22 +36,38 @@
         </dependency> <!--(dependency): Define um "item" da sua lista de dependencias (uma biblioteca, framewprk etc)-->
 
 
-<!-- https://mvnrepository.com/artifact/com.mysql/mysql-connector-j - / -  repositorio da versão do MySQL dentro do MavenRepository-->
+        <!-- https://mvnrepository.com/artifact/com.mysql/mysql-connector-j - / -  repositorio da versão do MySQL dentro do MavenRepository-->
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
             <version>8.4.0</version>
         </dependency>
 
-<!-- https://mvnrepository.com/artifact/org.openjfx/javafx-controls - / -  repositorio da versão do JavaFX dentro do MavenRepository-->
+        <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-controls - / -  repositorio da versão do JavaFX dentro do MavenRepository-->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
             <version>21.0.8</version>
         </dependency>
 
+
     </dependencies>
-<!--(dependencies): A tag que agrupa toda a sua "lista de compras" de bibliotecas, frameworks etc-->
+    <!--(dependencies): A tag que agrupa toda a sua "lista de compras" de bibliotecas, frameworks etc-->
+
+    <build>
+        <plugins>
+            <!--adicionado o plugin para fazer o trabalho sujo de encontrar as "dependências" do JavaFX na internet e rodar as telas pra gente, já que o Java não as traz mais por padrão.-->
+            <plugin>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>0.0.8</version>
+                <configuration>
+                    <mainClass>${app.run.class}</mainClass>
+                    <!--<mainClass> A tag usa a variável dinâmica ${app.run.class}. Isso permite que a classe de inicialização seja alterada via linha de comando (ex: -Dapp.run.class=OutraTela) sem editar o pom.xml.-->
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
-<!--(project) tag raiz de todos arquivos, tudo fica dentro dela-->
+        <!--(project) tag raiz de todos arquivos, tudo fica dentro dela-->
