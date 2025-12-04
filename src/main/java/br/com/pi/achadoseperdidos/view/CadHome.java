@@ -1,19 +1,22 @@
 package br.com.pi.achadoseperdidos.view;
 
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
-import javafx.scene.layout.HBox;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.geometry.Insets;
-import javafx.stage.Stage;
-import br.com.pi.achadoseperdidos.view.components.TopBar;
 import br.com.pi.achadoseperdidos.view.components.SideBar;
+import br.com.pi.achadoseperdidos.view.components.TopBar;
+import javafx.application.Application;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.*;
+import javafx.stage.Stage;
+
+import java.time.LocalDate;
+import java.util.Random;
 
 public class CadHome extends Application {
     private static Stage cadastroStage = null;
