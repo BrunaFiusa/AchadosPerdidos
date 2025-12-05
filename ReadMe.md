@@ -1,16 +1,13 @@
 # 🚀 Instruções da Migração para (Maven & JPA/Hibernate)
 
----
-
 **⚠️ Aviso Importante sobre Testes:** Devido à urgência do prazo, alguns testes de integração ainda não foram concluídos. No entanto, a migração da arquitetura está finalizada com êxito e funcional.
 
-Vou encaminhar os materiais para vocês estudarem e entenderem aquilo que foi implementado nesta "migração".
+Dentro desta documentação será apresentado ***guias*** e ***materiais*** para vocês estudarem e entenderem aquilo que foi implementado nesta "migração".
 
-> **Observação:** Além dos materiais, adicionei comentários em alguns arquivos novos no código da aplicação, para caso de dúvidas. (Embora alguns materiais sejam mais antigos, o conceito das *stacks* continua o mesmo)
+> **Observação:** Além dos materiais, adicionei comentários em arquivos novos no código da aplicação, para caso de dúvidas. (Embora alguns materiais sejam mais antigos, o conceito das *stacks* continua o mesmo)
 
----
-
-## 📚 Materiais de Estudo e Conceitos
+ &ensp;
+# 📚 Materiais de Estudo e Conceitos
 
 Aqui estão os artigos e vídeos para aprofundar o entendimento sobre as tecnologias implementadas (ORM, JPA, Hibernate e Maven).
 
@@ -39,9 +36,10 @@ Aqui estão os artigos e vídeos para aprofundar o entendimento sobre as tecnolo
 
 * **Repositório no GitHub para auxiliar no entendimento:** [renandacruzzsnts/java-oficina-crud](https://github.com/renandacruzzsnts/java-oficina-crud/tree/main)
 
----
+  
+&ensp;
 
-## 🛠️ Resumo das Alterações (O que foi mudado/removido)
+# 🛠️ Resumo das Alterações (O que foi mudado/removido)
 
 A seguir, um resumo das principais mudanças de arquitetura e remoções de código:
 
@@ -58,9 +56,10 @@ A seguir, um resumo das principais mudanças de arquitetura e remoções de cód
 * **Estrutura da Model:**
     * A model agora utiliza **`@Anotations`** do **Persistence (JPA)** para o mapeamento relacional.
 
----
 
-## ✨ Oque há de novo?
+&ensp;
+
+# ✨ Oque há de novo?
 
 Conheça os novos componentes e a nova organização do projeto:
 
@@ -89,9 +88,8 @@ Conheça os novos componentes e a nova organização do projeto:
         * `RegistroFotoId`
         * `DevolucaoFotoId`
 
----
-
-## ⚙🌐 Configuração Global de Ambiente e Boas Práticas de Build
+&ensp;
+# ⚙🌐 Configuração Global de Ambiente e Boas Práticas de Build
 
 Esta seção deve ser seguida por ***TODOS*** os desenvolvedores do projeto. Para que possamos utilizar os comandos do Maven (`mvn`) no terminal e nas ferramentas da IDE, é necessário ter o Maven configurado nas **Variáveis de Ambiente** do **Windows**.
 
@@ -126,13 +124,14 @@ Esta seção deve ser seguida por ***TODOS*** os desenvolvedores do projeto. Par
 * O **`clean`** elimina builds antigos que podem causar erros difíceis de rastrear.
 * O **`install`** garante que sua aplicação compilada (`.jar`)* vá para o repositório Maven local (`.m2/repository`). Isso é crucial para que o `javafx-maven-plugin` (que roda a view) encontre e utilize a versão mais recente e correta do seu próprio código.
 
----
-
-## 🎨 Guia de Execução do Frontend (JavaFX)
+&ensp;
+# 🎨 Guia de Execução do Frontend (JavaFX)
 
 **Como migramos o projeto para o *Maven* e o projeto agora é modular, a forma de rodar as telas mudou. Não usamos mais o botão "Run" direto na classe *Java (Application)* sem configuração prévia.**
 
 > Abaixo estão as **3 maneiras (1️⃣-2️⃣-3️⃣)** de rodar e testar as telas (`Views`) da aplicação.
+
+---
 
 ### 1️⃣ Opção 1: Rodando pelo Terminal (Linha de Comando)
 
@@ -152,9 +151,7 @@ Esta é a forma mais direta. Graças à configuração dinâmica que fizemos no 
     ```
 
 > **Nota:** O parâmetro `-D app.run.class` sobrescreve temporariamente a configuração padrão do projeto, permitindo testar telas isoladas.
-
 ---
-
 ### 2️⃣ Opção 2: Criando Botões de "Run" Personalizados (IDE)
 
 Você pode configurar botões no menu superior do IntelliJ para rodar telas específicas com um clique.
@@ -177,9 +174,7 @@ Você pode configurar botões no menu superior do IntelliJ para rodar telas espe
 5.  Agora é só selecionar a configuração criada no topo da IDE e clicar no **Play (▶)**.
 
 > **Importante:** O parâmetro `-Dunique.id=NomeDaTela` não afeta o código, serve apenas para o IntelliJ entender que são botões diferentes.
-
 ---
-
 ### 3️⃣ Opção 3: Ferramenta Maven (Run Configurations)
 
 Após fazer a *(Opção 2)*, você pode rodar utilizando as ferramentas do próprio *Maven*
@@ -190,5 +185,6 @@ Após fazer a *(Opção 2)*, você pode rodar utilizando as ferramentas do próp
 3.  Se você seguiu o passo da "Opção 2", todas as suas configurações salvas aparecerão listadas ali.
 
 4.  Basta clicar duas vezes sobre a configuração desejada (ex: `Run View: Login`) para iniciar a aplicação.
+
 
 
