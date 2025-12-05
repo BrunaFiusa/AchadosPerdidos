@@ -89,26 +89,49 @@ Conheça os novos componentes e a nova organização do projeto:
         * `RegistroFotoId`
         * `DevolucaoFotoId`
 
+---
 
-    ---
+## ⚙🌐 Configuração Global de Ambiente e Boas Práticas de Build
 
-## 🎨 Guia de Execução do Frontend (JavaFX)
+Esta seção deve ser seguida por ***TODOS*** os desenvolvedores do projeto. Para que possamos utilizar os comandos do Maven (`mvn`) no terminal e nas ferramentas da IDE, é necessário ter o Maven configurado nas **Variáveis de Ambiente** do **Windows**.
 
-Como migramos para o Maven e o projeto agora é modular, a forma de rodar as telas mudou. Não usamos mais o botão "Run" direto na classe Java (Application) sem configuração prévia.
+1.  **Assista ao tutorial de configuração:** [YouTube - Como Baixar Instalar e Configurar as Variaveis de Ambiente Maven](https://youtu.be/mPqp_vmU_w8?si=6Ip7gnupacr89DPV)
 
-Abaixo estão as **3 maneiras (1️⃣-2️⃣-3️⃣)** de rodar e testar as telas (`Views`) da aplicação.
-
-### ⚠️ Pré-requisito: Configurando o Ambiente
-
-Para rodar via terminal ou ferramentas Maven, você precisa ter o Maven configurado nas **Variáveis de Ambiente** do Windows.
-
-1.  Assista ao tutorial de configuração: **[YouTube - Como Baixar Instalar e Configurar as Variaveis de Ambiente Maven](https://youtu.be/mPqp_vmU_w8?si=6Ip7gnupacr89DPV)**
-
-2.  Após configurar, abra seu terminal e verifique se funcionou digitando:
+2.  Após configurar, abra seu terminal (ou o terminal embutido da IDE) e verifique se o Maven está acessível digitando:
     ```bash
     mvn -v
     ```
+    
+### 2. Ciclo de Build e Boas Práticas (Clean & Install)
+
+É crucial entender os comandos de ciclo de vida do Maven para garantir que o build do seu projeto esteja sempre limpo e atualizado.
+
+| Comando | O que faz? | Motivo para usar |
+| :--- | :--- | :--- |
+| **`mvn clean`** | **Limpa a sujeira:** Deleta a pasta `target/` inteira, que é onde ficam os arquivos de build antigos (`.class`, JARs, etc.). | Garante que o projeto não está usando nenhuma versão antiga ou *cacheada* do código. |
+| **`mvn install`** | **Compila e Guarda:** Compila (transforma `.java` em `.class`), executa os testes e, o mais importante, **coloca a sua aplicação no repositório Maven local**. | Essencial para que outros módulos ou o próprio `javafx:run` consigam encontrar e usar as classes mais recentes. |
+
+
+### ⚠️ Aviso Importante:
+*Sequência Recomendada para Atualizar o Projeto:*
+Sempre que fizer um `pull` (para integrar o código de outra pessoa) ou após realizar **grandes alterações na estrutura/dependências** do projeto, utilize a sequência:
+
+```bash
+mvn clean install
+```
+
+#### Por que isso é importante?
+
+* O **`clean`** elimina builds antigos que podem causar erros difíceis de rastrear.
+* O **`install`** garante que sua aplicação compilada (`.jar`)* vá para o repositório Maven local (`.m2/repository`). Isso é crucial para que o `javafx-maven-plugin` (que roda a view) encontre e utilize a versão mais recente e correta do seu próprio código.
+
 ---
+
+## 🎨 Guia de Execução do Frontend (JavaFX)
+
+**Como migramos o projeto para o *Maven* e o projeto agora é modular, a forma de rodar as telas mudou. Não usamos mais o botão "Run" direto na classe *Java (Application)* sem configuração prévia.**
+
+> Abaixo estão as **3 maneiras (1️⃣-2️⃣-3️⃣)** de rodar e testar as telas (`Views`) da aplicação.
 
 ### 1️⃣ Opção 1: Rodando pelo Terminal (Linha de Comando)
 
@@ -124,10 +147,10 @@ Esta é a forma mais direta. Graças à configuração dinâmica que fizemos no 
     ```
 3.  Para rodar **qualquer outra tela** (ex: Login, CadCadastro, etc), use o comando abaixo trocando apenas o caminho da classe:
     ```bash
-    mvn clean javafx:run -Dapp.run.class=br.com.pi.achadoseperdidos.view.Classe
+    mvn clean javafx:run -D app.run.class=br.com.pi.achadoseperdidos.view.Classe
     ```
 
-> **Nota:** O parâmetro `-Dapp.run.class` sobrescreve temporariamente a configuração padrão do projeto, permitindo testar telas isoladas.
+> **Nota:** O parâmetro `-D app.run.class` sobrescreve temporariamente a configuração padrão do projeto, permitindo testar telas isoladas.
 
 ---
 
@@ -147,7 +170,7 @@ Você pode configurar botões no menu superior do IntelliJ para rodar telas espe
 | Campo | O que colocar? (Exemplo para aplicar em TODAS classes da *(.view)* ) |
 | :--- | :--- |
 | **Name** | `Run View: Cadastro` (Nome amigável para você identificar) |
-| **Command line** | `clean javafx:run -Dapp.run.class=br.com.pi.achadoseperdidos.view.CadCadastro -Dunique.id=Cadastro` |
+| **Command line** | `clean javafx:run -D app.run.class=br.com.pi.achadoseperdidos.view.CadCadastro -Dunique.id=Cadastro` |
 
 4.  Clique em **Apply**.
 5.  Agora é só selecionar a configuração criada no topo da IDE e clicar no **Play (▶)**.
@@ -162,6 +185,7 @@ Após fazer a *(Opção 2)*, você pode rodar utilizando as ferramentas do próp
 **Passo a passo:**
 
 1.  Abra a aba **Maven** na lateral direita do IntelliJ.
-2.  Vá até a pasta **⚙ Run Configurations** (geralmente representada por ícones de engrenagem(⚙) ou lista de comandos salvos).
+2.  Vá até a pasta **⚙ Run Configurations** (geralmente representada por ícones de engrenagem *⚙* ou lista de comandos salvos).
 3.  Se você seguiu o passo da "Opção 2", todas as suas configurações salvas aparecerão listadas ali.
+
 4.  Basta clicar duas vezes sobre a configuração desejada (ex: `Run View: Login`) para iniciar a aplicação.
