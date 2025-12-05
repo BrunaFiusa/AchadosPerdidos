@@ -112,7 +112,7 @@ Esta seção deve ser seguida por ***TODOS*** os desenvolvedores do projeto. Par
 | **`mvn install`** | **Compila e Guarda:** Compila (transforma `.java` em `.class`), executa os testes e, o mais importante, **coloca a sua aplicação no repositório Maven local**. | Essencial para que outros módulos ou o próprio `javafx:run` consigam encontrar e usar as classes mais recentes. |
 
 
-### ⚠️ Aviso Importante:
+### ⚠️ Aviso Importante sobre Atualizações:
 *Sequência Recomendada para Atualizar o Projeto:*
 Sempre que fizer um `pull` (para integrar o código de outra pessoa) ou após realizar **grandes alterações na estrutura/dependências** do projeto, utilize a sequência:
 
@@ -189,3 +189,4 @@ Após fazer a *(Opção 2)*, você pode rodar utilizando as ferramentas do próp
 3.  Se você seguiu o passo da "Opção 2", todas as suas configurações salvas aparecerão listadas ali.
 
 4.  Basta clicar duas vezes sobre a configuração desejada (ex: `Run View: Login`) para iniciar a aplicação.
+
