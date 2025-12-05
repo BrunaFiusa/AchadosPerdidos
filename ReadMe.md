@@ -112,15 +112,16 @@ Esta seção deve ser seguida por ***TODOS*** os desenvolvedores do projeto. Par
 | **`mvn install`** | **Compila e Guarda:** Compila (transforma `.java` em `.class`), executa os testes e, o mais importante, **coloca a sua aplicação no repositório Maven local**. | Essencial para que outros módulos ou o próprio `javafx:run` consigam encontrar e usar as classes mais recentes. |
 
 
-### ⚠️ Aviso Importante sobre Atualizações:
+## ⚠ Aviso Importante sobre Atualizações:
 *Sequência Recomendada para Atualizar o Projeto:*
-Sempre que fizer um `pull` (para integrar o código de outra pessoa) ou após realizar **grandes alterações na estrutura/dependências** do projeto, utilize a sequência:
 
-```bash
-mvn clean install
-```
+* Sempre que fizer um `pull` (para integrar o código de outra pessoa) ou após realizar **grandes alterações na estrutura/dependências** do projeto, utilize a sequência:
 
-#### Por que isso é importante?
+   ```bash
+   mvn clean install
+   ```
+
+#### ❓ Por que isso é importante?
 
 * O **`clean`** elimina builds antigos que podem causar erros difíceis de rastrear.
 * O **`install`** garante que sua aplicação compilada (`.jar`)* vá para o repositório Maven local (`.m2/repository`). Isso é crucial para que o `javafx-maven-plugin` (que roda a view) encontre e utilize a versão mais recente e correta do seu próprio código.
@@ -189,4 +190,5 @@ Após fazer a *(Opção 2)*, você pode rodar utilizando as ferramentas do próp
 3.  Se você seguiu o passo da "Opção 2", todas as suas configurações salvas aparecerão listadas ali.
 
 4.  Basta clicar duas vezes sobre a configuração desejada (ex: `Run View: Login`) para iniciar a aplicação.
+
 
