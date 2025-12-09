@@ -65,7 +65,7 @@ public class DevolucaoDao {
         }
     }
 
-    public Devolucao buscarPorId(Long id) {
+    public Devolucao buscarPorId(Integer id) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
             return em.find(Devolucao.class, id);
