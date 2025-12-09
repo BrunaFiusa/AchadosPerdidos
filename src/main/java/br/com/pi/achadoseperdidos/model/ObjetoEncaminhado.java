@@ -26,4 +26,45 @@ public class ObjetoEncaminhado {
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date dataEnvio;
+
+    public ObjetoEncaminhado() {
+    }
+
+    public ObjetoEncaminhado(Objeto objeto, Destino destino, Date dataEnvio) {
+        this.objeto = objeto;
+        this.destino = destino;
+        this.dataEnvio = dataEnvio;
+    }
+
+    public ObjetoEncaminhadoId getId() {
+        return id;
+    }
+
+    public void setId(ObjetoEncaminhadoId id) {
+        this.id = id;
+    }
+
+    public Objeto getObjeto() {
+        return objeto;
+    }
+
+    public void setObjeto(Objeto objeto) {
+        this.objeto = objeto;
+    }
+
+    public Destino getDestino() {
+        return destino;
+    }
+
+    public void setDestino(Destino destino) {
+        this.destino = destino;
+    }
+
+    public Date getDataEnvio() {
+        return dataEnvio;
+    }
+
+    public void setDataEnvio(Date dataEnvio) {
+        this.dataEnvio = dataEnvio;
+    }
 }
