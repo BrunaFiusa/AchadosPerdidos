@@ -65,7 +65,7 @@ public class FotoDao {
         }
     }
 
-    public Foto buscarPorId(Long id) {
+    public Foto buscarPorId(Integer id) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
             return em.find(Foto.class, id);
