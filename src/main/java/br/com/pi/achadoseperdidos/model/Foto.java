@@ -12,10 +12,10 @@ public class Foto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @OneToMany(mappedBy = "foto")
+    @OneToMany(mappedBy = "foto", cascade = CascadeType.ALL)
     private List<RegistroFoto> registroFotos;
 
-    @OneToMany(mappedBy = "foto")
+    @OneToMany(mappedBy = "foto", cascade = CascadeType.ALL)
     private List<DevolucaoFoto> devolucaoFotos;
 
     @Column(name = "caminho")
