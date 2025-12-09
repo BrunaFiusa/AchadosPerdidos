@@ -4,6 +4,8 @@ import jakarta.persistence.Column;
 
 import jakarta.persistence.Embeddable;
 
+import java.util.Objects;
+
 public class RegistroeDevolucaoFotoId {
 
     @Embeddable
@@ -35,6 +37,17 @@ public class RegistroeDevolucaoFotoId {
 
         public void setObjetoId(int objetoId) {
             this.objetoId = objetoId;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (!(o instanceof RegistroFotoId that)) return false;
+            return fotoId == that.fotoId && objetoId == that.objetoId;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(fotoId, objetoId);
         }
     }
 
@@ -69,6 +82,16 @@ public class RegistroeDevolucaoFotoId {
             this.devolucaoId = devolucaoId;
         }
 
+        @Override
+        public boolean equals(Object o) {
+            if (!(o instanceof DevolucaoFotoId that)) return false;
+            return fotoId == that.fotoId && devolucaoId == that.devolucaoId;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(fotoId, devolucaoId);
+        }
     }
 
 }
