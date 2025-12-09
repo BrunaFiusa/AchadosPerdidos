@@ -1,54 +1,54 @@
-package br.com.pi.achadoseperdidos.model;
+    package br.com.pi.achadoseperdidos.model;
 
-import jakarta.persistence.*;
+    import jakarta.persistence.*;
 
-@Entity
-@Table(name = "fotodevolucoes")
-public class DevolucaoFoto {
+    @Entity
+    @Table(name = "fotodevolucoes")
+    public class DevolucaoFoto {
 
-    @EmbeddedId
-    private RegistroeDevolucaoFotoId.DevolucaoFotoId id;
+        @EmbeddedId
+        private RegistroeDevolucaoFotoId.DevolucaoFotoId id;
 
-    @ManyToOne
-    @MapsId("fotoId")
-    @JoinColumn(name = "foto_id")
-    private Foto foto;
+        @ManyToOne
+        @MapsId("fotoId")
+        @JoinColumn(name = "foto_id")
+        private Foto foto;
 
-    @ManyToOne
-    @MapsId("devolucaoId")
-    @JoinColumn(name = "devolucao_id")
-    private Devolucao devolucao;
+        @ManyToOne
+        @MapsId("devolucaoId")
+        @JoinColumn(name = "devolucao_id")
+        private Devolucao devolucao;
 
-    public DevolucaoFoto() {
+        public DevolucaoFoto() {
+        }
+
+        public DevolucaoFoto(RegistroeDevolucaoFotoId.DevolucaoFotoId id, Foto foto, Devolucao devolucao) {
+            this.id = id;
+            this.foto = foto;
+            this.devolucao = devolucao;
+        }
+
+        public RegistroeDevolucaoFotoId.DevolucaoFotoId getId() {
+            return id;
+        }
+
+        public void setId(RegistroeDevolucaoFotoId.DevolucaoFotoId id) {
+            this.id = id;
+        }
+
+        public Foto getFoto() {
+            return foto;
+        }
+
+        public void setFoto(Foto foto) {
+            this.foto = foto;
+        }
+
+        public Devolucao getDevolucao() {
+            return devolucao;
+        }
+
+        public void setDevolucao(Devolucao devolucao) {
+            this.devolucao = devolucao;
+        }
     }
-
-    public DevolucaoFoto(RegistroeDevolucaoFotoId.DevolucaoFotoId id, Foto foto, Devolucao devolucao) {
-        this.id = id;
-        this.foto = foto;
-        this.devolucao = devolucao;
-    }
-
-    public RegistroeDevolucaoFotoId.DevolucaoFotoId getId() {
-        return id;
-    }
-
-    public void setId(RegistroeDevolucaoFotoId.DevolucaoFotoId id) {
-        this.id = id;
-    }
-
-    public Foto getFoto() {
-        return foto;
-    }
-
-    public void setFoto(Foto foto) {
-        this.foto = foto;
-    }
-
-    public Devolucao getDevolucao() {
-        return devolucao;
-    }
-
-    public void setDevolucao(Devolucao devolucao) {
-        this.devolucao = devolucao;
-    }
-}
