@@ -22,7 +22,7 @@ public class Devolucao {
     @JoinColumn(name = "objeto_id")
     private Objeto objeto;
 
-    @OneToMany(mappedBy = "devolucao")
+    @OneToMany(mappedBy = "devolucao", cascade = CascadeType.ALL)
     private List<DevolucaoFoto> devolucaoFotos;
 
 

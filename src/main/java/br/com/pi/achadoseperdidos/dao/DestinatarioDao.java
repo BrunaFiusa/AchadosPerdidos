@@ -73,4 +73,27 @@ public class DestinatarioDao {
             em.close();
         }
     }
+    public Destinatario desativar(Destinatario destinatario) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            // 1. Busca o destinatario na base de dados para garantir que está no contexto
+            Destinatario destinatarioParaDesativar = em.find(Destinatario.class, destinatario.getId());
+
+            // 2. Define a ativação como false (Deleção Lógica)
+            if (destinatarioParaDesativar != null) {
+                // metodo setAtivacao(Boolean) na Model
+                destinatarioParaDesativar.setAtivacao(false);
+            }
+            // 3. Atualiza no banco
+            Destinatario merged = em.merge(destinatarioParaDesativar);
+            em.getTransaction().commit();
+            return merged;
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
 }

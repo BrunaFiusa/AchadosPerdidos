@@ -44,7 +44,7 @@ public class ObjetoDao {
         EntityManager em = JPAUtil.getEntityManager();
         try {
             // JPQL: Adicionando a cláusula WHERE para filtrar apenas objetos ATIVOS
-            TypedQuery<Objeto> q = em.createQuery("SELECT o FROM Objeto o WHERE o.ativo = true", Objeto.class);
+            TypedQuery<Objeto> q = em.createQuery("SELECT o FROM Objeto o", Objeto.class);
             return q.getResultList();
         } finally {
             em.close();
@@ -61,7 +61,7 @@ public class ObjetoDao {
     }
     // Adicione este método ao final da sua classe ObjetoDao
 
-    public void desativarObjeto(Integer id) {
+    public void desativar(Integer id) {
         EntityManager em = JPAUtil.getEntityManager();
         em.getTransaction().begin();
         try {
@@ -70,7 +70,7 @@ public class ObjetoDao {
 
             if (objeto != null) {
                 // 2. Altera o status (Assumindo que sua entidade Objeto tem o método setAtivo(Boolean))
-                objeto.setAtivacao(false);
+                objeto.setAtivado(false);
                 // 3. Persiste a mudança
                 em.merge(objeto);
                 em.getTransaction().commit();

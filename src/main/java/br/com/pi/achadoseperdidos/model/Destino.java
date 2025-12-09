@@ -12,18 +12,30 @@ public class Destino {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @OneToMany(mappedBy = "destino")
+    @OneToMany(mappedBy = "destino", cascade = CascadeType.ALL)
     private List<ObjetoEncaminhado> objetosEncaminhados;
 
     @Column(name = "nome")
     private String nome;
 
-    public Destino(String nome) {
+    public Destino() {
+    }
+
+    public Destino(List<ObjetoEncaminhado> objetosEncaminhados, String nome) {
+        this.objetosEncaminhados = objetosEncaminhados;
         this.nome = nome;
     }
 
     public Integer getId() {
         return id;
+    }
+
+    public List<ObjetoEncaminhado> getObjetosEncaminhados() {
+        return objetosEncaminhados;
+    }
+
+    public void setObjetosEncaminhados(List<ObjetoEncaminhado> objetosEncaminhados) {
+        this.objetosEncaminhados = objetosEncaminhados;
     }
 
     public String getNome() {
@@ -33,5 +45,4 @@ public class Destino {
     public void setNome(String nome) {
         this.nome = nome;
     }
-
 }

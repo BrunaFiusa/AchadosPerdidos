@@ -38,8 +38,11 @@ public class Objeto {
 
     // Identificação para o Hibernate não criar uma coluna ObjetosEncaminhados na tabela.
     // Lista de navegação: a chave estrangeira (FK) está na tabela intermediária ObjetoEncaminhados (identificação p Hibernate).
-    @OneToMany(mappedBy = "objeto")
+    @OneToMany(mappedBy = "objeto", cascade = CascadeType.ALL)
     private List<ObjetoEncaminhado> objetosEncaminhados;
+
+    @OneToMany(mappedBy = "objeto", cascade = CascadeType.ALL)
+    private List<RegistroFoto> registrosFotos;
 
     @Column(name = "lacre", nullable = false, unique = true) //verificar se ele é unico
     private Integer lacre;
@@ -51,30 +54,31 @@ public class Objeto {
     private String marca;
     @Column(name = "condicao")
     private String condicao;
-    @Column(name = "ativação")
-    private Boolean ativacao;
-    @Column(name = "data_registro")// Define o formato de data/hora no SQL. TIMESTAMP salva a data e a hora exata do registro (o momento do registro).
+    @Column(name = "ativado")
+    private Boolean ativado;
+    @Column(name = "data_registro")
+// Define o formato de data/hora no SQL. TIMESTAMP salva a data e a hora exata do registro (o momento do registro).
     private Date dataRegistro;
 
     public Objeto() {
     }
 
     public Objeto(Local local, Status status, Funcionario funcionario, Categoria categoria, List<Devolucao> devolucoes,
-                  List<ObjetoEncaminhado> objetosEncaminhados, Integer lacre, String nome, String observacao, String marca, String
-                          condicao, Boolean ativacao, Date dataRegistro) {
-
+                  List<ObjetoEncaminhado> objetosEncaminhados, List<RegistroFoto> registrosFotos, Integer lacre,
+                  String nome, String observacao, String marca, String condicao, Boolean ativado, Date dataRegistro) {
         this.local = local;
         this.status = status;
         this.funcionario = funcionario;
         this.categoria = categoria;
         this.devolucoes = devolucoes;
         this.objetosEncaminhados = objetosEncaminhados;
+        this.registrosFotos = registrosFotos;
         this.lacre = lacre;
         this.nome = nome;
         this.observacao = observacao;
         this.marca = marca;
         this.condicao = condicao;
-        this.ativacao = ativacao;
+        this.ativado = ativado;
         this.dataRegistro = dataRegistro;
     }
 
@@ -124,6 +128,13 @@ public class Objeto {
         this.objetosEncaminhados = objetosEncaminhados;
     }
 
+    public List<RegistroFoto> getRegistrosFotos() {
+        return registrosFotos;
+    }
+    public void setRegistrosFotos(List<RegistroFoto> registrosFotos) {
+        this.registrosFotos = registrosFotos;
+    }
+
     public Integer getLacre() {
         return lacre;
     }
@@ -159,11 +170,11 @@ public class Objeto {
         this.condicao = condicao;
     }
 
-    public Boolean getAtivacao() {
-        return ativacao;
+    public Boolean getAtivado() {
+        return ativado;
     }
-    public void setAtivacao(Boolean ativacao) {
-        this.ativacao = ativacao;
+    public void setAtivado(Boolean ativado) {
+        this.ativado = ativado;
     }
 
     public Date getDataRegistro() {

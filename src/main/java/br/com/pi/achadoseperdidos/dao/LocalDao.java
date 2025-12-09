@@ -64,7 +64,7 @@ public class LocalDao {
         }
     }
 
-    public Local buscarPorId(Long id) {
+    public Local buscarPorId(Integer id) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
             return em.find(Local.class, id);

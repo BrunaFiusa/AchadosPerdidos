@@ -65,7 +65,7 @@ public class StatusDao {
         }
     }
 
-    public Status buscarPorId(Long id) {
+    public Status buscarPorId(Integer id) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
             return em.find(Status.class, id);

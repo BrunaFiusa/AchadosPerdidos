@@ -18,16 +18,19 @@ public class Destinatario {
     private String rg;
     @Column(name = "cpf", unique = true)
     private String cpf;
+    @Column(name = "ativação")
+    private Boolean ativacao;
 //    @Column(name = "documento", unique = true)
 //    private String documento; - (como estava antes de alterar) - verificar
 
     public Destinatario() {}
 
-    public Destinatario(String nome, String telefone, String rg, String cpf) {
+    public Destinatario(String nome, String telefone, String rg, String cpf, Boolean ativacao) {
         this.nome = nome;
         this.telefone = telefone;
         this.rg = rg;
         this.cpf = cpf;
+        this.ativacao = ativacao;
     }
 
     public Integer getId() {
@@ -61,5 +64,12 @@ public class Destinatario {
     }
     public void setCpf(String cpf) {
         this.cpf = cpf;
+    }
+
+    public Boolean isAtivacao() {
+        return ativacao;
+    }
+    public void setAtivacao(Boolean ativacao) {
+        this.ativacao = ativacao;
     }
 }
