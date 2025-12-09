@@ -17,7 +17,7 @@ public class Categoria {
 
     public Categoria(){}
 
-    public Categoria(String nome, int prazo) {
+    public Categoria(String nome, Integer prazo) {
         this.nome = nome;
         this.prazo = prazo;
     }
@@ -33,10 +33,10 @@ public class Categoria {
         this.nome = nome;
     }
 
-    public int getPrazo() {
+    public Integer getPrazo() {
         return prazo;
     }
-    public void setPrazo(int prazo) {
+    public void setPrazo(Integer prazo) {
         this.prazo = prazo;
     }
 }
