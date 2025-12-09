@@ -65,7 +65,7 @@ public class CategoriaDao {
         }
     }
 
-    public Categoria buscarPorId(Long id) {
+    public Categoria buscarPorId(Integer id) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
             return em.find(Categoria.class, id);
