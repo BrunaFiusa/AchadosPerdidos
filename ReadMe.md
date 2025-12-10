@@ -1,11 +1,7 @@
 # 🚀 Instruções da Migração para (Maven & JPA/Hibernate)
 
-**⚠️ Aviso Importante sobre Testes:** Devido à urgência do prazo, alguns testes de integração ainda não foram concluídos. No entanto, a migração da arquitetura está finalizada com êxito e funcional.
-
 Dentro desta documentação será apresentado ***guias*** e ***materiais*** para vocês estudarem e entenderem aquilo que foi implementado nesta "migração".
-
 > **Observação:** Além dos materiais, adicionei comentários em arquivos novos no código da aplicação, para caso de dúvidas. (Embora alguns materiais sejam mais antigos, o conceito das *stacks* continua o mesmo)
-
  &ensp;
 # 📚 Materiais de Estudo e Conceitos
 
@@ -185,6 +181,7 @@ Após fazer a *(Opção 2)*, você pode rodar utilizando as ferramentas do próp
 3.  Se você seguiu o passo da "Opção 2", todas as suas configurações salvas aparecerão listadas ali.
 
 4.  Basta clicar duas vezes sobre a configuração desejada (ex: `Run View: Login`) para iniciar a aplicação.
+
 
 
 
