@@ -1,252 +1,247 @@
 package br.com.pi.achadoseperdidos.view.components;
 
+import javafx.animation.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Separator;
-import javafx.scene.control.ToggleGroup;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
+import javafx.util.Duration;
+
+import java.io.ByteArrayInputStream;
+import java.util.*;
 import java.util.function.Consumer;
 
 /**
- * Um componente de barra lateral de filtro otimizado para um sistema de achados e perdidos de shopping.
- * Usa botões de rádio para seleção exclusiva, com categorias organizadas, funcionalidade de limpar e
- * atualizações em tempo real em um painel rolável.
+ * Sidebar colapsível premium com botão hamburger bonito e flutuante.
  */
-public class SideBar extends ScrollPane {
-    private static final double SIDEBAR_WIDTH = 220.0;
-    private static final String PRIMARY_COLOR = "#C4AF95"; // Bege suave (RGB: 196, 175, 149)
-    private static final String ACCENT_COLOR = "#B39F85";  // Bege mais escuro (RGB: 179, 159, 133)
-    private static final String HOVER_COLOR = "#A69475";   // Bege escuro para hover (RGB: 166, 148, 117)
-    private static final String TEXT_COLOR = "#333333";    // Texto escuro para contraste
-    private static final String CATEGORY_STYLE = "-fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: " + TEXT_COLOR + ";";
-    private static final String RADIO_STYLE = "-fx-font-size: 12px; -fx-text-fill: " + TEXT_COLOR + ";";
-    private static final String BUTTON_STYLE = "-fx-background-color: " + ACCENT_COLOR + "; " +
-            "-fx-text-fill: #FFFFFF; -fx-font-size: 12px; -fx-padding: 6 12 6 12; -fx-cursor: hand;" +
-            "-fx-background-radius: 4px; -fx-border-radius: 4px;";
+public class SideBar extends StackPane {
+
+    private static final double SIDEBAR_WIDTH = 260.0;
+    private static final double BUTTON_SIZE = 56.0; // Um pouco maior para ficar mais premium
+    private static final String PRIMARY_COLOR = "#C4AF95";
+    private static final String ACCENT_COLOR = "#B39F85";
+    private static final String HOVER_COLOR = "#A69475";
+    private static final String TEXT_COLOR = "#333333";
+    private static final String ICON_COLOR = "#FFFFFF";
 
     private final VBox content;
-    private final List<RadioButton> radioButtons;
-    private final ToggleGroup toggleGroup;
+    private final ScrollPane scrollPane;
+    private final List<RadioButton> radioButtons = new ArrayList<>();
+    private final ToggleGroup toggleGroup = new ToggleGroup();
     private Consumer<List<String>> selectionListener;
 
-    /**
-     * Constrói a barra lateral de filtro com botões de rádio agrupados.
-     */
+    private boolean isOpen = false;
+    private final Button hamburgerButton;
+
     public SideBar() {
-        content = new VBox(12);
-        radioButtons = new ArrayList<>();
-        toggleGroup = new ToggleGroup();
+        content = new VBox(14);
+        scrollPane = new ScrollPane(content);
 
-        // Configura o painel de conteúdo
-        content.setPrefWidth(SIDEBAR_WIDTH);
-        content.setPadding(new Insets(15));
-        content.setStyle("-fx-background-color: " + PRIMARY_COLOR + ";");
+        setupScrollPane();
+        setupContent();
+        buildFilterContent();
+
+        hamburgerButton = createBeautifulHamburgerButton();
+
+        getChildren().addAll(scrollPane, hamburgerButton);
+
+        StackPane.setAlignment(hamburgerButton, Pos.TOP_LEFT);
+        StackPane.setMargin(hamburgerButton, new Insets(24, 0, 0, 24)); // Mais espaço para ficar elegante
+
+        setOpen(false); // Inicia fechada
+
+        hamburgerButton.setOnAction(e -> toggle());
+    }
+
+    private void setupScrollPane() {
+        scrollPane.setFitToWidth(true);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        scrollPane.setStyle("-fx-background: " + PRIMARY_COLOR + "; " +
+                "-fx-background-color: " + PRIMARY_COLOR + "; " +
+                "-fx-border-color: #A69475; -fx-border-width: 0 2 0 0;");
+        scrollPane.setPrefWidth(SIDEBAR_WIDTH);
+    }
+
+    private void setupContent() {
+        content.setPadding(new Insets(20, 20, 30, 20));
         content.setAlignment(Pos.TOP_CENTER);
+        content.setStyle("-fx-background-color: " + PRIMARY_COLOR + ";");
+    }
 
-        // Configura o painel de rolagem
-        setContent(content);
-        setFitToWidth(true);
-        setStyle("-fx-background-color: " + PRIMARY_COLOR + "; -fx-border-color: #A69475; -fx-border-width: 0 1 0 0;");
-        setFocusTraversable(true);
-        setHbarPolicy(ScrollBarPolicy.NEVER);
-        setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
+    private Button createBeautifulHamburgerButton() {
+        Button btn = new Button();
+        btn.setPrefSize(BUTTON_SIZE, BUTTON_SIZE);
+        btn.setMinSize(BUTTON_SIZE, BUTTON_SIZE);
+        btn.setMaxSize(BUTTON_SIZE, BUTTON_SIZE);
 
-        // Adiciona cabeçalho e grupos de opções
+        // Estilo premium: sombra forte, bordas bem arredondadas
+        btn.setStyle("-fx-background-color: " + ACCENT_COLOR + "; " +
+                "-fx-background-radius: 16px; " +
+                "-fx-cursor: hand; " +
+                "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 16, 0.4, 6, 6);");
+
+        // Ícone hamburger mais grosso e bonito
+        String hamburgerSVG = """
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="%s" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="3" y1="6" x2="21" y2="6"/>
+                <line x1="3" y1="12" x2="21" y2="12"/>
+                <line x1="3" y1="18" x2="21" y2="18"/>
+            </svg>
+            """.formatted(ICON_COLOR.replace("#", "%23"));
+
+        BackgroundImage bg = new BackgroundImage(
+                new Image(new ByteArrayInputStream(hamburgerSVG.getBytes()), 28, 28, true, true),
+                BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+
+        btn.setBackground(new Background(bg));
+
+        // Hover com escala + cor
+        btn.setOnMouseEntered(e -> {
+            btn.setStyle(btn.getStyle() + "-fx-background-color: " + HOVER_COLOR + ";");
+            ScaleTransition scale = new ScaleTransition(Duration.millis(200), btn);
+            scale.setToX(1.1);
+            scale.setToY(1.1);
+            scale.play();
+        });
+
+        btn.setOnMouseExited(e -> {
+            btn.setStyle(btn.getStyle().replace("-fx-background-color: " + HOVER_COLOR + ";", "") +
+                    "-fx-background-color: " + ACCENT_COLOR + ";");
+            ScaleTransition scale = new ScaleTransition(Duration.millis(200), btn);
+            scale.setToX(1.0);
+            scale.setToY(1.0);
+            scale.play();
+        });
+
+        return btn;
+    }
+
+    // === O resto do código permanece igual (buildFilterContent, addHeader, etc.) ===
+    // (Copie os métodos da versão anterior completa: buildFilterContent, addHeader,
+    // createSeparator, createRadioButton, setSelectionListener, getSelectedOptions,
+    // clearSelections)
+
+    private void buildFilterContent() {
         addHeader();
-        createRadioGroups();
-    }
 
-    /**
-     * Adiciona o cabeçalho com título e botão de limpar.
-     */
-    private void addHeader() {
-        Label title = new Label("Filtros de Achados e Perdidos");
-        title.setStyle("-fx-font-weight: bold; -fx-font-size: 16px; -fx-text-fill: " + TEXT_COLOR + ";");
-        title.setPadding(new Insets(0, 0, 12, 0));
-
-        Button clearButton = new Button("Limpar Filtro");
-        clearButton.setStyle(BUTTON_STYLE);
-        clearButton.setOnAction(e -> clearSelections());
-        clearButton.setFocusTraversable(true);
-        clearButton.setOnMouseEntered(e -> clearButton.setStyle(BUTTON_STYLE + "-fx-background-color: " + HOVER_COLOR + ";"));
-        clearButton.setOnMouseExited(e -> clearButton.setStyle(BUTTON_STYLE));
-
-        HBox buttonBox = new HBox(clearButton);
-        buttonBox.setAlignment(Pos.CENTER);
-        buttonBox.setPadding(new Insets(0, 0, 12, 0));
-
-        Separator separator = new Separator();
-        separator.setPadding(new Insets(0, 0, 12, 0));
-
-        content.getChildren().addAll(title, buttonBox, separator);
-    }
-
-    /**
-     * Cria grupos de botões de rádio com categorias relevantes para achados e perdidos.
-     */
-    private void createRadioGroups() {
-        Map<String, List<String>> categoryOptions = new LinkedHashMap<>();
-        categoryOptions.put("Eletrônicos", Arrays.asList("Celular", "Tablet", "Notebook", "Fone de Ouvido", "Carregador", "Câmera"));
-        categoryOptions.put("Roupas", Arrays.asList("Camiseta", "Calça", "Jaqueta", "Sapato", "Boné", "Vestido"));
-        categoryOptions.put("Acessórios", Arrays.asList("Bolsa", "Carteira", "Óculos", "Relógio", "Jóias", "Chaveiro"));
-        categoryOptions.put("Documentos", Arrays.asList("RG", "CPF", "Passaporte", "Carteira de Motorista", "Cartão"));
-        categoryOptions.put("Outros", Arrays.asList("Chaves", "Livro", "Guarda-chuva", "Brinquedo", "Garrafa"));
-
-        // Adiciona opção "Todos" no topo
         Label generalLabel = new Label("Geral");
-        generalLabel.setStyle(CATEGORY_STYLE);
-        generalLabel.setPadding(new Insets(10, 0, 5, 8));
+        generalLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 15px; -fx-text-fill: " + TEXT_COLOR + ";");
+        generalLabel.setPadding(new Insets(0, 0, 6, 0));
 
         RadioButton allRadio = createRadioButton("Todos", true);
-        content.getChildren().addAll(generalLabel, allRadio);
+        content.getChildren().addAll(generalLabel, allRadio, createSeparator(15));
 
-        Separator initialSeparator = new Separator();
-        initialSeparator.setPadding(new Insets(10, 0, 10, 0));
-        content.getChildren().add(initialSeparator);
+        Map<String, List<String>> categories = new LinkedHashMap<>();
+        categories.put("Eletrônicos", Arrays.asList("Celular", "Tablet", "Notebook", "Fone de Ouvido", "Carregador", "Câmera"));
+        categories.put("Roupas", Arrays.asList("Camiseta", "Calça", "Jaqueta", "Sapato", "Boné", "Vestido"));
+        categories.put("Acessórios", Arrays.asList("Bolsa", "Carteira", "Óculos", "Relógio", "Jóias", "Chaveiro"));
+        categories.put("Documentos", Arrays.asList("RG", "CPF", "Passaporte", "Carteira de Motorista", "Cartão"));
+        categories.put("Outros", Arrays.asList("Chaves", "Livro", "Guarda-chuva", "Brinquedo", "Garrafa"));
 
-        int groupIndex = 0;
-        int groupCount = categoryOptions.size();
-
-        for (Map.Entry<String, List<String>> entry : categoryOptions.entrySet()) {
-            Label categoryLabel = new Label(entry.getKey());
-            categoryLabel.setStyle(CATEGORY_STYLE);
-            categoryLabel.setPadding(new Insets(10, 0, 5, 8));
-            content.getChildren().add(categoryLabel);
+        for (Map.Entry<String, List<String>> entry : categories.entrySet()) {
+            Label catLabel = new Label(entry.getKey());
+            catLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 15px; -fx-text-fill: " + TEXT_COLOR + ";");
+            catLabel.setPadding(new Insets(12, 0, 6, 0));
+            content.getChildren().add(catLabel);
 
             for (String option : entry.getValue()) {
-                RadioButton radioButton = createRadioButton(option, false);
-                content.getChildren().add(radioButton);
+                content.getChildren().add(createRadioButton(option, false));
             }
-
-            if (groupIndex < groupCount - 1) {
-                Separator separator = new Separator();
-                separator.setPadding(new Insets(10, 0, 10, 0));
-                content.getChildren().add(separator);
-            }
-            groupIndex++;
+            content.getChildren().add(createSeparator(15));
         }
     }
 
-    /**
-     * Cria um botão de rádio com configurações padrão.
-     *
-     * @param text     Texto do botão
-     * @param selected Se deve estar selecionado por padrão
-     * @return RadioButton configurado
-     */
+    private void addHeader() {
+        Label title = new Label("Filtros de Achados");
+        title.setStyle("-fx-font-weight: bold; -fx-font-size: 18px; -fx-text-fill: " + TEXT_COLOR + ";");
+
+        Button clearButton = new Button("Limpar Filtro");
+        clearButton.setStyle("-fx-background-color: " + ACCENT_COLOR + "; " +
+                "-fx-text-fill: white; -fx-font-size: 13px; -fx-padding: 10 18; " +
+                "-fx-background-radius: 8px; -fx-cursor: hand;");
+
+        clearButton.setOnAction(e -> clearSelections());
+        clearButton.setOnMouseEntered(e -> clearButton.setStyle(clearButton.getStyle() + "-fx-background-color: " + HOVER_COLOR + ";"));
+        clearButton.setOnMouseExited(e -> clearButton.setStyle(clearButton.getStyle().replace("-fx-background-color: " + HOVER_COLOR + ";", "") +
+                "-fx-background-color: " + ACCENT_COLOR + ";"));
+
+        VBox headerBox = new VBox(12, title, clearButton);
+        headerBox.setAlignment(Pos.CENTER_LEFT);
+
+        content.getChildren().addAll(headerBox, createSeparator(20));
+    }
+
+    private Separator createSeparator(double paddingBottom) {
+        Separator sep = new Separator();
+        sep.setPadding(new Insets(0, 0, paddingBottom, 0));
+        return sep;
+    }
+
     private RadioButton createRadioButton(String text, boolean selected) {
-        RadioButton radioButton = new RadioButton(text);
-        radioButton.setStyle(RADIO_STYLE);
-        radioButton.setPadding(new Insets(4, 0, 4, 20));
-        radioButton.setFocusTraversable(true);
-        radioButton.setToggleGroup(toggleGroup);
-        radioButton.setSelected(selected);
+        RadioButton rb = new RadioButton(text);
+        rb.setToggleGroup(toggleGroup);
+        rb.setSelected(selected);
+        rb.setStyle("-fx-font-size: 13.5px; -fx-text-fill: " + TEXT_COLOR + ";");
+        rb.setPadding(new Insets(6, 0, 6, 22));
 
-        radioButton.setOnMouseEntered(e -> radioButton.setStyle(RADIO_STYLE + "-fx-background-color: #D8C4A5; -fx-background-radius: 4px;"));
-        radioButton.setOnMouseExited(e -> radioButton.setStyle(RADIO_STYLE));
+        rb.setOnMouseEntered(e -> rb.setStyle(rb.getStyle() + "-fx-background-color: #D8C4A5; -fx-background-radius: 8px;"));
+        rb.setOnMouseExited(e -> rb.setStyle(rb.getStyle().replace("-fx-background-color: #D8C4A5; -fx-background-radius: 8px;", "")));
 
-        radioButton.selectedProperty().addListener((obs, oldVal, newVal) -> {
-            if (selectionListener != null && newVal) {
+        rb.selectedProperty().addListener((obs, oldVal, newVal) -> {
+            if (selectionListener != null && Boolean.TRUE.equals(newVal)) {
                 selectionListener.accept(getSelectedOptions());
             }
         });
 
-        radioButtons.add(radioButton);
-        return radioButton;
+        radioButtons.add(rb);
+        return rb;
     }
 
-    /**
-     * Define um ouvinte para ser notificado quando as seleções mudarem.
-     *
-     * @param listener Consumer que recebe a lista de opções selecionadas (0 ou 1 item)
-     */
     public void setSelectionListener(Consumer<List<String>> listener) {
         this.selectionListener = listener;
-        if (listener != null) {
-            listener.accept(getSelectedOptions());
-        }
+        if (listener != null) listener.accept(getSelectedOptions());
     }
 
-    /**
-     * Retorna a lista de opções selecionadas (máximo de 1 item, exceto "Todos").
-     *
-     * @return Lista com a opção selecionada ou vazia se "Todos" estiver selecionado
-     */
     public List<String> getSelectedOptions() {
-        for (RadioButton radioButton : radioButtons) {
-            if (radioButton.isSelected() && !radioButton.getText().equals("Todos")) {
-                return List.of(radioButton.getText());
-            }
-        }
-        return new ArrayList<>();
+        return radioButtons.stream()
+                .filter(rb -> rb.isSelected() && !rb.getText().equals("Todos"))
+                .map(RadioButton::getText)
+                .findFirst()
+                .map(List::of)
+                .orElse(new ArrayList<>());
     }
 
-    /**
-     * Limpa a seleção e seleciona "Todos" por padrão.
-     */
     public void clearSelections() {
         radioButtons.stream()
-                .filter(radio -> radio.getText().equals("Todos"))
+                .filter(rb -> rb.getText().equals("Todos"))
                 .findFirst()
-                .ifPresent(radio -> radio.setSelected(true));
-        if (selectionListener != null) {
-            selectionListener.accept(getSelectedOptions());
-        }
+                .ifPresent(rb -> rb.setSelected(true));
+
+        if (selectionListener != null) selectionListener.accept(getSelectedOptions());
     }
 
-    /**
-     * Define opções personalizadas para a barra lateral, substituindo os botões existentes.
-     *
-     * @param options Lista de nomes de opções a exibir
-     */
-    public void setOptions(List<String> options) {
-        content.getChildren().clear();
-        radioButtons.clear();
-        toggleGroup.getToggles().clear();
+    public void toggle() {
+        setOpen(!isOpen);
+    }
 
-        addHeader();
+    public void setOpen(boolean open) {
+        this.isOpen = open;
 
-        Label generalLabel = new Label("Geral");
-        generalLabel.setStyle(CATEGORY_STYLE);
-        generalLabel.setPadding(new Insets(10, 0, 5, 8));
-        RadioButton allRadio = createRadioButton("Todos", true);
-        content.getChildren().addAll(generalLabel, allRadio);
+        TranslateTransition slide = new TranslateTransition(Duration.millis(400), scrollPane);
+        slide.setToX(open ? 0 : -SIDEBAR_WIDTH);
+        slide.play();
 
-        Separator initialSeparator = new Separator();
-        initialSeparator.setPadding(new Insets(10, 0, 10, 0));
-        content.getChildren().add(initialSeparator);
+        FadeTransition fade = new FadeTransition(Duration.millis(300), hamburgerButton);
+        fade.setToValue(open ? 0.0 : 1.0);
+        fade.play();
 
-        final int OPTIONS_PER_GROUP = 6;
-        int groupCount = (int) Math.ceil((double) options.size() / OPTIONS_PER_GROUP);
-        for (int group = 0; group < groupCount; group++) {
-            Label categoryLabel = new Label("Categoria " + (group + 1));
-            categoryLabel.setStyle(CATEGORY_STYLE);
-            categoryLabel.setPadding(new Insets(10, 0, 5, 8));
-            content.getChildren().add(categoryLabel);
+        hamburgerButton.toFront();
+    }
 
-            int startIndex = group * OPTIONS_PER_GROUP;
-            int endIndex = Math.min(startIndex + OPTIONS_PER_GROUP, options.size());
-
-            for (int i = startIndex; i < endIndex; i++) {
-                RadioButton radioButton = createRadioButton(options.get(i), false);
-                content.getChildren().add(radioButton);
-            }
-
-            if (group < groupCount - 1) {
-                Separator separator = new Separator();
-                separator.setPadding(new Insets(10, 0, 10, 0));
-                content.getChildren().add(separator);
-            }
-        }
+    public boolean isOpen() {
+        return isOpen;
     }
 }
