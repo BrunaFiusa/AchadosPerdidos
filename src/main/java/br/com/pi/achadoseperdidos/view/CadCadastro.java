@@ -26,15 +26,15 @@ public class CadCadastro extends Application {
         BorderPane root = new BorderPane();
         root.setStyle("-fx-background-color: #c4af95;");
 
-        VBox content = new VBox(12); // Espaçamento ainda menor
+        VBox content = new VBox(12);
         content.setAlignment(Pos.CENTER);
         content.setPadding(new Insets(20, 30, 25, 30)); // Padding reduzido em cima e embaixo
 
-        // Título
+
         Label title = new Label("Cadastro de Objeto");
         title.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #333333;");
 
-        // Imagem menor
+
         ImageView imageView = new ImageView();
         imageView.setFitHeight(50);
         imageView.setFitWidth(50);
@@ -48,19 +48,19 @@ public class CadCadastro extends Application {
                         "-fx-border-radius: 16;"
         );
 
-        // Botão upload
+
         Button uploadButton = new Button("Escolher Foto(s)");
         styleButton(uploadButton);
         uploadButton.setPrefWidth(260);
 
-        // Campos mais baixos
+
         TextField nomeField = createCompactField("Nome do Objeto *");
         TextField lacreField = createCompactField("Número do Lacre *");
         TextField observacaoField = createCompactField("Observação");
         TextField marcaField = createCompactField("Marca");
         TextField condicaoField = createCompactField("Condição");
 
-        // Botões finais
+
         Button salvarButton = new Button("Salvar");
         styleButton(salvarButton);
         salvarButton.setPrefWidth(130);
@@ -73,7 +73,7 @@ public class CadCadastro extends Application {
         HBox buttons = new HBox(15, salvarButton, cancelButton);
         buttons.setAlignment(Pos.CENTER);
 
-        // Monta tudo
+
         content.getChildren().addAll(
                 title,
                 imageView,
@@ -88,7 +88,7 @@ public class CadCadastro extends Application {
 
         root.setCenter(content);
 
-        // Ação: Upload
+
         uploadButton.setOnAction(e -> {
             FileChooser fileChooser = new FileChooser();
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Imagens", "*.png", "*.jpg", "*.jpeg", "*.gif"));
@@ -112,7 +112,7 @@ public class CadCadastro extends Application {
             }
         });
 
-        // Ação: Cancelar
+
         cancelButton.setOnAction(e -> {
             nomeField.clear();
             lacreField.clear();
@@ -132,7 +132,7 @@ public class CadCadastro extends Application {
             );
         });
 
-        // Ação: Salvar (simulação)
+
         salvarButton.setOnAction(e -> {
             String nome = nomeField.getText().trim();
             String lacre = lacreField.getText().trim();
