@@ -1,5 +1,6 @@
 package br.com.pi.achadoseperdidos.view;
 
+import br.com.pi.achadoseperdidos.view.components.PaginatedTableView;
 import br.com.pi.achadoseperdidos.view.components.SideBar;
 import br.com.pi.achadoseperdidos.view.components.TopBar;
 import javafx.application.Application;
@@ -11,31 +12,84 @@ import javafx.collections.transformation.FilteredList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class CadHome extends Application {
     private static Stage cadastroStage = null;
+    private FilteredList<Item> filteredItems;
+    private ObservableList<Item> allItems;
+    private String categoryFilter = "";
+    private TextField searchField;
+
+    public static class Item {
+        private final StringProperty id = new SimpleStringProperty();
+        private final StringProperty description = new SimpleStringProperty();
+        private final StringProperty location = new SimpleStringProperty();
+        private final StringProperty date = new SimpleStringProperty();
+        private final StringProperty status = new SimpleStringProperty();
+        private final StringProperty contact = new SimpleStringProperty();
+
+        public Item(String id, String description, String location, String date, String status, String contact) {
+            this.id.set(id);
+            this.description.set(description);
+            this.location.set(location);
+            this.date.set(date);
+            this.status.set(status);
+            this.contact.set(contact);
+        }
+
+        public String getId() { return id.get(); }
+        public StringProperty idProperty() { return id; }
+
+        public String getDescription() { return description.get(); }
+        public StringProperty descriptionProperty() { return description; }
+
+        public String getLocation() { return location.get(); }
+        public StringProperty locationProperty() { return location; }
+
+        public String getDate() { return date.get(); }
+        public StringProperty dateProperty() { return date; }
+
+        public String getStatus() { return status.get(); }
+        public StringProperty statusProperty() { return status; }
+        public void setStatus(String newStatus) { status.set(newStatus); }
+
+        public String getContact() { return contact.get(); }
+        public StringProperty contactProperty() { return contact; }
+    }
 
     @Override
     public void start(Stage stage) throws Exception {
         TopBar topBar = new TopBar();
         SideBar sideBar = new SideBar();
 
-        BorderPane tela = new BorderPane();
-        tela.setStyle("-fx-background-color: #F5F5F5;");
+        BorderPane root = new BorderPane();
+        root.setStyle("-fx-background-color: #F5F5F5;");
+
+        VBox topContainer = new VBox(topBar);
+        root.setTop(topContainer);
+
+        root.setLeft(sideBar);
+
+        VBox centerArea = new VBox();
+        centerArea.setPadding(new Insets(20));
+        centerArea.setSpacing(20);
 
         HBox searchBar = new HBox(10);
         searchBar.setPadding(new Insets(10));
         searchBar.setStyle("-fx-background-color: #C4AF95; -fx-border-radius: 5; -fx-background-radius: 5;");
-        TextField searchField = new TextField();
+
+        searchField = new TextField();
         searchField.setPromptText("Pesquisar por descrição, local ou data...");
         searchField.setPrefWidth(400);
         searchField.setStyle("-fx-background-color: #FFFFFF; -fx-text-fill: #333333; -fx-prompt-text-fill: #8B7A68; -fx-border-color: #A67C52;");
+
+        searchField.textProperty().addListener((obs, oldValue, newValue) -> updatePredicate());
 
         Button registerButton = new Button("Cadastrar Item");
         registerButton.setStyle("-fx-background-color: #A67C52; -fx-text-fill: #FFFFFF; -fx-font-weight: bold; -fx-padding: 8 16; -fx-border-radius: 5; -fx-background-radius: 5;");
@@ -59,125 +113,50 @@ public class CadHome extends Application {
         HBox.setHgrow(spacer, Priority.ALWAYS);
         searchBar.getChildren().addAll(searchField, spacer, registerButton);
 
-        VBox topContainer = new VBox();
-        topContainer.getChildren().add(topBar);
-        tela.setTop(topContainer);
-        tela.setLeft(sideBar);
+        centerArea.getChildren().add(searchBar);
 
-        VBox contentArea = new VBox(20);
-        contentArea.setPadding(new Insets(20));
-        contentArea.getChildren().add(searchBar);
+        PaginatedTableView<Item> paginatedTable = new PaginatedTableView<>();
+        paginatedTable.setPageSize(50);
 
-        // Define a model for Lost and Found items
-        class Item {
-            private final StringProperty id;
-            private final StringProperty description;
-            private final StringProperty location;
-            private final StringProperty date;
-            private final StringProperty status;
-            private final StringProperty contact;
+        TableView<Item> tableView = paginatedTable.getTableView();
 
-            public Item(String id, String description, String location, String date, String status, String contact) {
-                this.id = new SimpleStringProperty(id);
-                this.description = new SimpleStringProperty(description);
-                this.location = new SimpleStringProperty(location);
-                this.date = new SimpleStringProperty(date);
-                this.status = new SimpleStringProperty(status);
-                this.contact = new SimpleStringProperty(contact);
-            }
-
-            public String getId() { return id.get(); }
-            public String getDescription() { return description.get(); }
-            public String getLocation() { return location.get(); }
-            public String getDate() { return date.get(); }
-            public String getStatus() { return status.get(); }
-            public StringProperty statusProperty() { return status; }
-            public String getContact() { return contact.get(); }
-            public void setStatus(String newStatus) { status.set(newStatus); }
-        }
-
-        // Create TableView with proper columns
-        TableView<Item> tableView = new TableView<>();
-        tableView.setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #C4AF95; -fx-table-cell-border-color: #E0E0E0;");
-        tableView.setPrefHeight(900);
-        tableView.setPrefWidth(1000);
 
         TableColumn<Item, String> colId = new TableColumn<>("ID");
         colId.setPrefWidth(100);
-        colId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        colId.setCellValueFactory(data -> data.getValue().idProperty());
 
         TableColumn<Item, String> colDescription = new TableColumn<>("Descrição");
         colDescription.setPrefWidth(300);
-        colDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
+        colDescription.setCellValueFactory(data -> data.getValue().descriptionProperty());
 
         TableColumn<Item, String> colLocation = new TableColumn<>("Local");
         colLocation.setPrefWidth(200);
-        colLocation.setCellValueFactory(new PropertyValueFactory<>("location"));
+        colLocation.setCellValueFactory(data -> data.getValue().locationProperty());
 
         TableColumn<Item, String> colDate = new TableColumn<>("Data");
         colDate.setPrefWidth(150);
-        colDate.setCellValueFactory(new PropertyValueFactory<>("date"));
+        colDate.setCellValueFactory(data -> data.getValue().dateProperty());
 
         TableColumn<Item, String> colStatus = new TableColumn<>("Status");
         colStatus.setPrefWidth(150);
-        colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
+        colStatus.setCellValueFactory(data -> data.getValue().statusProperty());
 
         TableColumn<Item, String> colContact = new TableColumn<>("Contato");
         colContact.setPrefWidth(200);
-        colContact.setCellValueFactory(new PropertyValueFactory<>("contact"));
+        colContact.setCellValueFactory(data -> data.getValue().contactProperty());
 
-        tableView.getColumns().addAll(colId, colDescription, colLocation, colDate, colStatus, colContact);
-
-        // Generate sample data
-        ObservableList<Item> items = FXCollections.observableArrayList();
-        Random rand = new Random();
-        String[] statuses = {"Pendente", "Devolvido", "Descartado"};
-        for (int i = 1; i <= 50; i++) {
-            items.add(new Item(
-                    String.format("%03d", i),
-                    "Item " + i + " - Exemplo de descrição",
-                    "Local " + (rand.nextInt(5) + 1),
-                    LocalDate.now().minusDays(rand.nextInt(30)).toString(),
-                    statuses[rand.nextInt(statuses.length)],
-                    "contato" + i + "@exemplo.com"
-            ));
-        }
-
-        // Filtered list for search functionality
-        FilteredList<Item> filteredItems = new FilteredList<>(items, p -> true);
-        tableView.setItems(filteredItems);
-
-        // Add search listener
-        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
-            filteredItems.setPredicate(item -> {
-                if (newValue == null || newValue.isEmpty()) {
-                    return true;
-                }
-                String lowerCaseFilter = newValue.toLowerCase();
-                return item.getDescription().toLowerCase().contains(lowerCaseFilter) ||
-                        item.getLocation().toLowerCase().contains(lowerCaseFilter) ||
-                        item.getDate().toLowerCase().contains(lowerCaseFilter) ||
-                        item.getStatus().toLowerCase().contains(lowerCaseFilter) ||
-                        item.getContact().toLowerCase().contains(lowerCaseFilter);
-            });
-        });
-
-        // Add status change dropdown column
         TableColumn<Item, Void> colActions = new TableColumn<>("Ações");
         colActions.setPrefWidth(150);
-        colActions.setCellFactory(param -> new javafx.scene.control.TableCell<>() {
-            private final ChoiceBox<String> statusChoiceBox = new ChoiceBox<>();
+        colActions.setCellFactory(param -> new TableCell<>() {
+            private final ChoiceBox<String> statusChoiceBox = new ChoiceBox<>(
+                    FXCollections.observableArrayList("Pendente", "Devolvido", "Descartado"));
 
             {
-                statusChoiceBox.getItems().addAll("Pendente", "Devolvido", "Descartado");
-                statusChoiceBox.setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #A67C52; -fx-font-size: 12;");
-                statusChoiceBox.setPrefWidth(120);
-
-                statusChoiceBox.getSelectionModel().selectedItemProperty().addListener((obs, oldValue, newValue) -> {
-                    if (newValue != null) {
+                statusChoiceBox.setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #A67C52;");
+                statusChoiceBox.getSelectionModel().selectedItemProperty().addListener((obs, old, newVal) -> {
+                    if (newVal != null && getIndex() >= 0 && getIndex() < getTableView().getItems().size()) {
                         Item item = getTableView().getItems().get(getIndex());
-                        item.setStatus(newValue);
-                        getTableView().refresh();
+                        item.setStatus(newVal);
                     }
                 });
             }
@@ -185,7 +164,7 @@ public class CadHome extends Application {
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
-                if (empty) {
+                if (empty || getIndex() < 0) {
                     setGraphic(null);
                 } else {
                     Item currentItem = getTableView().getItems().get(getIndex());
@@ -194,22 +173,78 @@ public class CadHome extends Application {
                 }
             }
         });
-        tableView.getColumns().add(colActions);
 
-        contentArea.getChildren().add(tableView);
+        tableView.getColumns().addAll(colId, colDescription, colLocation, colDate, colStatus, colContact, colActions);
 
-        ScrollPane scrollPane = new ScrollPane(contentArea);
-        scrollPane.setFitToWidth(true);
-        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-        scrollPane.setStyle("-fx-background: #F5F5F5;");
-        tela.setCenter(scrollPane);
 
-        Scene scene = new Scene(tela, 1200, 800);
-        stage.setResizable(true);
-        stage.setMaximized(true);
+        allItems = FXCollections.observableArrayList();
+        Random rand = new Random();
+        String[] statuses = {"Pendente", "Devolvido", "Descartado"};
+        List<String> subCategories = Arrays.asList(
+                "Celular", "Tablet", "Notebook", "Fone de Ouvido", "Carregador", "Câmera",
+                "Camiseta", "Calça", "Jaqueta", "Sapato", "Boné", "Vestido",
+                "Bolsa", "Carteira", "Óculos", "Relógio", "Jóias", "Chaveiro",
+                "RG", "CPF", "Passaporte", "Carteira de Motorista", "Cartão",
+                "Chaves", "Livro", "Guarda-chuva", "Brinquedo", "Garrafa"
+        );
+
+        for (int i = 1; i <= 150; i++) {
+            String subCat = subCategories.get(rand.nextInt(subCategories.size()));
+            allItems.add(new Item(
+                    String.format("%03d", i),
+                    subCat + " - Exemplo de descrição do achado ou perdido",
+                    "Local " + (rand.nextInt(10) + 1),
+                    LocalDate.now().minusDays(rand.nextInt(90)).toString(),
+                    statuses[rand.nextInt(3)],
+                    "contato" + i + "@exemplo.com"
+            ));
+        }
+
+        filteredItems = new FilteredList<>(allItems, p -> true);
+        paginatedTable.setItems(allItems); // Carrega inicialmente todos
+
+
+        sideBar.setSelectionListener(selected -> {
+            categoryFilter = selected.isEmpty() ? "" : selected.get(0).toLowerCase();
+            updatePredicate();
+        });
+
+        centerArea.getChildren().add(paginatedTable);
+        VBox.setVgrow(paginatedTable, Priority.ALWAYS);
+
+        root.setCenter(centerArea);
+
+        Scene scene = new Scene(root, 1200, 800);
         stage.setScene(scene);
         stage.setTitle("Sistema de Achados e Perdidos");
+        stage.setMaximized(true);
         stage.show();
+    }
+
+    private void updatePredicate() {
+        String filter = searchField.getText() == null ? "" : searchField.getText().toLowerCase();
+
+        filteredItems.setPredicate(item -> {
+            // Filtro de categoria do SideBar
+            if (!categoryFilter.isEmpty() && !item.getDescription().toLowerCase().contains(categoryFilter)) {
+                return false;
+            }
+
+            // Filtro de busca
+            if (filter.isEmpty()) {
+                return true;
+            }
+
+            return item.getDescription().toLowerCase().contains(filter) ||
+                    item.getLocation().toLowerCase().contains(filter) ||
+                    item.getDate().contains(filter) ||
+                    item.getStatus().toLowerCase().contains(filter) ||
+                    item.getContact().toLowerCase().contains(filter);
+        });
+
+    }
+
+    public static void main(String[] args) {
+        launch(args);
     }
 }

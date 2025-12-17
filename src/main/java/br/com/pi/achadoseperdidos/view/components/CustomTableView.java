@@ -1,39 +1,48 @@
 package br.com.pi.achadoseperdidos.view.components;
 
+import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.Button;
-import javafx.scene.layout.HBox;
 
-import javafx.stage.Stage;
-
+/**
+ * TableView personalizada para o sistema Achados e Perdidos.
+ * Apenas define tamanho, estilo e alguns melhoramentos visuais.
+ * As colunas são adicionadas manualmente onde a tabela é usada.
+ */
 public class CustomTableView<T> extends TableView<T> {
 
     public CustomTableView() {
+        // Tamanho preferido
         this.setPrefHeight(900);
         this.setPrefWidth(1000);
-        configureDefaultColumns();
-    }
 
-    private void configureDefaultColumns() {
-        TableColumn<T, String> column = new TableColumn<>("Items");
-        TableColumn<T, String> column2 = new TableColumn<>("");
-        TableColumn<T, String> column3 = new TableColumn<>("");
-        TableColumn<T, String> column4 = new TableColumn<>("");
-        TableColumn<T, String> column5 = new TableColumn<>("");
-        TableColumn<T, String> column6 = new TableColumn<>("");
+        // Estilo básico
+        this.setStyle(
+                "-fx-background-color: #FFFFFF;" +
+                        "-fx-border-color: #C4AF95;" +
+                        "-fx-table-cell-border-color: #E0E0E0;" +
+                        "-fx-font-size: 14px;"
+        );
 
-        column.setPrefWidth(100);
-        column2.setPrefWidth(300);
-        column3.setPrefWidth(300);
-        column4.setPrefWidth(300);
-        column5.setPrefWidth(300);
-        column6.setPrefWidth(300);
+        // Permite selecionar múltiplas linhas (útil para ações em lote no futuro)
+        this.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-        column.setCellValueFactory(data -> javafx.beans.binding.Bindings.createStringBinding(() -> String.valueOf(data.getValue())));
-
-        this.getColumns().addAll(column, column2, column3, column4, column5, column6);
+        // Linhas zebradas (alternando cores claras para melhor legibilidade)
+        this.setRowFactory(tv -> new TableRow<>() {
+            @Override
+            protected void updateItem(T item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setStyle("");
+                } else {
+                    // Linha par = cor mais clara, ímpar = branca
+                    if (getIndex() % 2 == 0) {
+                        setStyle("-fx-background-color: #F9F9F9;");
+                    } else {
+                        setStyle("-fx-background-color: #FFFFFF;");
+                    }
+                }
+            }
+        });
     }
 }
-

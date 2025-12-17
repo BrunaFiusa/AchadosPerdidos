@@ -10,114 +10,178 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CadCadastro extends Application {
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+    private File arquivoSelecionado = null;
+    private final List<File> arquivosFotos = new ArrayList<>();
 
     @Override
     public void start(Stage stage) {
-        BorderPane root = new BorderPane();
-        root.setStyle("-fx-background-color: #c4af95; -fx-border-radius: 10;"); // Added border radius to root
 
-        VBox content = new VBox(15);
+        BorderPane root = new BorderPane();
+        root.setStyle("-fx-background-color: #c4af95;");
+
+        VBox content = new VBox(12);
         content.setAlignment(Pos.CENTER);
-        content.setPadding(new Insets(20));
-        content.setStyle("-fx-background-color: #c4af95; -fx-border-radius: 10;"); // Consistent corner rounding
+        content.setPadding(new Insets(20, 30, 25, 30)); // Padding reduzido em cima e embaixo
+
+
+        Label title = new Label("Cadastro de Objeto");
+        title.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #333333;");
+
 
         ImageView imageView = new ImageView();
-        imageView.setFitHeight(200);
-        imageView.setFitWidth(200);
+        imageView.setFitHeight(50);
+        imageView.setFitWidth(50);
         imageView.setPreserveRatio(true);
-        imageView.setStyle("-fx-border-color: #919191; -fx-border-width: 2; -fx-background-color: #ffffff; -fx-border-radius: 12;"); // Increased border radius
+        imageView.setStyle(
+                "-fx-border-color: #919191; " +
+                        "-fx-border-width: 3; " +
+                        "-fx-border-style: dashed; " +
+                        "-fx-background-color: #d6c4b0; " +
+                        "-fx-background-radius: 16; " +
+                        "-fx-border-radius: 16;"
+        );
 
-        HBox imageContainer = new HBox();
-        imageContainer.setAlignment(Pos.CENTER);
-        imageContainer.setPadding(new Insets(15));
-        imageContainer.setStyle("-fx-background-color: #ffffff; -fx-border-radius: 12;"); // Increased border radius
-        imageContainer.getChildren().add(imageView);
 
-        Button uploadButton = new Button("Escolher Imagem");
+        Button uploadButton = new Button("Escolher Foto(s)");
         styleButton(uploadButton);
-        uploadButton.setOnAction(e -> {
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Imagens", "*.png", "*.jpg", "*.jpeg"));
-            File file = fileChooser.showOpenDialog(stage);
-            if (file != null) {
-                Image image = new Image(file.toURI().toString());
-                imageView.setImage(image);
-            }
-        });
+        uploadButton.setPrefWidth(260);
 
-        VBox form = new VBox(10);
-        form.setAlignment(Pos.CENTER);
-        form.setMaxWidth(300);
-        form.setStyle("-fx-background-color: #c4af95; -fx-border-radius: 10;"); // Added border radius to form
 
-        Label title = new Label("Cadastro de Produto");
-        title.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #ffffff;");
+        TextField nomeField = createCompactField("Nome do Objeto *");
+        TextField lacreField = createCompactField("Número do Lacre *");
+        TextField observacaoField = createCompactField("Observação");
+        TextField marcaField = createCompactField("Marca");
+        TextField condicaoField = createCompactField("Condição");
 
-        TextField nomeProduto = new TextField();
-        nomeProduto.setPromptText("Nome do Produto");
-        nomeProduto.setPrefHeight(40);
-        styleTextField(nomeProduto);
-
-        TextField descricao = new TextField();
-        descricao.setPromptText("Descrição");
-        descricao.setPrefHeight(40);
-        styleTextField(descricao);
-
-        HBox buttons = new HBox(15);
-        buttons.setAlignment(Pos.CENTER);
 
         Button salvarButton = new Button("Salvar");
         styleButton(salvarButton);
-        salvarButton.setPrefWidth(100);
-        salvarButton.setOnAction(e -> {
-            if (nomeProduto.getText().trim().isEmpty()) {
-                showAlert("Erro", "O nome do produto é obrigatório!");
-                return;
-            }
-            if (imageView.getImage() == null) {
-                showAlert("Erro", "Por favor, selecione uma imagem!");
-                return;
-            }
-            showAlert("Sucesso", "Produto salvo com sucesso!");
-        });
+        salvarButton.setPrefWidth(130);
 
         Button cancelButton = new Button("Cancelar");
         styleButton(cancelButton);
-        cancelButton.setPrefWidth(100);
-        cancelButton.setOnAction(e -> {
-            nomeProduto.clear();
-            descricao.clear();
-            imageView.setImage(null);
-        });
+        cancelButton.setStyle(cancelButton.getStyle() + "-fx-background-color: #a0522d;");
+        cancelButton.setPrefWidth(130);
 
-        buttons.getChildren().addAll(salvarButton, cancelButton);
+        HBox buttons = new HBox(15, salvarButton, cancelButton);
+        buttons.setAlignment(Pos.CENTER);
 
-        form.getChildren().addAll(title, nomeProduto, descricao);
-        content.getChildren().addAll(imageContainer, uploadButton, form, buttons);
+
+        content.getChildren().addAll(
+                title,
+                imageView,
+                uploadButton,
+                nomeField,
+                lacreField,
+                observacaoField,
+                marcaField,
+                condicaoField,
+                buttons
+        );
 
         root.setCenter(content);
 
-        Scene scene = new Scene(root, 500, 550);
+
+        uploadButton.setOnAction(e -> {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Imagens", "*.png", "*.jpg", "*.jpeg", "*.gif"));
+            List<File> files = fileChooser.showOpenMultipleDialog(stage);
+            if (files != null && !files.isEmpty()) {
+                arquivosFotos.clear();
+                arquivosFotos.addAll(files);
+                arquivoSelecionado = files.get(0);
+
+                Image image = new Image(arquivoSelecionado.toURI().toString());
+                imageView.setImage(image);
+
+                imageView.setStyle(
+                        "-fx-border-color: #5e8c61; " +
+                                "-fx-border-width: 3; " +
+                                "-fx-border-style: solid; " +
+                                "-fx-background-color: #d6c4b0; " +
+                                "-fx-background-radius: 16; " +
+                                "-fx-border-radius: 16;"
+                );
+            }
+        });
+
+
+        cancelButton.setOnAction(e -> {
+            nomeField.clear();
+            lacreField.clear();
+            observacaoField.clear();
+            marcaField.clear();
+            condicaoField.clear();
+            imageView.setImage(null);
+            arquivosFotos.clear();
+            arquivoSelecionado = null;
+            imageView.setStyle(
+                    "-fx-border-color: #919191; " +
+                            "-fx-border-width: 3; " +
+                            "-fx-border-style: dashed; " +
+                            "-fx-background-color: #d6c4b0; " +
+                            "-fx-background-radius: 16; " +
+                            "-fx-border-radius: 16;"
+            );
+        });
+
+
+        salvarButton.setOnAction(e -> {
+            String nome = nomeField.getText().trim();
+            String lacre = lacreField.getText().trim();
+
+            if (nome.isEmpty() || lacre.isEmpty() || arquivosFotos.isEmpty()) {
+                showAlert("Atenção", "Preencha nome, lacre e selecione uma foto.");
+                return;
+            }
+
+            showAlert("Sucesso!", "Tudo preenchido corretamente!\nA tela está compacta e funcionando.");
+        });
+
+        Scene scene = new Scene(root, 460, 620); // Tela mais curta
         stage.setScene(scene);
+        stage.setTitle("Cadastro de Objeto");
         stage.setResizable(false);
-        stage.setTitle("Cadastro de Produto");
         stage.centerOnScreen();
         stage.show();
     }
 
+    private TextField createCompactField(String prompt) {
+        TextField tf = new TextField();
+        tf.setPromptText(prompt);
+        tf.setPrefHeight(38);
+        tf.setMaxWidth(300);
+        styleTextField(tf);
+        return tf;
+    }
+
     private void styleButton(Button button) {
-        button.setStyle("-fx-background-color: #333333; -fx-text-fill: #ffffff; -fx-font-size: 14px; -fx-padding: 10 20; -fx-background-radius: 12; -fx-border-radius: 12;"); // Increased corner radius
+        button.setStyle(
+                "-fx-background-color: #333333; " +
+                        "-fx-text-fill: white; " +
+                        "-fx-font-size: 14px; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-background-radius: 12; " +
+                        "-fx-padding: 10 18;"
+        );
     }
 
     private void styleTextField(TextField textField) {
-        textField.setStyle("-fx-background-color: #ffffff; -fx-border-color: #919191; -fx-border-radius: 12; -fx-font-size: 16px; -fx-text-fill: #333333; -fx-prompt-text-fill: #cccccc; -fx-background-radius: 12;"); // Increased corner radius
+        textField.setStyle(
+                "-fx-background-color: white; " +
+                        "-fx-border-color: #919191; " +
+                        "-fx-border-radius: 12; " +
+                        "-fx-background-radius: 12; " +
+                        "-fx-font-size: 14px; " +
+                        "-fx-padding: 10;"
+        );
     }
 
     private void showAlert(String title, String message) {
@@ -126,5 +190,9 @@ public class CadCadastro extends Application {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    public static void main(String[] args) {
+        launch(args);
     }
 }

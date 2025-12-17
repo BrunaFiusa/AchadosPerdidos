@@ -16,14 +16,17 @@
     <properties>
         <!--(properties): Define "variáveis" globais para usar no resto do arquivo-->
 
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> <!-- (project.build.sourceEncoding): Define a codificação de caracteres (UTF-8) para evitar problemas com acentos-->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- (project.build.sourceEncoding): Define a codificação de caracteres (UTF-8) para evitar problemas com acentos-->
 
         <app.run.class>br.com.pi.achadoseperdidos.view.Login</app.run.class>
         <!-- Define a classe (tela) inicial PADRÃO da aplicação JavaFX. Este valor é usado se nenhum parâmetro -Dapp.run.class for passado via linha de comando (terminal/IDE).-->
 
-        <maven.compiler.source>21</maven.compiler.source> <!-- (maven.compiler.source): Diz ao Maven qual versão do Java usou para escrever o código (ex: 21)-->
-        <maven.compiler.target>21</maven.compiler.target> <!-- (maven.compiler.target): Diz ao Maven para qual versão do Java ele deve compilar o código (ex: 21)-->
-        <!--cofiguração da versao do java(21) para rodar o maven-->
+        <!-- Configuração moderna e recomendada para Java 21+ -->
+        <maven.compiler.release>21</maven.compiler.release>
+        <!-- Usa -release 21: compila com source/target 21 + define automaticamente o location dos system modules.
+             Isso remove o warning "location of system modules is not set" de uma vez por todas. -->
+
     </properties>
 
     <dependencies>
@@ -63,7 +66,7 @@
                 <version>0.0.8</version>
                 <configuration>
                     <mainClass>${app.run.class}</mainClass>
-                    <!--<mainClass> A tag usa a variável dinâmica ${app.run.class}. Isso permite que a classe de inicialização seja alterada via linha de comando (ex: -Dapp.run.class=OutraTela) sem editar o pom.xml.-->
+                    <executable>C:\Users\gabri\.jdks\openjdk-25.0.1\bin\java.exe</executable>
                 </configuration>
             </plugin>
         </plugins>
