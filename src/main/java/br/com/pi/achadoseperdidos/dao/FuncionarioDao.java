@@ -9,7 +9,7 @@ import jakarta.persistence.TypedQuery;
 import java.util.List;
 
 
-public class    FuncionarioDao {
+public class FuncionarioDao {
     public void salvar(Funcionario funcionario){
         EntityManager em = JPAUtil.getEntityManager();
         try {
