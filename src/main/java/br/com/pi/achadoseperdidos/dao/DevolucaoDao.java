@@ -9,7 +9,8 @@ import java.util.List;
 
 public class DevolucaoDao {
 
-    public void salvar(Devolucao devolucao){
+    //Métodos de Criação, Desativação e Atualização
+    public void inserirDevolucao(Devolucao devolucao){
         EntityManager em = JPAUtil.getEntityManager();
         try {
             em.getTransaction().begin();
@@ -23,7 +24,7 @@ public class DevolucaoDao {
         }
     }
 
-    public Devolucao atualizar(Devolucao devolucao) {
+    public Devolucao alterarDevolucao(Devolucao devolucao) {
         EntityManager em = JPAUtil.getEntityManager();
         try{
             em.getTransaction().begin();
@@ -38,7 +39,7 @@ public class DevolucaoDao {
         }
     }
 
-    public void remover(Devolucao devolucao) {
+    public void desativarDevolucao(Devolucao devolucao) {
         EntityManager em = JPAUtil.getEntityManager();
 
         try {
@@ -54,6 +55,7 @@ public class DevolucaoDao {
         }
     }
 
+    //Métodos de consulta
     public List<Devolucao> listarTodos() {
         EntityManager em = JPAUtil.getEntityManager();
 
@@ -73,6 +75,5 @@ public class DevolucaoDao {
             em.close();
         }
     }
-
 
 }

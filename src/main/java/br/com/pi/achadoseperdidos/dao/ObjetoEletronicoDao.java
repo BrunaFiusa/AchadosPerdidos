@@ -1,20 +1,20 @@
 package br.com.pi.achadoseperdidos.dao;
 
-import br.com.pi.achadoseperdidos.model.Roupa;
+import br.com.pi.achadoseperdidos.model.Eletronico;
 import br.com.pi.achadoseperdidos.util.JPAUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 
 import java.util.List;
 
-public class RoupaDao {
+public class ObjetoEletronicoDao {
 
-    public void salvar(Roupa roupa){
+    //Métodos de Criação, Desativação e Atualização
+    public void inserirEletronico(Eletronico eletronico){
         EntityManager em = JPAUtil.getEntityManager();
         try {
             em.getTransaction().begin();
-            // O merge salva o novo registro ou atualiza um existente (em ambas as tabelas)
-            em.merge(roupa);
+            em.merge(eletronico);
             em.getTransaction().commit();
         } catch (Exception e) {
             em.getTransaction().rollback();
@@ -24,21 +24,22 @@ public class RoupaDao {
         }
     }
 
-    public Roupa buscarPorId(Integer id) {
+    //Métodos de consulta
+    public Eletronico buscarPorId(Integer id) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
-            // Usa a classe Roupa.class para buscar, o JPA fará o JOIN internamente.
-            return em.find(Roupa.class, id);
+            // Usa a classe Eletronico.class para buscar, o JPA fará o JOIN internamente.
+            return em.find(Eletronico.class, id);
         } finally {
             em.close();
         }
     }
 
-    public List<Roupa> listarTodos() {
+    public List<Eletronico> listarTodos() {
         EntityManager em = JPAUtil.getEntityManager();
         try {
-            // JPQL para listar todas as Roupas
-            TypedQuery<Roupa> q = em.createQuery("SELECT r FROM Roupa r", Roupa.class);
+            // JPQL para listar todos os Eletronicos
+            TypedQuery<Eletronico> q = em.createQuery("SELECT e FROM Eletronico e", Eletronico.class);
             return q.getResultList();
         } finally {
             em.close();

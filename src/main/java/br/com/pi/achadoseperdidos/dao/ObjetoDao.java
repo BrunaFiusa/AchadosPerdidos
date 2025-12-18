@@ -10,7 +10,7 @@ import java.util.List;
 public class ObjetoDao {
 
     //Métodos de Criação, Desativação e Atualização
-    public void salvar(Objeto objeto) {
+    public void inserirObjeto(Objeto objeto) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
             em.getTransaction().begin();
@@ -32,7 +32,7 @@ public class ObjetoDao {
         }
     }
 
-    public Objeto atualizar(Objeto objeto) {
+    public Objeto alterarObjeto(Objeto objeto) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
             em.getTransaction().begin();
@@ -51,7 +51,7 @@ public class ObjetoDao {
         }
     }
 
-    public void desativar(Integer id) {
+    public void desativarObjeto(Integer id) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
             em.getTransaction().begin();
@@ -74,7 +74,7 @@ public class ObjetoDao {
         }
     }
 
-    // Métodos de consulta
+    //Métodos de consulta
     public List<Objeto> listarTodos() {
         EntityManager em = JPAUtil.getEntityManager();
         try {

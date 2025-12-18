@@ -10,7 +10,9 @@ import java.util.List;
 
 
 public class FuncionarioDao {
-    public void salvar(Funcionario funcionario){
+
+    //Métodos de Criação, Desativação e Atualização
+    public void inserirFuncionario(Funcionario funcionario){
         EntityManager em = JPAUtil.getEntityManager();
         try {
             em.getTransaction().begin();
@@ -24,7 +26,7 @@ public class FuncionarioDao {
         }
     }
 
-    public Funcionario atualizar(Funcionario funcionario) {
+    public Funcionario alterarFuncionario(Funcionario funcionario) {
         EntityManager em = JPAUtil.getEntityManager();
         try{
             em.getTransaction().begin();
@@ -39,7 +41,7 @@ public class FuncionarioDao {
         }
     }
 
-    public void remover(Funcionario funcionario) {
+    public void desativarFuncionario(Funcionario funcionario) {
         EntityManager em = JPAUtil.getEntityManager();
 
         try {
@@ -55,6 +57,7 @@ public class FuncionarioDao {
         }
     }
 
+    //Métodos de consulta
     public List<Funcionario> listarTodos() {
         EntityManager em = JPAUtil.getEntityManager();
 
@@ -74,4 +77,5 @@ public class FuncionarioDao {
             em.close();
         }
     }
+
 }
