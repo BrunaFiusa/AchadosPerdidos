@@ -9,7 +9,8 @@ import java.util.List;
 
 public class DestinoDao {
 
-    public void salvar(Destino destino){
+    //Métodos de Criação, Desativação e Atualização
+    public void inserirDestino(Destino destino){
         EntityManager em = JPAUtil.getEntityManager();
         try {
             em.getTransaction().begin();
@@ -23,7 +24,7 @@ public class DestinoDao {
         }
     }
 
-    public Destino atualizar(Destino destino) {
+    public Destino alterarDestino(Destino destino) {
         EntityManager em = JPAUtil.getEntityManager();
         try{
             em.getTransaction().begin();
@@ -38,7 +39,7 @@ public class DestinoDao {
         }
     }
 
-    public void remover(Destino destino) {
+    public void desativarDestino(Destino destino) {
         EntityManager em = JPAUtil.getEntityManager();
 
         try {
@@ -54,6 +55,7 @@ public class DestinoDao {
         }
     }
 
+    //Métodos de consulta
     public List<Destino> listarTodos() {
         EntityManager em = JPAUtil.getEntityManager();
 
@@ -73,4 +75,5 @@ public class DestinoDao {
             em.close();
         }
     }
+
 }

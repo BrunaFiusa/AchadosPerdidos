@@ -9,41 +9,75 @@ import java.util.List;
 
 public class ObjetoDao {
 
-    public void salvar(Objeto objeto){
+    //Métodos de Criação, Desativação e Atualização
+    public void inserirObjeto(Objeto objeto) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
             em.getTransaction().begin();
-            em.merge(objeto);
+            if (objeto.getId() == null) {
+                em.persist(objeto);
+            } else {
+                em.merge(objeto);
+            }
             em.getTransaction().commit();
-        }catch (Exception e) {
-            em.getTransaction().rollback();
-            throw e;
-        }finally {
-            em.close();
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw new RuntimeException("Erro ao salvar objeto: " + e.getMessage(), e);
+        } finally {
+            if (em.isOpen()) {
+                em.close();
+            }
         }
     }
 
-    public Objeto atualizar(Objeto objeto) {
+    public Objeto alterarObjeto(Objeto objeto) {
         EntityManager em = JPAUtil.getEntityManager();
-        try{
+        try {
             em.getTransaction().begin();
-            Objeto merged = em.merge(objeto);
+            Objeto resultado = em.merge(objeto);
             em.getTransaction().commit();
-            return merged;
-        }catch (Exception e){
-            em.getTransaction().rollback();
-            throw e;
-        }finally {
-            em.close();
+            return resultado;
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw new RuntimeException("Falha ao atualizar objeto ID: " + objeto.getId(), e);
+        } finally {
+            if (em.isOpen()) {
+                em.close();
+            }
         }
     }
 
+    public void desativarObjeto(Integer id) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            Objeto objeto = em.find(Objeto.class, id);
+            if (objeto != null) {
+                objeto.setAtivado(false);
+                em.getTransaction().commit();
+            } else {
+                em.getTransaction().rollback();
+            }
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw new RuntimeException("Erro ao desativar objeto ID: " + id, e);
+        } finally {
+            if (em.isOpen()) {
+                em.close();
+            }
+        }
+    }
 
-    // O método listarTodos deve filtrar apenas os objetos onde 'ativo' é TRUE
+    //Métodos de consulta
     public List<Objeto> listarTodos() {
         EntityManager em = JPAUtil.getEntityManager();
         try {
-            // JPQL: Adicionando a cláusula WHERE para filtrar apenas objetos ATIVOS
             TypedQuery<Objeto> q = em.createQuery("SELECT o FROM Objeto o", Objeto.class);
             return q.getResultList();
         } finally {
@@ -59,33 +93,5 @@ public class ObjetoDao {
             em.close();
         }
     }
-    // Adicione este método ao final da sua classe ObjetoDao
 
-    public void desativar(Integer id) {
-        EntityManager em = JPAUtil.getEntityManager();
-        em.getTransaction().begin();
-        try {
-            // 1. Busca o objeto
-            Objeto objeto = em.find(Objeto.class, id);
-
-            if (objeto != null) {
-                // 2. Altera o status (Assumindo que sua entidade Objeto tem o método setAtivo(Boolean))
-                objeto.setAtivado(false);
-                // 3. Persiste a mudança
-                em.merge(objeto);
-                em.getTransaction().commit();
-            } else {
-                // Se não encontrar, faz o rollback e pode lançar uma exceção de que o objeto não existe.
-                em.getTransaction().rollback();
-                // Opcional: throw new IllegalArgumentException("Objeto ID " + id + " não encontrado.");
-            }
-        } catch (Exception e) {
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
-            throw new RuntimeException("Erro ao desativar Objeto: " + e.getMessage(), e);
-        } finally {
-            em.close();
-        }
-    }
 }

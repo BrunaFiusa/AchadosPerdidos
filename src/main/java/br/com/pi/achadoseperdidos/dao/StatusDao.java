@@ -9,7 +9,8 @@ import java.util.List;
 
 public class StatusDao {
 
-    public void salvar(Status status){
+    //Métodos de Criação, Desativação e Atualização
+    public void inserirStatus(Status status){
         EntityManager em = JPAUtil.getEntityManager();
         try {
             em.getTransaction().begin();
@@ -23,7 +24,7 @@ public class StatusDao {
         }
     }
 
-    public Status atualizar(Status status) {
+    public Status alterarStatus(Status status) {
         EntityManager em = JPAUtil.getEntityManager();
         try{
             em.getTransaction().begin();
@@ -38,7 +39,7 @@ public class StatusDao {
         }
     }
 
-    public void remover(Status status) {
+    public void desativarStatus(Status status) {
         EntityManager em = JPAUtil.getEntityManager();
 
         try {
@@ -54,6 +55,7 @@ public class StatusDao {
         }
     }
 
+    //Métodos de consulta
     public List<Status> listarTodos() {
         EntityManager em = JPAUtil.getEntityManager();
 

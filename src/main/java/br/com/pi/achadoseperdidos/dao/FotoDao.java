@@ -9,7 +9,8 @@ import java.util.List;
 
 public class FotoDao {
 
-    public void salvar(Foto foto){
+    //Métodos de Criação, Desativação e Atualização
+    public void inserirFoto(Foto foto){
         EntityManager em = JPAUtil.getEntityManager();
         try {
             em.getTransaction().begin();
@@ -23,7 +24,7 @@ public class FotoDao {
         }
     }
 
-    public Foto atualizar(Foto foto) {
+    public Foto alterarFoto(Foto foto) {
         EntityManager em = JPAUtil.getEntityManager();
         try{
             em.getTransaction().begin();
@@ -38,7 +39,7 @@ public class FotoDao {
         }
     }
 
-    public void remover(Foto foto) {
+    public void desativarFoto(Foto foto) {
         EntityManager em = JPAUtil.getEntityManager();
 
         try {
@@ -54,6 +55,7 @@ public class FotoDao {
         }
     }
 
+    //Métodos de consulta
     public List<Foto> listarTodos() {
         EntityManager em = JPAUtil.getEntityManager();
 
@@ -73,4 +75,5 @@ public class FotoDao {
             em.close();
         }
     }
+
 }

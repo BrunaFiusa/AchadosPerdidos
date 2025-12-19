@@ -8,7 +8,9 @@ import jakarta.persistence.TypedQuery;
 import java.util.List;
 
 public class LocalDao {
-    public void salvar(Local local){
+
+    //Métodos de Criação, Desativação e Atualização
+    public void inserirObjeto(Local local){
         EntityManager em = JPAUtil.getEntityManager();
         try {
             em.getTransaction().begin();
@@ -22,7 +24,7 @@ public class LocalDao {
         }
     }
 
-    public Local atualizar(Local local) {
+    public Local alterarObjeto(Local local) {
         EntityManager em = JPAUtil.getEntityManager();
         try{
             em.getTransaction().begin();
@@ -37,7 +39,7 @@ public class LocalDao {
         }
     }
 
-    public void remover(Local local) {
+    public void desativarObjeto(Local local) {
         EntityManager em = JPAUtil.getEntityManager();
 
         try {
@@ -53,6 +55,7 @@ public class LocalDao {
         }
     }
 
+    //Métodos de consulta
     public List<Local> listarTodos() {
         EntityManager em = JPAUtil.getEntityManager();
 

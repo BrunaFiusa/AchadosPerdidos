@@ -9,7 +9,8 @@ import java.util.List;
 
 public class CategoriaDao {
 
-    public void salvar(Categoria categoria){
+    //Métodos de Criação, Desativação e Atualização
+    public void inserirCategoria(Categoria categoria){
         EntityManager em = JPAUtil.getEntityManager();
         try {
             em.getTransaction().begin();
@@ -23,7 +24,7 @@ public class CategoriaDao {
         }
     }
 
-    public Categoria atualizar(Categoria categoria) {
+    public Categoria alterarCategoria(Categoria categoria) {
         EntityManager em = JPAUtil.getEntityManager();
         try{
             em.getTransaction().begin();
@@ -38,7 +39,7 @@ public class CategoriaDao {
         }
     }
 
-    public void remover(Categoria categoria) {
+    public void desativarCategoria(Categoria categoria) {
         EntityManager em = JPAUtil.getEntityManager();
 
         try {
@@ -54,6 +55,7 @@ public class CategoriaDao {
         }
     }
 
+    //Métodos de consulta
     public List<Categoria> listarTodos() {
         EntityManager em = JPAUtil.getEntityManager();
 
@@ -73,4 +75,5 @@ public class CategoriaDao {
             em.close();
         }
     }
+
 }
