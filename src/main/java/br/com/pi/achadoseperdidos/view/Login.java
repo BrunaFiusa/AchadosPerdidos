@@ -82,7 +82,7 @@ public class Login extends Application {
                         "-fx-border-width: 1.5;"
         );
 
-        // Password field
+
         Label passwordLabel = new Label("Senha:");
         passwordLabel.setFont(Font.font("Arial", 16));
         PasswordField passwordField = new PasswordField();
