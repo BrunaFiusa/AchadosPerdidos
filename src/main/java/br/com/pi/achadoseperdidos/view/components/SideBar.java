@@ -10,6 +10,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
+
 import java.util.*;
 import java.util.function.Consumer;
 
@@ -29,6 +30,7 @@ public class SideBar extends StackPane {
     private final ToggleGroup toggleGroup = new ToggleGroup();
     private Consumer<List<String>> selectionListener;
     private boolean isOpen = false;
+
     private final Button hamburgerButton;
     private final Region line1 = new Region();
     private final Region line2 = new Region();
@@ -47,7 +49,6 @@ public class SideBar extends StackPane {
         getChildren().addAll(scrollPane, hamburgerButton);
         StackPane.setAlignment(hamburgerButton, Pos.TOP_RIGHT);
         StackPane.setMargin(hamburgerButton, new Insets(24, 24, 0, 0));
-
 
         setPrefWidth(BUTTON_SIZE);
         setMinWidth(BUTTON_SIZE);
@@ -79,7 +80,6 @@ public class SideBar extends StackPane {
         btn.setMinSize(BUTTON_SIZE, BUTTON_SIZE);
         btn.setMaxSize(BUTTON_SIZE, BUTTON_SIZE);
 
-
         line1.setStyle("-fx-background-color: " + ICON_COLOR + ";");
         line2.setStyle("-fx-background-color: " + ICON_COLOR + ";");
         line3.setStyle("-fx-background-color: " + ICON_COLOR + ";");
@@ -88,10 +88,8 @@ public class SideBar extends StackPane {
         line2.setPrefSize(28, 4);
         line3.setPrefSize(28, 4);
 
-
         VBox iconBox = new VBox(6, line1, line2, line3);
         iconBox.setAlignment(Pos.CENTER);
-
         btn.setGraphic(iconBox);
 
         btn.setStyle("-fx-background-color: " + ACCENT_COLOR + "; " +
@@ -99,39 +97,32 @@ public class SideBar extends StackPane {
                 "-fx-cursor: hand; " +
                 "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 16, 0.4, 6, 6);");
 
-
         btn.setOnMouseEntered(e -> btn.setStyle(
                 "-fx-background-color: " + HOVER_COLOR + "; " +
                         "-fx-background-radius: 16px; " +
                         "-fx-cursor: hand; " +
-                        "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 20, 0.5, 8, 8);"
-        ));
+                        "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 20, 0.5, 8, 8);"));
 
         btn.setOnMouseExited(e -> btn.setStyle(
                 "-fx-background-color: " + ACCENT_COLOR + "; " +
                         "-fx-background-radius: 16px; " +
                         "-fx-cursor: hand; " +
-                        "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 16, 0.4, 6, 6);"
-        ));
+                        "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 16, 0.4, 6, 6);"));
 
         return btn;
     }
 
     private void updateButtonIcon(boolean open) {
         if (open) {
-
             line1.setRotate(45);
             line2.setOpacity(0);
             line3.setRotate(-45);
-
-
             line1.setTranslateY(10);
             line3.setTranslateY(-10);
         } else {
             line1.setRotate(0);
             line2.setOpacity(1);
             line3.setRotate(0);
-
             line1.setTranslateY(0);
             line3.setTranslateY(0);
         }
@@ -139,9 +130,11 @@ public class SideBar extends StackPane {
 
     private void buildFilterContent() {
         addHeader();
+
         Label generalLabel = new Label("Geral");
         generalLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 15px; -fx-text-fill: " + TEXT_COLOR + ";");
         generalLabel.setPadding(new Insets(0, 0, 6, 0));
+
         RadioButton allRadio = createRadioButton("Todos", true);
         content.getChildren().addAll(generalLabel, allRadio, createSeparator(15));
 
@@ -157,6 +150,7 @@ public class SideBar extends StackPane {
             catLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 15px; -fx-text-fill: " + TEXT_COLOR + ";");
             catLabel.setPadding(new Insets(12, 0, 6, 0));
             content.getChildren().add(catLabel);
+
             for (String option : entry.getValue()) {
                 content.getChildren().add(createRadioButton(option, false));
             }
@@ -167,10 +161,12 @@ public class SideBar extends StackPane {
     private void addHeader() {
         Label title = new Label("Filtros de Achados");
         title.setStyle("-fx-font-weight: bold; -fx-font-size: 18px; -fx-text-fill: " + TEXT_COLOR + ";");
+
         Button clearButton = new Button("Limpar Filtro");
         clearButton.setStyle("-fx-background-color: " + ACCENT_COLOR + "; " +
                 "-fx-text-fill: white; -fx-font-size: 13px; -fx-padding: 10 18; " +
                 "-fx-background-radius: 8px; -fx-cursor: hand;");
+
         clearButton.setOnAction(e -> clearSelections());
 
         clearButton.setOnMouseEntered(e -> {
@@ -179,6 +175,7 @@ public class SideBar extends StackPane {
                 clearButton.setStyle(current.replace(ACCENT_COLOR, HOVER_COLOR));
             }
         });
+
         clearButton.setOnMouseExited(e -> {
             String current = clearButton.getStyle();
             if (!current.contains(ACCENT_COLOR)) {
@@ -210,6 +207,7 @@ public class SideBar extends StackPane {
                 rb.setStyle(current + "-fx-background-color: #D8C4A5; -fx-background-radius: 8px;");
             }
         });
+
         rb.setOnMouseExited(e -> {
             String current = rb.getStyle();
             rb.setStyle(current.replace("-fx-background-color: #D8C4A5; -fx-background-radius: 8px;", ""));
@@ -227,7 +225,9 @@ public class SideBar extends StackPane {
 
     public void setSelectionListener(Consumer<List<String>> listener) {
         this.selectionListener = listener;
-        if (listener != null) listener.accept(getSelectedOptions());
+        if (listener != null) {
+            listener.accept(getSelectedOptions());
+        }
     }
 
     public List<String> getSelectedOptions() {
@@ -236,7 +236,7 @@ public class SideBar extends StackPane {
                 .map(RadioButton::getText)
                 .findFirst()
                 .map(List::of)
-                .orElse(new ArrayList<>());
+                .orElse(Collections.emptyList());
     }
 
     public void clearSelections() {
@@ -244,7 +244,10 @@ public class SideBar extends StackPane {
                 .filter(rb -> rb.getText().equals("Todos"))
                 .findFirst()
                 .ifPresent(rb -> rb.setSelected(true));
-        if (selectionListener != null) selectionListener.accept(getSelectedOptions());
+
+        if (selectionListener != null) {
+            selectionListener.accept(getSelectedOptions());
+        }
     }
 
     public void toggle() {
