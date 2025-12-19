@@ -9,10 +9,10 @@
 
         <properties>
 
-            <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/ap_iguatemi?serverTimezone=UTC" />
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:mariadb://localhost:3306/ap_iguatemi?serverTimezone=UTC" />
             <!--Endereço/url do banco-->
 
-            <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
+            <property name="jakarta.persistence.jdbc.driver" value="org.mariadb.jdbc.Driver" />
             <!--Classe que ira conversar com MySQL-->
 
             <property name="jakarta.persistence.jdbc.user" value="ap_iguatemi_admin" />
@@ -23,9 +23,6 @@
 
             <property name="hibernate.hbm2ddl.auto" value="none" />
             <!--Gerencia a estrutura do banco (DDL - update (ideal para dev): Cria ou atualiza tabelas, mas não apaga dados existentes.-->
-
-            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
-            <!--Define o dialeto SQL - Informa ao Hibernate qual sotaque SQL usar (Ex: MySQL8Dialect).-->
 
             <property name="hibernate.show_sql" value="true" />
             <!--Vacilita Debug - Se true, imprime todo o SQL gerado no console.-->
