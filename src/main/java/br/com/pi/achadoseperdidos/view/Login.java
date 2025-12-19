@@ -9,11 +9,14 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class Login extends Application {
+
+    private boolean passwordVisible = false;
 
     @Override
     public void start(Stage stage) {
@@ -58,7 +61,7 @@ public class Login extends Application {
                         "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 12, 0, 0, 6);"
         );
 
-        // Welcome label
+        // Welcome Label
         Label welcomeLabel = new Label("Bem-vindo!");
         welcomeLabel.setFont(Font.font("Arial", 30));
         welcomeLabel.setTextFill(Color.rgb(180, 160, 135));
@@ -79,7 +82,7 @@ public class Login extends Application {
                         "-fx-border-width: 1.5;"
         );
 
-        // Password field
+
         Label passwordLabel = new Label("Senha:");
         passwordLabel.setFont(Font.font("Arial", 16));
         PasswordField passwordField = new PasswordField();
@@ -90,10 +93,92 @@ public class Login extends Application {
                         "-fx-border-color: #D0D0D0;" +
                         "-fx-border-radius: 10;" +
                         "-fx-background-radius: 10;" +
-                        "-fx-padding: 12;" +
+                        "-fx-padding: 12 40 12 12;" +
                         "-fx-font-size: 15;" +
                         "-fx-border-width: 1.5;"
         );
+
+        TextField visiblePasswordField = new TextField();
+        visiblePasswordField.setPromptText("Digite sua senha");
+        visiblePasswordField.setMaxWidth(320);
+        visiblePasswordField.setStyle(
+                "-fx-background-color: #F8F8F8;" +
+                        "-fx-border-color: #D0D0D0;" +
+                        "-fx-border-radius: 10;" +
+                        "-fx-background-radius: 10;" +
+                        "-fx-padding: 12 40 12 12;" +
+                        "-fx-font-size: 15;" +
+                        "-fx-border-width: 1.5;"
+        );
+        visiblePasswordField.setVisible(false);
+        visiblePasswordField.setManaged(false);
+
+        ImageView eyeOpenIcon = new ImageView();
+        ImageView eyeClosedIcon = new ImageView();
+        try {
+            eyeOpenIcon.setImage(new Image("img/OlhoOpen.png"));
+            eyeClosedIcon.setImage(new Image("img/OlhoClose.png"));
+        } catch (Exception e) {
+            System.out.println("Eye icons not found, using text placeholders");
+        }
+        eyeOpenIcon.setFitWidth(20);
+        eyeOpenIcon.setFitHeight(20);
+        eyeOpenIcon.setPreserveRatio(true);
+        eyeOpenIcon.setVisible(false);
+
+        eyeClosedIcon.setFitWidth(20);
+        eyeClosedIcon.setFitHeight(20);
+        eyeClosedIcon.setPreserveRatio(true);
+
+        StackPane eyeIconStack = new StackPane(eyeClosedIcon, eyeOpenIcon);
+        eyeIconStack.setMaxSize(20, 20);
+        eyeIconStack.setMinSize(20, 20);
+        eyeIconStack.setPrefSize(20, 20);
+        eyeIconStack.setStyle("-fx-cursor: hand;");
+
+        StackPane toggleIconPane = new StackPane(eyeIconStack);
+        toggleIconPane.setAlignment(Pos.CENTER_RIGHT);
+        toggleIconPane.setPadding(new Insets(0, 10, 0, 0));
+        toggleIconPane.setMaxWidth(320);
+        toggleIconPane.setPickOnBounds(false);
+
+        StackPane passwordFieldContainer = new StackPane();
+        passwordFieldContainer.getChildren().addAll(passwordField, visiblePasswordField, toggleIconPane);
+        passwordFieldContainer.setAlignment(Pos.CENTER_LEFT);
+        passwordFieldContainer.setMaxWidth(320);
+
+        eyeIconStack.setOnMouseClicked((MouseEvent event) -> {
+            passwordVisible = !passwordVisible;
+            if (passwordVisible) {
+                visiblePasswordField.setText(passwordField.getText());
+                passwordField.setVisible(false);
+                passwordField.setManaged(false);
+                visiblePasswordField.setVisible(true);
+                visiblePasswordField.setManaged(true);
+                eyeClosedIcon.setVisible(false);
+                eyeOpenIcon.setVisible(true);
+            } else {
+                passwordField.setText(visiblePasswordField.getText());
+                visiblePasswordField.setVisible(false);
+                visiblePasswordField.setManaged(false);
+                passwordField.setVisible(true);
+                passwordField.setManaged(true);
+                eyeClosedIcon.setVisible(true);
+                eyeOpenIcon.setVisible(false);
+            }
+        });
+
+        passwordField.textProperty().addListener((obs, oldVal, newVal) -> {
+            if (passwordField.isVisible()) {
+                visiblePasswordField.setText(newVal);
+            }
+        });
+
+        visiblePasswordField.textProperty().addListener((obs, oldVal, newVal) -> {
+            if (visiblePasswordField.isVisible()) {
+                passwordField.setText(newVal);
+            }
+        });
 
         // Login button
         Button loginButton = new Button("Entrar");
@@ -124,7 +209,7 @@ public class Login extends Application {
         ));
         loginButton.setOnAction(event -> {
             String email = emailField.getText().trim();
-            String password = passwordField.getText().trim();
+            String password = passwordVisible ? visiblePasswordField.getText().trim() : passwordField.getText().trim();
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erro");
             alert.setHeaderText(null);
@@ -134,10 +219,21 @@ public class Login extends Application {
             } else if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
                 alert.setContentText("Por favor, insira um e-mail válido!");
                 alert.showAndWait();
-            } else {
+            } else if (email.equals("admin@iguatemi.com") && password.equals("admin123")) {
                 alert.setAlertType(Alert.AlertType.INFORMATION);
                 alert.setTitle("Sucesso");
                 alert.setContentText("Login bem-sucedido!");
+                alert.showAndWait();
+                CadHome cadHomeApp = new CadHome();
+                Stage newStage = new Stage();
+                try {
+                    cadHomeApp.start(newStage);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+                stage.close();
+            } else {
+                alert.setContentText("E-mail ou senha incorretos!");
                 alert.showAndWait();
             }
         });
@@ -173,7 +269,7 @@ public class Login extends Application {
         loginPanel.getChildren().addAll(
                 welcomeLabel,
                 emailLabel, emailField,
-                passwordLabel, passwordField,
+                passwordLabel, passwordFieldContainer,
                 loginButton,
                 forgotPasswordButton
         );
@@ -182,12 +278,12 @@ public class Login extends Application {
         StackPane imagePanel = new StackPane();
         imagePanel.setAlignment(Pos.CENTER);
         Region spacer = new Region();
-        HBox.setHgrow(spacer, Priority.ALWAYS); // Spacer to push image to fill right side
+        HBox.setHgrow(spacer, Priority.ALWAYS); // Spacer to push image to fill Right Side
         try {
             Image image = new Image("img/iguatemi_esplanada.jpg", true);
             ImageView imageView = new ImageView(image);
             imageView.setPreserveRatio(false);
-            imageView.fitWidthProperty().bind(centerPanel.widthProperty().divide(2)); // Fill right half
+            imageView.fitWidthProperty().bind(centerPanel.widthProperty().divide(2)); // Fill Right Half
             imageView.fitHeightProperty().bind(centerPanel.heightProperty());
             imageView.setStyle("-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 10, 0, 0, 5);");
             imagePanel.getChildren().add(imageView);
@@ -198,7 +294,7 @@ public class Login extends Application {
             imagePanel.getChildren().add(placeholder);
         }
 
-        // Add panels to center
+        // Add panels to Center
         centerPanel.getChildren().addAll(loginPanel, spacer, imagePanel);
         root.setCenter(centerPanel);
 
