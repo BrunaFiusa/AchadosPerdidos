@@ -61,7 +61,7 @@ public class Login extends Application {
                         "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 12, 0, 0, 6);"
         );
 
-        // Welcome label
+        // Welcome Label
         Label welcomeLabel = new Label("Bem-vindo!");
         welcomeLabel.setFont(Font.font("Arial", 30));
         welcomeLabel.setTextFill(Color.rgb(180, 160, 135));
