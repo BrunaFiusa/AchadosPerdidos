@@ -25,11 +25,39 @@ public class PaginatedTableView<T> extends VBox {
     private final ScrollPane tableScrollPane = new ScrollPane();
 
     public PaginatedTableView() {
-        // Cria a tabela personalizada
-        tableView = new CustomTableView<>();
+        // Cria a tabela (assumindo que você tem uma CustomTableView ou usa TableView normal)
+        tableView = new TableView<>(); // Se você tem CustomTableView, troque aqui
         tableView.setItems(currentPageData);
 
-        // Configura o ScrollPane para ter scroll só na tabela
+        // === CORREÇÕES PARA REMOVER VERMELHO E ESTILOS INDESEJADOS ===
+        tableView.setRowFactory(tv -> new TableRow<T>() {
+            @Override
+            protected void updateItem(T item, boolean empty) {
+                super.updateItem(item, empty);
+                // Remove qualquer classe de erro que possa estar causando vermelho
+                getStyleClass().removeAll("error", "table-row-cell:error");
+                // Fundo limpo em linhas vazias
+                if (empty || item == null) {
+                    setStyle("");
+                } else {
+                    setStyle("");
+                }
+            }
+        });
+
+        // Cores de seleção mais suaves e no seu tema
+        tableView.setStyle(
+                "-fx-selection-bar: #C4AF95; " +
+                        "-fx-selection-bar-non-focused: #E0D6CB; " +
+                        "-fx-focus-color: #A67C52; " +
+                        "-fx-faint-focus-color: #A67C5222; " +
+                        "-fx-background: #FFFFFF;"
+        );
+
+        // Remove possíveis estilos herdados problemáticos
+        tableView.getStyleClass().removeIf(c -> c.contains("error"));
+
+        // Configura o ScrollPane
         tableScrollPane.setContent(tableView);
         tableScrollPane.setFitToWidth(true);
         tableScrollPane.setFitToHeight(true);
@@ -37,17 +65,15 @@ public class PaginatedTableView<T> extends VBox {
         tableScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         tableScrollPane.setStyle("-fx-background: #FFFFFF; -fx-border-color: transparent;");
 
-        // Faz a tabela crescer dentro do ScrollPane
         VBox.setVgrow(tableScrollPane, Priority.ALWAYS);
 
-        // Configuração da barra de paginação (fundo e estilo)
+        // Barra de paginação
         paginationControls.setAlignment(Pos.CENTER);
         paginationControls.setPadding(new Insets(10));
         paginationControls.setStyle("-fx-background-color: #F9F5F0; " +
                 "-fx-border-color: #C4AF95; " +
                 "-fx-border-width: 1 0 0 0;");
 
-        // Adiciona scroll da tabela + barra de paginação fixa
         this.getChildren().addAll(tableScrollPane, paginationControls);
         this.setSpacing(0);
 
@@ -171,7 +197,7 @@ public class PaginatedTableView<T> extends VBox {
         if (pageIndex == currentPage.get()) {
             btn.setStyle("-fx-font-weight: bold; -fx-background-color: #A67C52; -fx-text-fill: white; -fx-background-radius: 5;");
         } else {
-            btn.setStyle("-fx-background-radius: 5;");
+            btn.setStyle("-fx-background-color: #F0E6DC; -fx-background-radius: 5;");
         }
         btn.setOnAction(e -> currentPage.set(pageIndex));
         paginationControls.getChildren().add(btn);
