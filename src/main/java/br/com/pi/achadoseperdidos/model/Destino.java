@@ -17,23 +17,28 @@ public class Destino {
 
     @Column(name = "nome")
     private String nome;
+    @Column(name = "ativado")
+    private boolean ativado;
 
     public Destino() {
     }
 
-    public Destino(List<ObjetoEncaminhado> objetosEncaminhados, String nome) {
+    public Destino(List<ObjetoEncaminhado> objetosEncaminhados, String nome, boolean ativado) {
         this.objetosEncaminhados = objetosEncaminhados;
         this.nome = nome;
+        this.ativado = ativado;
     }
 
     public Integer getId() {
         return id;
     }
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public List<ObjetoEncaminhado> getObjetosEncaminhados() {
         return objetosEncaminhados;
     }
-
     public void setObjetosEncaminhados(List<ObjetoEncaminhado> objetosEncaminhados) {
         this.objetosEncaminhados = objetosEncaminhados;
     }
@@ -41,8 +46,14 @@ public class Destino {
     public String getNome() {
         return nome;
     }
-
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public boolean isAtivado() {
+        return ativado;
+    }
+    public void setAtivado(boolean ativado) {
+        this.ativado = ativado;
     }
 }
