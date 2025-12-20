@@ -58,7 +58,7 @@ public class FuncionarioDao {
     }
 
     //Métodos de consulta
-    public List<Funcionario> listarTodos() {
+    public List<Funcionario> listarFuncionarios() {
         EntityManager em = JPAUtil.getEntityManager();
 
         try {
@@ -69,7 +69,7 @@ public class FuncionarioDao {
         }
     }
 
-    public Funcionario buscarPorId(Integer id) {
+    public Funcionario listarFuncionarioPorId(Integer id) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
             return em.find(Funcionario.class, id);
