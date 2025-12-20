@@ -14,22 +14,24 @@ public class Funcionario {
     @JoinColumn(name = "acesso_id", nullable = false)
     private Acesso acesso;
 
-
     @Column(name = "nome")
     private String nome;
     @Column(name = "email")//, unique = true)
     private String email;
     @Column(name = "senha")//, unique = true)
     private String senha;
+    @Column(name = "ativado")
+    private boolean ativado;
 
     public Funcionario() {
     }
 
-    public Funcionario(Acesso acesso, String nome, String email, String senha) {
+    public Funcionario(Acesso acesso, String nome, String email, String senha, boolean ativado) {
         this.acesso = acesso;
         this.nome = nome;
         this.email = email;
         this.senha = senha;
+        this.ativado = ativado;
     }
 
     public Integer getId() {
@@ -65,5 +67,12 @@ public class Funcionario {
     }
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public boolean isAtivado() {
+        return ativado;
+    }
+    public void setAtivado(boolean ativado) {
+        this.ativado = ativado;
     }
 }
