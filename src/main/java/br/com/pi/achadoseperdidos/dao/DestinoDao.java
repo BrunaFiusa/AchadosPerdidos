@@ -56,7 +56,7 @@ public class DestinoDao {
     }
 
     //Métodos de consulta
-    public List<Destino> listarTodos() {
+    public List<Destino> listarDestinos() {
         EntityManager em = JPAUtil.getEntityManager();
 
         try {
@@ -67,7 +67,7 @@ public class DestinoDao {
         }
     }
 
-    public Destino buscarPorId(Integer id) {
+    public Destino listarDestinoPorId(Integer id) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
             return em.find(Destino.class, id);
