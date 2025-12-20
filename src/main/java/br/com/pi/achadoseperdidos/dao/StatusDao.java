@@ -56,7 +56,7 @@ public class StatusDao {
     }
 
     //Métodos de consulta
-    public List<Status> listarTodos() {
+    public List<Status> listarStatus() {
         EntityManager em = JPAUtil.getEntityManager();
 
         try {
@@ -67,7 +67,7 @@ public class StatusDao {
         }
     }
 
-    public Status buscarPorId(Integer id) {
+    public Status listarStatusPorId(Integer id) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
             return em.find(Status.class, id);
