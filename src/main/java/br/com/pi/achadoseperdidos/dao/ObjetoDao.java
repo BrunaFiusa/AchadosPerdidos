@@ -75,7 +75,7 @@ public class ObjetoDao {
     }
 
     //Métodos de consulta
-    public List<Objeto> listarTodos() {
+    public List<Objeto> listarObjetos() {
         EntityManager em = JPAUtil.getEntityManager();
         try {
             TypedQuery<Objeto> q = em.createQuery("SELECT o FROM Objeto o", Objeto.class);
@@ -85,7 +85,7 @@ public class ObjetoDao {
         }
     }
 
-    public Objeto buscarPorId(Integer id) {
+    public Objeto listarObjetoPorId(Integer id) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
             return em.find(Objeto.class, id);

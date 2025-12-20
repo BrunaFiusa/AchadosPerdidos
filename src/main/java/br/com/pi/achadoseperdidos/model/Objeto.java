@@ -57,7 +57,6 @@ public class Objeto {
     @Column(name = "ativado")
     private Boolean ativado;
     @Column(name = "data_registro")
-// Define o formato de data/hora no SQL. TIMESTAMP salva a data e a hora exata do registro (o momento do registro).
     private Date dataRegistro;
 
     public Objeto() {
