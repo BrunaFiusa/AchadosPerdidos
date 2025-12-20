@@ -56,7 +56,7 @@ public class LocalDao {
     }
 
     //Métodos de consulta
-    public List<Local> listarTodos() {
+    public List<Local> listarLocais() {
         EntityManager em = JPAUtil.getEntityManager();
 
         try {
@@ -67,7 +67,7 @@ public class LocalDao {
         }
     }
 
-    public Local buscarPorId(Integer id) {
+    public Local listarLocalPorId(Integer id) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
             return em.find(Local.class, id);
