@@ -8,12 +8,16 @@ import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class Novasenha extends Application {
+
+    private boolean newPasswordVisible = false;
+    private boolean confirmPasswordVisible = false;
 
     @Override
     public void start(Stage stage) {
@@ -79,6 +83,88 @@ public class Novasenha extends Application {
                         "-fx-border-width: 1.5;"
         );
 
+        TextField visibleNewPasswordField = new TextField();
+        visibleNewPasswordField.setPromptText("Digite sua nova senha");
+        visibleNewPasswordField.setMaxWidth(320);
+        visibleNewPasswordField.setStyle(
+                "-fx-background-color: #F8F8F8;" +
+                        "-fx-border-color: #D0D0D0;" +
+                        "-fx-border-radius: 10;" +
+                        "-fx-background-radius: 10;" +
+                        "-fx-padding: 12;" +
+                        "-fx-font-size: 15;" +
+                        "-fx-border-width: 1.5;"
+        );
+        visibleNewPasswordField.setVisible(false);
+        visibleNewPasswordField.setManaged(false);
+
+        ImageView eyeOpenIconNew = new ImageView();
+        ImageView eyeClosedIconNew = new ImageView();
+        try {
+            eyeOpenIconNew.setImage(new Image("img/OlhoOpen.png"));
+            eyeClosedIconNew.setImage(new Image("img/OlhoClose.png"));
+        } catch (Exception e) {
+            System.out.println("Eye icons not found, using text placeholders");
+        }
+        eyeOpenIconNew.setFitWidth(20);
+        eyeOpenIconNew.setFitHeight(20);
+        eyeOpenIconNew.setPreserveRatio(true);
+        eyeOpenIconNew.setVisible(false);
+
+        eyeClosedIconNew.setFitWidth(20);
+        eyeClosedIconNew.setFitHeight(20);
+        eyeClosedIconNew.setPreserveRatio(true);
+
+        StackPane eyeIconStackNew = new StackPane(eyeClosedIconNew, eyeOpenIconNew);
+        eyeIconStackNew.setMaxSize(20, 20);
+        eyeIconStackNew.setMinSize(20, 20);
+        eyeIconStackNew.setPrefSize(20, 20);
+        eyeIconStackNew.setStyle("-fx-cursor: hand;");
+
+        StackPane toggleIconPaneNew = new StackPane(eyeIconStackNew);
+        toggleIconPaneNew.setAlignment(Pos.CENTER_RIGHT);
+        toggleIconPaneNew.setPadding(new Insets(0, 10, 0, 0));
+        toggleIconPaneNew.setMaxWidth(320);
+        toggleIconPaneNew.setPickOnBounds(false);
+
+        StackPane newPasswordFieldContainer = new StackPane();
+        newPasswordFieldContainer.getChildren().addAll(newPasswordField, visibleNewPasswordField, toggleIconPaneNew);
+        newPasswordFieldContainer.setAlignment(Pos.CENTER_LEFT);
+        newPasswordFieldContainer.setMaxWidth(320);
+
+        eyeIconStackNew.setOnMouseClicked((MouseEvent event) -> {
+            newPasswordVisible = !newPasswordVisible;
+            if (newPasswordVisible) {
+                visibleNewPasswordField.setText(newPasswordField.getText());
+                newPasswordField.setVisible(false);
+                newPasswordField.setManaged(false);
+                visibleNewPasswordField.setVisible(true);
+                visibleNewPasswordField.setManaged(true);
+                eyeClosedIconNew.setVisible(false);
+                eyeOpenIconNew.setVisible(true);
+            } else {
+                newPasswordField.setText(visibleNewPasswordField.getText());
+                visibleNewPasswordField.setVisible(false);
+                visibleNewPasswordField.setManaged(false);
+                newPasswordField.setVisible(true);
+                newPasswordField.setManaged(true);
+                eyeClosedIconNew.setVisible(true);
+                eyeOpenIconNew.setVisible(false);
+            }
+        });
+
+        newPasswordField.textProperty().addListener((obs, oldVal, newVal) -> {
+            if (newPasswordField.isVisible()) {
+                visibleNewPasswordField.setText(newVal);
+            }
+        });
+
+        visibleNewPasswordField.textProperty().addListener((obs, oldVal, newVal) -> {
+            if (visibleNewPasswordField.isVisible()) {
+                newPasswordField.setText(newVal);
+            }
+        });
+
         // Confirm password field
         Label confirmPasswordLabel = new Label("Confirmar Senha:");
         confirmPasswordLabel.setFont(Font.font("Arial", 16));
@@ -94,6 +180,88 @@ public class Novasenha extends Application {
                         "-fx-font-size: 15;" +
                         "-fx-border-width: 1.5;"
         );
+
+        TextField visibleConfirmPasswordField = new TextField();
+        visibleConfirmPasswordField.setPromptText("Confirme sua nova senha");
+        visibleConfirmPasswordField.setMaxWidth(320);
+        visibleConfirmPasswordField.setStyle(
+                "-fx-background-color: #F8F8F8;" +
+                        "-fx-border-color: #D0D0D0;" +
+                        "-fx-border-radius: 10;" +
+                        "-fx-background-radius: 10;" +
+                        "-fx-padding: 12;" +
+                        "-fx-font-size: 15;" +
+                        "-fx-border-width: 1.5;"
+        );
+        visibleConfirmPasswordField.setVisible(false);
+        visibleConfirmPasswordField.setManaged(false);
+
+        ImageView eyeOpenIconConfirm = new ImageView();
+        ImageView eyeClosedIconConfirm = new ImageView();
+        try {
+            eyeOpenIconConfirm.setImage(new Image("img/OlhoOpen.png"));
+            eyeClosedIconConfirm.setImage(new Image("img/OlhoClose.png"));
+        } catch (Exception e) {
+            System.out.println("Eye icons not found, using text placeholders");
+        }
+        eyeOpenIconConfirm.setFitWidth(20);
+        eyeOpenIconConfirm.setFitHeight(20);
+        eyeOpenIconConfirm.setPreserveRatio(true);
+        eyeOpenIconConfirm.setVisible(false);
+
+        eyeClosedIconConfirm.setFitWidth(20);
+        eyeClosedIconConfirm.setFitHeight(20);
+        eyeClosedIconConfirm.setPreserveRatio(true);
+
+        StackPane eyeIconStackConfirm = new StackPane(eyeClosedIconConfirm, eyeOpenIconConfirm);
+        eyeIconStackConfirm.setMaxSize(20, 20);
+        eyeIconStackConfirm.setMinSize(20, 20);
+        eyeIconStackConfirm.setPrefSize(20, 20);
+        eyeIconStackConfirm.setStyle("-fx-cursor: hand;");
+
+        StackPane toggleIconPaneConfirm = new StackPane(eyeIconStackConfirm);
+        toggleIconPaneConfirm.setAlignment(Pos.CENTER_RIGHT);
+        toggleIconPaneConfirm.setPadding(new Insets(0, 10, 0, 0));
+        toggleIconPaneConfirm.setMaxWidth(320);
+        toggleIconPaneConfirm.setPickOnBounds(false);
+
+        StackPane confirmPasswordFieldContainer = new StackPane();
+        confirmPasswordFieldContainer.getChildren().addAll(confirmPasswordField, visibleConfirmPasswordField, toggleIconPaneConfirm);
+        confirmPasswordFieldContainer.setAlignment(Pos.CENTER_LEFT);
+        confirmPasswordFieldContainer.setMaxWidth(320);
+
+        eyeIconStackConfirm.setOnMouseClicked((MouseEvent event) -> {
+            confirmPasswordVisible = !confirmPasswordVisible;
+            if (confirmPasswordVisible) {
+                visibleConfirmPasswordField.setText(confirmPasswordField.getText());
+                confirmPasswordField.setVisible(false);
+                confirmPasswordField.setManaged(false);
+                visibleConfirmPasswordField.setVisible(true);
+                visibleConfirmPasswordField.setManaged(true);
+                eyeClosedIconConfirm.setVisible(false);
+                eyeOpenIconConfirm.setVisible(true);
+            } else {
+                confirmPasswordField.setText(visibleConfirmPasswordField.getText());
+                visibleConfirmPasswordField.setVisible(false);
+                visibleConfirmPasswordField.setManaged(false);
+                confirmPasswordField.setVisible(true);
+                confirmPasswordField.setManaged(true);
+                eyeClosedIconConfirm.setVisible(true);
+                eyeOpenIconConfirm.setVisible(false);
+            }
+        });
+
+        confirmPasswordField.textProperty().addListener((obs, oldVal, newVal) -> {
+            if (confirmPasswordField.isVisible()) {
+                visibleConfirmPasswordField.setText(newVal);
+            }
+        });
+
+        visibleConfirmPasswordField.textProperty().addListener((obs, oldVal, newVal) -> {
+            if (visibleConfirmPasswordField.isVisible()) {
+                confirmPasswordField.setText(newVal);
+            }
+        });
 
         // Change password button
         Button changePasswordButton = new Button("Alterar Senha");
@@ -123,8 +291,8 @@ public class Novasenha extends Application {
                         "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 6, 0, 0, 3);"
         ));
         changePasswordButton.setOnAction(event -> {
-            String newPassword = newPasswordField.getText().trim();
-            String confirmPassword = confirmPasswordField.getText().trim();
+            String newPassword = (newPasswordVisible ? visibleNewPasswordField.getText() : newPasswordField.getText()).trim();
+            String confirmPassword = (confirmPasswordVisible ? visibleConfirmPasswordField.getText() : confirmPasswordField.getText()).trim();
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erro");
             alert.setHeaderText(null);
@@ -153,8 +321,8 @@ public class Novasenha extends Application {
         // Add elements to password panel
         passwordPanel.getChildren().addAll(
                 welcomeLabel,
-                newPasswordLabel, newPasswordField,
-                confirmPasswordLabel, confirmPasswordField,
+                newPasswordLabel, newPasswordFieldContainer,
+                confirmPasswordLabel, confirmPasswordFieldContainer,
                 changePasswordButton
         );
 

@@ -9,12 +9,15 @@ import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class Esquecisenha extends Application {
+
+    private boolean passwordVisible = false;
 
     @Override
     public void start(Stage stage) {
@@ -113,6 +116,89 @@ public class Esquecisenha extends Application {
                 stage.widthProperty(), stage.heightProperty()
         ));
 
+        TextField visiblePasswordField = new TextField();
+        visiblePasswordField.setPromptText("Digite a senha de administrador");
+        visiblePasswordField.maxWidthProperty().bind(recoverPanel.prefWidthProperty().multiply(0.65));
+        visiblePasswordField.styleProperty().bind(Bindings.createStringBinding(
+                () -> "-fx-background-color: #F8F8F8;" +
+                        "-fx-border-color: #D0D0D0;" +
+                        "-fx-border-radius: 10;" +
+                        "-fx-background-radius: 10;" +
+                        "-fx-padding: " + Math.min(stage.getHeight() * 0.015, 12) + ";" +
+                        "-fx-font-size: " + Math.min(stage.getWidth() * 0.013, 15) + ";" +
+                        "-fx-border-width: 1.5;",
+                stage.widthProperty(), stage.heightProperty()
+        ));
+        visiblePasswordField.setVisible(false);
+        visiblePasswordField.setManaged(false);
+
+        ImageView eyeOpenIcon = new ImageView();
+        ImageView eyeClosedIcon = new ImageView();
+        try {
+            eyeOpenIcon.setImage(new Image("img/OlhoOpen.png"));
+            eyeClosedIcon.setImage(new Image("img/OlhoClose.png"));
+        } catch (Exception e) {
+            System.out.println("Eye icons not found, using text placeholders");
+        }
+        eyeOpenIcon.setFitWidth(20);
+        eyeOpenIcon.setFitHeight(20);
+        eyeOpenIcon.setPreserveRatio(true);
+        eyeOpenIcon.setVisible(false);
+
+        eyeClosedIcon.setFitWidth(20);
+        eyeClosedIcon.setFitHeight(20);
+        eyeClosedIcon.setPreserveRatio(true);
+
+        StackPane eyeIconStack = new StackPane(eyeClosedIcon, eyeOpenIcon);
+        eyeIconStack.setMaxSize(20, 20);
+        eyeIconStack.setMinSize(20, 20);
+        eyeIconStack.setPrefSize(20, 20);
+        eyeIconStack.setStyle("-fx-cursor: hand;");
+
+        StackPane toggleIconPane = new StackPane(eyeIconStack);
+        toggleIconPane.setAlignment(Pos.CENTER_RIGHT);
+        toggleIconPane.setPadding(new Insets(0, 10, 0, 0));
+        toggleIconPane.setMaxWidth(320);
+        toggleIconPane.setPickOnBounds(false);
+
+        StackPane passwordFieldContainer = new StackPane();
+        passwordFieldContainer.getChildren().addAll(adminPasswordField, visiblePasswordField, toggleIconPane);
+        passwordFieldContainer.setAlignment(Pos.CENTER_LEFT);
+        passwordFieldContainer.maxWidthProperty().bind(recoverPanel.prefWidthProperty().multiply(0.65));
+
+        eyeIconStack.setOnMouseClicked((MouseEvent event) -> {
+            passwordVisible = !passwordVisible;
+            if (passwordVisible) {
+                visiblePasswordField.setText(adminPasswordField.getText());
+                adminPasswordField.setVisible(false);
+                adminPasswordField.setManaged(false);
+                visiblePasswordField.setVisible(true);
+                visiblePasswordField.setManaged(true);
+                eyeClosedIcon.setVisible(false);
+                eyeOpenIcon.setVisible(true);
+            } else {
+                adminPasswordField.setText(visiblePasswordField.getText());
+                visiblePasswordField.setVisible(false);
+                visiblePasswordField.setManaged(false);
+                adminPasswordField.setVisible(true);
+                adminPasswordField.setManaged(true);
+                eyeClosedIcon.setVisible(true);
+                eyeOpenIcon.setVisible(false);
+            }
+        });
+
+        adminPasswordField.textProperty().addListener((obs, oldVal, newVal) -> {
+            if (adminPasswordField.isVisible()) {
+                visiblePasswordField.setText(newVal);
+            }
+        });
+
+        visiblePasswordField.textProperty().addListener((obs, oldVal, newVal) -> {
+            if (visiblePasswordField.isVisible()) {
+                adminPasswordField.setText(newVal);
+            }
+        });
+
         // Send button
         Button sendButton = new Button("Enviar");
         sendButton.prefWidthProperty().bind(recoverPanel.prefWidthProperty().multiply(0.4));
@@ -200,7 +286,7 @@ public class Esquecisenha extends Application {
                 recoverLabel,
                 instructionLabel,
                 adminPasswordLabel,
-                adminPasswordField,
+                passwordFieldContainer,
                 sendButton,
                 backButton
         );
