@@ -56,7 +56,7 @@ public class DevolucaoDao {
     }
 
     //Métodos de consulta
-    public List<Devolucao> listarTodos() {
+    public List<Devolucao> listarDevolucoes() {
         EntityManager em = JPAUtil.getEntityManager();
 
         try {
@@ -67,7 +67,7 @@ public class DevolucaoDao {
         }
     }
 
-    public Devolucao buscarPorId(Integer id) {
+    public Devolucao listarDevolucaoPorId(Integer id) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
             return em.find(Devolucao.class, id);

@@ -25,26 +25,31 @@ public class  Devolucao {
     @OneToMany(mappedBy = "devolucao", cascade = CascadeType.ALL)
     private List<DevolucaoFoto> devolucaoFotos;
 
-
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "dataDevolucao")
     private Date dataDevolucao;
     @Column(name = "autenticadorAssinatura")
     private String autenticadorAssinatura;
+    @Column(name = "ativado")
+    private boolean ativado;
 
     public Devolucao() {
     }
 
-    public Devolucao(Destinatario destinatario, Objeto objeto, List<DevolucaoFoto> devolucaoFotos, Date dataDevolucao, String autenticadorAssinatura) {
+    public Devolucao(Destinatario destinatario, Objeto objeto, List<DevolucaoFoto> devolucaoFotos, Date dataDevolucao, String autenticadorAssinatura, boolean ativado) {
         this.destinatario = destinatario;
         this.objeto = objeto;
         this.devolucaoFotos = devolucaoFotos;
         this.dataDevolucao = dataDevolucao;
         this.autenticadorAssinatura = autenticadorAssinatura;
+        this.ativado = ativado;
     }
 
     public Integer getId() {
         return id;
+    }
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Destinatario getDestinatario() {
@@ -80,5 +85,12 @@ public class  Devolucao {
     }
     public void setAutenticadorAssinatura(String autenticadorAssinatura) {
         this.autenticadorAssinatura = autenticadorAssinatura;
+    }
+
+    public boolean isAtivado() {
+        return ativado;
+    }
+    public void setAtivado(boolean ativado) {
+        this.ativado = ativado;
     }
 }

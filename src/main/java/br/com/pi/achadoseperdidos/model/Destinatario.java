@@ -20,8 +20,6 @@ public class Destinatario {
     private String cpf;
     @Column(name = "ativação")
     private Boolean ativacao;
-//    @Column(name = "documento", unique = true)
-//    private String documento; - (como estava antes de alterar) - verificar
 
     public Destinatario() {}
 

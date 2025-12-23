@@ -56,7 +56,7 @@ public class CategoriaDao {
     }
 
     //Métodos de consulta
-    public List<Categoria> listarTodos() {
+    public List<Categoria> listarCategorias() {
         EntityManager em = JPAUtil.getEntityManager();
 
         try {
@@ -67,7 +67,7 @@ public class CategoriaDao {
         }
     }
 
-    public Categoria buscarPorId(Integer id) {
+    public Categoria listarCategoriaPorId(Integer id) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
             return em.find(Categoria.class, id);

@@ -56,7 +56,7 @@ public class FotoDao {
     }
 
     //Métodos de consulta
-    public List<Foto> listarTodos() {
+    public List<Foto> listarFotos() {
         EntityManager em = JPAUtil.getEntityManager();
 
         try {
@@ -67,7 +67,7 @@ public class FotoDao {
         }
     }
 
-    public Foto buscarPorId(Integer id) {
+    public Foto listarFotoPorId(Integer id) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
             return em.find(Foto.class, id);

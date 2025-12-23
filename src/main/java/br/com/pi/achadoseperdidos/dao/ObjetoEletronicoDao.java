@@ -25,22 +25,22 @@ public class ObjetoEletronicoDao {
     }
 
     //Métodos de consulta
-    public Eletronico buscarPorId(Integer id) {
-        EntityManager em = JPAUtil.getEntityManager();
-        try {
-            // Usa a classe Eletronico.class para buscar, o JPA fará o JOIN internamente.
-            return em.find(Eletronico.class, id);
-        } finally {
-            em.close();
-        }
-    }
-
-    public List<Eletronico> listarTodos() {
+    public List<Eletronico> listarEletronicos() {
         EntityManager em = JPAUtil.getEntityManager();
         try {
             // JPQL para listar todos os Eletronicos
             TypedQuery<Eletronico> q = em.createQuery("SELECT e FROM Eletronico e", Eletronico.class);
             return q.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    public Eletronico listarEletronicoPorId(Integer id) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            // Usa a classe Eletronico.class para buscar, o JPA fará o JOIN internamente.
+            return em.find(Eletronico.class, id);
         } finally {
             em.close();
         }
