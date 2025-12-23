@@ -4,7 +4,6 @@ import br.com.pi.achadoseperdidos.model.Eletronico;
 import br.com.pi.achadoseperdidos.util.JPAUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
-
 import java.util.List;
 
 public class ObjetoEletronicoDao {
