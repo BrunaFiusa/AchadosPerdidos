@@ -1,27 +1,13 @@
 package br.com.pi.achadoseperdidos.dao;
 
 import br.com.pi.achadoseperdidos.model.Eletronico;
+import br.com.pi.achadoseperdidos.model.Objeto;
 import br.com.pi.achadoseperdidos.util.JPAUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import java.util.List;
 
 public class ObjetoEletronicoDao {
-
-    //Métodos de Criação, Desativação e Atualização
-    public void inserirEletronico(Eletronico eletronico){
-        EntityManager em = JPAUtil.getEntityManager();
-        try {
-            em.getTransaction().begin();
-            em.merge(eletronico);
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            em.getTransaction().rollback();
-            throw e;
-        } finally {
-            em.close();
-        }
-    }
 
     //Métodos de consulta
     public List<Eletronico> listarEletronicos() {

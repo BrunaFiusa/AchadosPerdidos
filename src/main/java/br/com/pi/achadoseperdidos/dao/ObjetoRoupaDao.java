@@ -9,22 +9,6 @@ import java.util.List;
 
 public class ObjetoRoupaDao {
 
-    //Métodos de Criação, Desativação e Atualização
-    public void inserirRoupa(Roupa roupa){
-        EntityManager em = JPAUtil.getEntityManager();
-        try {
-            em.getTransaction().begin();
-            // O merge salva o novo registro ou atualiza um existente (em ambas as tabelas)
-            em.merge(roupa);
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            em.getTransaction().rollback();
-            throw e;
-        } finally {
-            em.close();
-        }
-    }
-
     //Métodos de consulta
     public List<Roupa> listarRoupas() {
         EntityManager em = JPAUtil.getEntityManager();

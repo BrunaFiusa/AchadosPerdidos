@@ -11,12 +11,14 @@ public class GerenciamentoControllerTest {
         System.out.println("--- Iniciando Testes da Controller ---");
 
         System.out.println("\n[1] Testando Inserção...");
-        Objeto novoObjeto = new Objeto();
+        Roupa novoObjeto = new Roupa();
         novoObjeto.setNome("Notebook");
         novoObjeto.setMarca("Dell");
         novoObjeto.setLacre(1247);
         novoObjeto.setCondicao("preservado");
         novoObjeto.setObservacao("Teste gerenciamento Controller");
+        novoObjeto.setCor("Teste");
+        novoObjeto.setTamanho("123");
 
         //Local Fake
         Local localFake = new Local();
@@ -41,6 +43,7 @@ public class GerenciamentoControllerTest {
         novoObjeto.setAtivado(true);
 
         boolean salvou = controller.inserirObjeto(novoObjeto);
+
         if (salvou) {
             System.out.println("x----------------------------------------------------------------x");
             System.out.println("Sucesso! Objeto salvo com ID: " + novoObjeto.getId());
@@ -54,7 +57,7 @@ public class GerenciamentoControllerTest {
 
         if (salvou) {
             System.out.println("\n[2] Testando Atualização...");
-            novoObjeto.setNome("Notebook Dell G15 - Atualizado");
+            novoObjeto.setCor("Teste Funcionou");
 
             Objeto atualizado = controller.alterarObjeto(novoObjeto);
 

@@ -1,11 +1,14 @@
 package br.com.pi.achadoseperdidos.controller;
 
 import br.com.pi.achadoseperdidos.dao.ObjetoDao;
+import br.com.pi.achadoseperdidos.dao.ObjetoEletronicoDao;
+import br.com.pi.achadoseperdidos.model.Eletronico;
 import br.com.pi.achadoseperdidos.model.Objeto;
 
 public class GerenciamentoController {
 
     private final ObjetoDao objetoDao = new ObjetoDao();
+    private final ObjetoEletronicoDao objetoEletronicoDao = new ObjetoEletronicoDao();
 
     public boolean inserirObjeto(Objeto objeto) {
         try {

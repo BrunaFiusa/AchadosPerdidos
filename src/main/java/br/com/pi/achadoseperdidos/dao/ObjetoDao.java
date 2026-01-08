@@ -21,9 +21,7 @@ public class ObjetoDao {
             }
             em.getTransaction().commit();
         } catch (Exception e) {
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
+            if (em.getTransaction().isActive()) {em.getTransaction().rollback();}
             throw new RuntimeException("Erro ao salvar objeto: " + e.getMessage(), e);
         } finally {
             if (em.isOpen()) {
