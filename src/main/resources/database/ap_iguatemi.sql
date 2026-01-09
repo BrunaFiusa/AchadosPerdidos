@@ -835,6 +835,16 @@ ALTER TABLE `objetosencaminhados`
 --
 ALTER TABLE `roupas`
   ADD CONSTRAINT `roupas_ibfk_1` FOREIGN KEY (`objeto_id`) REFERENCES `objetos` (`id`);
+
+ALTER TABLE objetos
+CHANGE data_registro dataReg VARCHAR(20);
+
+ALTER TABLE categorias
+ADD COLUMN ativado BOOLEAN NOT NULL;
+
+ALTER TABLE devolucoes
+CHANGE autenticadorAssinatura autenticadorAss VARCHAR(20);
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
