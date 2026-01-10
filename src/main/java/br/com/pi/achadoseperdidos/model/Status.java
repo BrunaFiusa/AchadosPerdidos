@@ -11,12 +11,18 @@ public class Status {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "nome")
+    @Column(name = "nome", nullable = false)
     private String nome;
+    @Column(name = "ativado", nullable = false)
+    private boolean ativado;
 
-    public Status(){}
+    public Status() {
+    }
 
-    public Status(String nome) {this.nome = nome;}
+    public Status(String nome, boolean ativado) {
+        this.nome = nome;
+        this.ativado = ativado;
+    }
 
     public Integer getId() {
         return id;
@@ -28,8 +34,24 @@ public class Status {
     public String getNome() {
         return nome;
     }
-
     public void setNome(String nome) {
         this.nome = nome;
     }
+
+    public boolean isAtivado() {
+        return ativado;
+    }
+    public void setAtivado(boolean ativado) {
+        this.ativado = ativado;
+    }
 }
+
+
+
+
+
+
+
+
+
+
