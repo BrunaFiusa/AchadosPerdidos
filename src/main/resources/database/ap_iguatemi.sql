@@ -845,6 +845,42 @@ ADD COLUMN ativado BOOLEAN NOT NULL;
 ALTER TABLE devolucoes
 CHANGE autenticadorAssinatura autenticadorAss VARCHAR(20);
 
+ALTER TABLE status 
+ADD COLUMN ativado TINYINT(1) NOT NULL DEFAULT 1;
+
+UPDATE status SET ativado = 1 WHERE ativado IS NULL;
+
+ALTER TABLE locais 
+ADD COLUMN ativado TINYINT(1) NOT NULL DEFAULT 1;
+
+UPDATE locais SET ativado = 1 WHERE ativado IS NULL;
+
+SET FOREIGN_KEY_CHECKS = 0;  
+
+RENAME TABLE 
+    acessos TO Acesso,
+    categorias TO Categoria,
+    destinos TO Destino,
+    fotos TO Foto,
+    locais TO Local;
+    
+RENAME TABLE 
+    destinatarios TO Destinatario,
+    funcionarios TO Funcionario;
+
+RENAME TABLE 
+    devolucoes TO Devolucao,
+    objetos TO Objeto;
+
+RENAME TABLE 
+    eletronicos TO Eletronico,
+    fotodevolucoes TO DevolucaoFoto,
+    fotoregistros TO RegistroFoto,
+    objetosencaminhados TO ObjetoEncaminhado,
+    roupas TO Roupa;
+
+SET FOREIGN_KEY_CHECKS = 1;  
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
