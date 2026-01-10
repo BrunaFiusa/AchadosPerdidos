@@ -15,6 +15,10 @@ public class Objeto {
     private Integer id;
 
     //Mapeamento das chaves FK
+    @ManyToOne // Indica que Muitos Objetos (N) apontam para Um Destino (1)
+    @JoinColumn(name = "destino_id", nullable = false) // O nome EXATO da coluna FK na tabela Objeto
+    private Destino destino;
+
     @ManyToOne // Indica que Muitos Objetos (N) apontam para Um Local (1)
     @JoinColumn(name = "local_id") // O nome EXATO da coluna FK na tabela Objeto
     private Local local; // O tipo é o Objeto (Local), e não o ID primitivo
@@ -28,8 +32,7 @@ public class Objeto {
     private Funcionario funcionario;
 
     @ManyToOne // Indica que Muitos Objetos (N) apontam para Uma Categoria (1)
-    @JoinColumn(name = "categoria_id")
-    //verificar se no cad do objeto não é obrigatorio colocar categoria(nullable = true)
+    @JoinColumn(name = "categoria_id", nullable = false)
     private Categoria categoria;
 
     //Mapeamento de navegação(boas praticas)
@@ -44,6 +47,8 @@ public class Objeto {
     @OneToMany(mappedBy = "objeto", cascade = CascadeType.ALL)
     private List<RegistroFoto> registrosFotos;
 
+
+
     @Column(name = "lacre", nullable = false, unique = true) //verificar se ele é unico
     private Integer lacre;
     @Column(name = "nome")
@@ -54,17 +59,18 @@ public class Objeto {
     private String marca;
     @Column(name = "condicao")
     private String condicao;
-    @Column(name = "ativado")
+    @Column(name = "ativado", nullable = false)
     private Boolean ativado;
-    @Column(name = "data_registro")
-    private Date dataRegistro;
+    @Column(name = "dataReg")
+    private Date dataReg;
 
     public Objeto() {
     }
 
-    public Objeto(Local local, Status status, Funcionario funcionario, Categoria categoria, List<Devolucao> devolucoes,
+    public Objeto(Destino destino, Local local, Status status, Funcionario funcionario, Categoria categoria, List<Devolucao> devolucoes,
                   List<ObjetoEncaminhado> objetosEncaminhados, List<RegistroFoto> registrosFotos, Integer lacre,
-                  String nome, String observacao, String marca, String condicao, Boolean ativado, Date dataRegistro) {
+                  String nome, String observacao, String marca, String condicao, Boolean ativado, Date dataReg) {
+        this.destino = destino;
         this.local = local;
         this.status = status;
         this.funcionario = funcionario;
@@ -78,12 +84,15 @@ public class Objeto {
         this.marca = marca;
         this.condicao = condicao;
         this.ativado = ativado;
-        this.dataRegistro = dataRegistro;
+        this.dataReg = dataReg;
     }
 
     public Integer getId() {
         return id;
     }
+
+    public Destino getDestino() { return destino; }
+    public void setDestino(Destino destino) { this.destino = destino; }
 
     public Local getLocal() {
         return local;
@@ -176,10 +185,10 @@ public class Objeto {
         this.ativado = ativado;
     }
 
-    public Date getDataRegistro() {
-        return dataRegistro;
+    public Date getDataReg() {
+        return dataReg;
     }
-    public void setDataRegistro(Date dataRegistro) {
-        this.dataRegistro = dataRegistro;
+    public void setDataReg(Date dataReg) {
+        this.dataReg = dataReg;
     }
 }

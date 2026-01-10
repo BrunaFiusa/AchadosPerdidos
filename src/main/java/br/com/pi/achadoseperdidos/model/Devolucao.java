@@ -28,20 +28,20 @@ public class  Devolucao {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "dataDevolucao")
     private Date dataDevolucao;
-    @Column(name = "autenticadorAssinatura")
-    private String autenticadorAssinatura;
+    @Column(name = "autenticadorAss")
+    private String autenticadorAss;
     @Column(name = "ativado")
     private boolean ativado;
 
     public Devolucao() {
     }
 
-    public Devolucao(Destinatario destinatario, Objeto objeto, List<DevolucaoFoto> devolucaoFotos, Date dataDevolucao, String autenticadorAssinatura, boolean ativado) {
+    public Devolucao(Destinatario destinatario, Objeto objeto, List<DevolucaoFoto> devolucaoFotos, Date dataDevolucao, String autenticadorAss, boolean ativado) {
         this.destinatario = destinatario;
         this.objeto = objeto;
         this.devolucaoFotos = devolucaoFotos;
         this.dataDevolucao = dataDevolucao;
-        this.autenticadorAssinatura = autenticadorAssinatura;
+        this.autenticadorAss = autenticadorAss;
         this.ativado = ativado;
     }
 
@@ -80,11 +80,11 @@ public class  Devolucao {
         this.dataDevolucao = dataDevolucao;
     }
 
-    public String getAutenticadorAssinatura() {
-        return autenticadorAssinatura;
+    public String getAutenticadorAss() {
+        return autenticadorAss;
     }
-    public void setAutenticadorAssinatura(String autenticadorAssinatura) {
-        this.autenticadorAssinatura = autenticadorAssinatura;
+    public void setAutenticadorAss(String autenticadorAss) {
+        this.autenticadorAss = autenticadorAss;
     }
 
     public boolean isAtivado() {

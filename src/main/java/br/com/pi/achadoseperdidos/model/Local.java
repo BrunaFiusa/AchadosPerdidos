@@ -11,11 +11,14 @@ public class Local {
     private Integer id;
     @Column(name = "nome")
     private String nome;
+    @Column(name = "ativado", nullable = false)
+    private boolean ativado;
 
     public Local(){}
 
-    public Local(String nome) {
+    public Local(String nome, boolean ativado) {
         this.nome = nome;
+        this.ativado = ativado;
     }
 
     public Integer getId() {
@@ -28,8 +31,14 @@ public class Local {
     public String getNome() {
         return nome;
     }
-
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public boolean isAtivado() {
+        return ativado;
+    }
+    public void setAtivado(boolean ativado) {
+        this.ativado = ativado;
     }
 }
