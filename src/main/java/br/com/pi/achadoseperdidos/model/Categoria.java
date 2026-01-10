@@ -14,18 +14,23 @@ public class Categoria {
     private String nome;
     @Column(name = "prazo", nullable = false)
     private Integer prazo;
+    @Column(name = "ativado", nullable = false)
+    private boolean ativado;
 
     public Categoria(){}
 
-    public Categoria(String nome, Integer prazo) {
+    public Categoria(String nome, Integer prazo, boolean ativado) {
         this.nome = nome;
         this.prazo = prazo;
+        this.ativado = ativado;
     }
 
     public Integer getId() {
         return id;
     }
-    public void setId(Integer id) { this.id = id; }
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getNome() {
         return nome;
@@ -39,5 +44,12 @@ public class Categoria {
     }
     public void setPrazo(Integer prazo) {
         this.prazo = prazo;
+    }
+
+    public boolean isAtivado() {
+        return ativado;
+    }
+    public void setAtivado(boolean ativado) {
+        this.ativado = ativado;
     }
 }
